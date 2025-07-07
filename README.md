@@ -54,3 +54,11 @@ Example request:
 ```
 
 The response includes the total cost and a breakdown of labor hours, protective materials charges, number of movers and trucks, and the calculated weight and volume.
+
+## Run Locally
+
+1. `cd` into the repository folder.
+2. `pip install -r requirements.txt`
+3. `uvicorn main:api --host 0.0.0.0 --port 8000`
+
+Once running, open [http://localhost:8000/docs](http://localhost:8000/docs) to test the API.
