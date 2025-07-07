@@ -26,7 +26,7 @@ for item in ITEMS:
 with open(DATA_DIR / "moving_rules.json", "r") as f:
     RULES = json.load(f)["movingQuoterContext"]
 
-api = FastAPI()
+api = FastAPI(title="Moving Price Estimator")
 
 
 class EstimateRequest(BaseModel):
@@ -95,8 +95,7 @@ def _estimate_hours(weight: float, movers: int, distance: float) -> float:
     return max(hours, 3.0)
 
 
-@api.post("/estimate", response_model=EstimateResponse)
-def estimate(req: EstimateRequest):
+def _calculate_estimate(req: EstimateRequest):
     weight, volume = _resolve_items(req.items)
     movers = _num_movers(weight)
     trucks = _num_trucks(weight)
@@ -117,5 +116,34 @@ def estimate(req: EstimateRequest):
             "weight": weight,
             "volume": volume,
         },
+    }
+
+
+@api.post("/estimate", response_model=EstimateResponse)
+def estimate(req: EstimateRequest):
+    return _calculate_estimate(req)
+
+
+@api.get("/estimate", response_model=EstimateResponse)
+def estimate_get(items: str, distance_miles: float, move_date: datetime):
+    """GET variant for simple testing via browser or curl.
+
+    The ``items`` parameter should be a JSON mapping of item names/ids to
+    quantities. Example: ``{"bed_king_mattress": 1, "bar_stool": 2}``.
+    """
+    try:
+        items_dict = json.loads(items)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid items JSON")
+    req = EstimateRequest(
+        items=items_dict, distance_miles=distance_miles, move_date=move_date
+    )
+    return _calculate_estimate(req)
+
+
+@api.get("/")
+def root():
+    return {
+        "message": "Moving price estimation service. POST or GET /estimate.",
     }
 
