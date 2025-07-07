@@ -18,7 +18,7 @@ This repository holds the FastAPI code used to estimate moving costs. Below are 
 3. **Configure Build and Start Commands**
    - **Environment**: Python 3.11 or your preferred version.
    - **Build Command:** `pip install -r requirements.txt` (make sure `requirements.txt` exists and lists `fastapi` and `uvicorn`).
-   - **Start Command:** `uvicorn agent_service:app --host 0.0.0.0 --port $PORT` (adjust `agent_service` if your app is in a different module).
+   - **Start Command:** `uvicorn main:api --host 0.0.0.0 --port $PORT`
 4. **Select Plan and Deploy**
    - Choose a free or paid plan based on traffic needs.
    - Click **Create Web Service**. Render will build and start the service.
@@ -59,6 +59,6 @@ The response includes the total cost and a breakdown of labor hours, protective 
 
 1. `cd` into the repository folder.
 2. `pip install -r requirements.txt`
-3. `uvicorn agent_service:app --host 0.0.0.0 --port 8000`
+3. `uvicorn main:api --host 0.0.0.0 --port 8000`
 
 Once running, open [http://localhost:8000/docs](http://localhost:8000/docs) to test the API.
