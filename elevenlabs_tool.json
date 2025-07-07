@@ -3,18 +3,40 @@
   "description": "Determine the estimated cost of the move based on the caller's inventory, distance and move date.",
   "type": "webhook",
   "api_schema": {
-    "url": "{{base_url}}/estimate",
+    "url": "https://estimate-moving-price.onrender.com/estimate",
     "method": "POST",
     "path_params_schema": [],
     "query_params_schema": [],
     "request_body_schema": {
+      "id": "estimateRequest",
+      "description": "Data required to generate a moving estimate",
       "type": "object",
-      "properties": {
-        "items": {"type": "object"},
-        "distance_miles": {"type": "number"},
-        "move_date": {"type": "string", "format": "date"}
-      },
-      "required": ["items", "distance_miles", "move_date"]
+      "required": true,
+      "properties": [
+        {
+          "id": "items",
+          "type": "object",
+          "description": "Mapping of items to move with their quantities",
+          "properties": [],
+          "dynamic_variable": "items",
+          "required": true
+        },
+        {
+          "id": "distance_miles",
+          "type": "number",
+          "description": "Distance of the move in miles",
+          "dynamic_variable": "distance_miles",
+          "required": true
+        },
+        {
+          "id": "move_date",
+          "type": "string",
+          "format": "date",
+          "description": "Date of the move (YYYY-MM-DD)",
+          "dynamic_variable": "move_date",
+          "required": true
+        }
+      ]
     },
     "request_headers": [],
     "auth_connection": null
@@ -22,7 +44,7 @@
   "response_timeout_secs": 10,
   "dynamic_variables": {
     "dynamic_variable_placeholders": {
-      "base_url": "Your Render service URL (e.g. https://my-api.onrender.com)"
+      "base_url": "https://estimate-moving-price.onrender.com"
     }
   }
 }
