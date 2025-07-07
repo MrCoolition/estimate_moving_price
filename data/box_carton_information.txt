@@ -1,0 +1,15 @@
+CARTONS are boxes
+
+CP = carrier pack (the moving company packs the boxes)
+
+PBO = packed by owner
+
+6.5 (or 6.0) means the size of the box - 6.5 (or 6.0) cubic feet which is an Extra Large box
+
+4.1 or 4.5 is a Large box
+
+3.1 or 3.0 is a Medium box
+
+1.5 is a Small box or Book carton
+
+Factor refers to the phrase "we will use a 'factor' of x lbs per packed 1.5 box", etc.
