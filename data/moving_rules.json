@@ -1,0 +1,65 @@
+{
+  "movingQuoterContext": {
+    "rules": [
+      { "ruleNumber": 1, "description": "One mover can move 310 lbs of furniture in one hour if moving into/out of a home where most of the items are distributed evenly amongst floors.", "subrules": [
+        { "subrule": "1A", "condition": "House has a significant amount of items on a second floor or in the basement", "rateOfMovement": 295 },
+        { "subrule": "1B", "condition": "Second-floor apartment or condo", "rateOfMovement": 270 },
+        { "subrule": "1C", "condition": "Home/apartment is first floor only", "rateOfMovement": 325 },
+        { "subrule": "1D", "condition": "Moving into or out of a first-floor storage unit or open garage", "rateOfMovement": 370 },
+        { "subrule": "1E", "condition": "Storage or warehouse dock job into a storage or dock", "rateOfMovement": 420 }
+      ] },
+      { "ruleNumber": 2, "description": "One truck can fit 8000 lbs of furniture." },
+      { "ruleNumber": 3, "description": "1-4000 lbs of furniture requires 2 Movers." },
+      { "ruleNumber": 4, "description": "For every additional 2500 lbs over 4000, add 1 mover." },
+      { "ruleNumber": 5, "description": "A 1-hour travel charge is added to hours worked (covers 1/2 hour from warehouse to origin + 1/2 hour from destination back to warehouse)." },
+      { "ruleNumber": 6, "description": "3-hour minimum charge (includes the 1-hour drive time)." },
+      { "ruleNumber": 7, "description": "Add 20 minutes of time to travel from the origin to the destination for local moves (under 30 miles)." },
+      { "ruleNumber": 8, "description": "For intrastate moves over 30 miles, drive time is based on ACTUAL time from warehouse to origin (minimum 30 minutes), and from destination back to warehouse (minimum 30 minutes), rounded up to the nearest quarter hour." },
+      { "ruleNumber": 9, "description": "Add the ACTUAL time from origin to destination, rounded up to the nearest quarter hour (for intrastate moves)." },
+      { "ruleNumber": 10, "description": "Protective materials charge: $5.00 for every 1000 lbs moved." },
+      { "ruleNumber": 11, "description": "Disassembly and reassembly of beds: add 30 minutes of time for 1 mover total (regardless of how many beds)." },
+      { "ruleNumber": 12, "description": "For 'Sleep Number' brand beds, add an additional 30 minutes of time for 1 mover." },
+      { "ruleNumber": 13, "description": "If a desk needs disassembly and reassembly, add 30 minutes of time for 1 mover." },
+      { "ruleNumber": 14, "description": "Office hours for humans:\n - Monday-Friday: 8 AM – 7 PM\n - Saturday: 9 AM – 3 PM\n - Sunday: 10 AM – 2 PM" },
+      { "ruleNumber": 15, "description": "Costs for boxes and packing. Customer may buy boxes only OR pay for both box + packing service." },
+      { "ruleNumber": "15.5", "description": "Sales tax on all items in Rule 15 is 7.5%. Sales tax is NOT charged on anything else." },
+      { "ruleNumber": 16, "description": "Some box types are commonly RENTED rather than purchased (movers bring them, then return them to the warehouse)." },
+      { "ruleNumber": 17, "description": "If customer wants to book the job, Jerry G will respond and take the following actions:",
+        "subrules": [
+          { "subrule": "17A", "condition": "During human work hours", "response": "Jerry says: \u201cThat's great to hear and we appreciate the confidence you have in our company! I am going to get your information over to one of my colleagues who can get you on our schedule. You should expect a call from someone within the next 15 to 30 minutes \u2013 would that be OK?\u201d Then Jerry sends the dialogue script to freeestimate@all-americanmoving.com AND sends an SMS to 614-398-1024 stating 'A job is ready to be booked!'" },
+          { "subrule": "17B", "condition": "NOT during human work hours", "response": "Jerry says: \u201cThat's great to hear and we appreciate the confidence you have in our company! I am going to get your information over to one of my colleagues who can get you on our schedule. Unfortunately they aren\u2019t currently in the office, but you can expect a call from them first thing ____ morning after ____ O'Clock am \u2013 would that be OK?\u201d Then Jerry sends the dialogue script to freeestimate@all-americanmoving.com AND sends an SMS to 614-398-1024 stating 'A job is ready to be booked!'" },
+          { "subrule": "17C", "condition": "Whenever a job is ready to be booked", "response": "Jerry must include the customer's name and phone number along with the dialogue script." }
+        ] }
+    ],
+    "pricing": {
+      "localMoves": {
+        "description": "Origin and destination within 30 miles of 2660 Fisher Rd 43204",
+        "ratesMondayToThursday": { "moverRatePerHour": 50.0, "truckRatePerHour": 50.0 },
+        "ratesFridayToSaturday": { "moverRatePerHour": 55.0, "truckRatePerHour": 55.0 }
+      },
+      "intrastateMoves": {
+        "description": "Moves where origin and/or destination is more than 30 miles from 2660 Fisher Rd 43204 (within Ohio)",
+        "ratesMondayToThursday": { "moverRatePerHour": 55.0, "truckRatePerHour": 55.0 },
+        "ratesFridayToSaturday": { "moverRatePerHour": 60.0, "truckRatePerHour": 60.0 }
+      }
+    },
+    "boxAndPackingCosts": {
+      "purchase": [
+        { "boxType": "Dishpak", "boxRate": 7.75, "laborRate": 16.67 },
+        { "boxType": "1.5 (small carton)", "boxRate": 2.25, "laborRate": 8.33 },
+        { "boxType": "3.0 (medium carton)", "boxRate": 3.5, "laborRate": 8.33 },
+        { "boxType": "4.5 (large carton)", "boxRate": 5.0, "laborRate": 8.33 },
+        { "boxType": "6.0 (extra-large carton)", "boxRate": 6.75, "laborRate": 8.33 },
+        { "boxType": "Mirror", "boxRate": 17.99, "laborRate": 12.5 },
+        { "boxType": "Flat Screen TV", "boxRate": 80.0, "laborRate": 25.0 },
+        { "boxType": "Wardrobe", "boxRate": 22.0, "laborRate": 6.25 },
+        { "boxType": "Twin mattress bag", "boxRate": 11.99, "laborRate": 8.33, "notes": "Must be purchased for liability on soiling. Only covered at $0.60/lb for tears, rips, etc." },
+        { "boxType": "King/Queen/Double mattress bag", "boxRate": 16.99, "laborRate": 12.0, "notes": "Must be purchased for liability on soiling. Only covered at $0.60/lb for tears, rips, etc." }
+      ],
+      "rental": [
+        { "boxType": "Flat Screen TV", "rentalRate": 50.0, "laborRate": 25.0 },
+        { "boxType": "Wardrobe", "rentalRate": 7.0, "laborRate": 6.25, "notes": "Quote 1 box per every 2' of closet rod." }
+      ]
+    }
+  }
+}

@@ -28,3 +28,12 @@ This repository holds the FastAPI code used to estimate moving costs. Below are 
    - In the ElevenLabs interface, register a new tool with the base URL of your Render service. Set the endpoint to `POST /estimate` and describe the expected payload.
 
 Your FastAPI service is now ready to be called by the agent.
+
+## Data Files
+
+This repo now includes sample data used for estimating move costs.
+- `data/estimation_weights_volumes_categories.json` contains item weights and volumes.
+- `data/moving_rules.json` describes pricing and operational rules.
+- `data/box_carton_information.txt` and `data/packing_weight_volume_pricing.tsv` provide box and packing details.
+- `data/follow_up_questions.txt` lists questions the agent can use when gathering details.
+
