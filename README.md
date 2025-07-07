@@ -37,3 +37,19 @@ This repo now includes sample data used for estimating move costs.
 - `data/box_carton_information.txt` and `data/packing_weight_volume_pricing.tsv` provide box and packing details.
 - `data/follow_up_questions.txt` lists questions the agent can use when gathering details.
 
+
+## API Usage
+
+Send a `POST` request to `/estimate` with a JSON body specifying the items to move, distance in miles, and the date of the move. Item names must match entries in `data/estimation_weights_volumes_categories.json` (aliases are accepted).
+
+Example request:
+
+```json
+{
+  "items": {"bed_king_mattress": 1, "bar_stool": 4},
+  "distance_miles": 15,
+  "move_date": "2025-07-08"
+}
+```
+
+The response includes the total cost and a breakdown of labor hours, protective materials charges, number of movers and trucks, and the calculated weight and volume.
