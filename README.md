@@ -1,0 +1,30 @@
+# Render Service Setup for Moving Estimate Tool
+
+This repository holds the FastAPI code used to estimate moving costs. Below are quick setup instructions for deploying the API as a web service on [Render](https://render.com) so it can be used as a custom tool in the ElevenLabs AI Agent system.
+
+## Prerequisites
+
+- A Render account
+- A Git repository containing your FastAPI code (this repository)
+- Optional: `requirements.txt` listing `fastapi`, `uvicorn`, and any other dependencies
+
+## Steps
+
+1. **Log in to Render**
+   - Go to <https://dashboard.render.com>, sign up or sign in.
+2. **Create a New Web Service**
+   - Click **New** > **Web Service**.
+   - Connect your GitHub or GitLab account and pick this repository.
+3. **Configure Build and Start Commands**
+   - **Environment**: Python 3.11 or your preferred version.
+   - **Build Command:** `pip install -r requirements.txt` (make sure `requirements.txt` exists and lists `fastapi` and `uvicorn`).
+   - **Start Command:** `uvicorn main:api --host 0.0.0.0 --port 8000` (adjust `main` if your app is in a different module).
+4. **Select Plan and Deploy**
+   - Choose a free or paid plan based on traffic needs.
+   - Click **Create Web Service**. Render will build and start the service.
+5. **Test the Endpoint**
+   - Once deployed, visit `https://<your-service>.onrender.com/docs` to view the OpenAPI docs and verify `/estimate` works.
+6. **Use with ElevenLabs AI Agent**
+   - In the ElevenLabs interface, register a new tool with the base URL of your Render service. Set the endpoint to `POST /estimate` and describe the expected payload.
+
+Your FastAPI service is now ready to be called by the agent.
