@@ -48,6 +48,8 @@ def _resolve_items(items: Dict[str, int]):
     volume = 0.0
     unknown = []
     for name, qty in items.items():
+        if not isinstance(qty, int) or qty <= 0:
+            raise HTTPException(status_code=400, detail="Quantity must be positive")
         info = ITEM_LOOKUP.get(name.lower())
         if info is None:
             unknown.append(name)
