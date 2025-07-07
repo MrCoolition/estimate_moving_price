@@ -25,62 +25,8 @@ This repository holds the FastAPI code used to estimate moving costs. Below are 
 5. **Test the Endpoint**
    - Once deployed, visit `https://<your-service>.onrender.com/docs` to view the OpenAPI docs and verify `/estimate` works.
 6. **Use with ElevenLabs AI Agent**
-   - In the ElevenLabs interface, register a new tool with the base URL of your Render service. Set the endpoint to `POST /estimate` and describe the expected payload.
-
-   Example webhook tool configuration:
-
-   ```json
-   {
-     "name": "Estimate_Move_Price",
-     "description": "Determine the estimated cost of the move based on the caller's inventory, distance and move date.",
-     "type": "webhook",
-     "api_schema": {
-      "url": "https://estimate-moving-price.onrender.com/estimate",
-       "method": "POST",
-       "path_params_schema": [],
-       "query_params_schema": [],
-       "request_body_schema": {
-         "id": "estimateRequest",
-         "description": "Data required to generate a moving estimate",
-         "type": "object",
-         "required": true,
-         "properties": [
-           {
-             "id": "items",
-             "type": "object",
-             "description": "Mapping of items to move with their quantities",
-             "properties": [],
-             "dynamic_variable": "items",
-             "required": true
-           },
-           {
-             "id": "distance_miles",
-             "type": "number",
-             "description": "Distance of the move in miles",
-             "dynamic_variable": "distance_miles",
-             "required": true
-           },
-           {
-             "id": "move_date",
-             "type": "string",
-             "format": "date",
-             "description": "Date of the move (YYYY-MM-DD)",
-             "dynamic_variable": "move_date",
-             "required": true
-           }
-         ]
-       },
-       "request_headers": [],
-       "auth_connection": null
-     },
-     "response_timeout_secs": 10,
-     "dynamic_variables": {
-      "dynamic_variable_placeholders": {
-        "base_url": "https://estimate-moving-price.onrender.com"
-      }
-     }
-   }
-   ```
+   - Register a new tool in the ElevenLabs interface using the base URL of your Render service and the endpoint `POST /estimate`.
+   - The complete webhook configuration is provided in `elevenlabs_tool.json`. Import this file directly or copy its contents when creating the tool.
 
 Your FastAPI service is now ready to be called by the agent.
 
