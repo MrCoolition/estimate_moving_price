@@ -37,10 +37,19 @@ class EstimateRequest(BaseModel):
     distance_miles: float = Field(..., gt=0)
     move_date: datetime = Field(..., description="Date of move (YYYY-MM-DD)")
 
+class EstimateBreakdown(BaseModel):
+    labor: float
+    protective: float
+    hours: float
+    movers: int
+    trucks: int
+    weight: float
+    volume: float
+
 
 class EstimateResponse(BaseModel):
     cost: float
-    breakdown: Dict[str, float]
+    breakdown: EstimateBreakdown
 
 
 def _resolve_items(items: Dict[str, int]):
@@ -105,18 +114,17 @@ def _calculate_estimate(req: EstimateRequest):
     labor = (mover_rate * movers + truck_rate * trucks) * hours
     protective = 5.0 * ceil(weight / 1000)
     cost = labor + protective
-    return {
-        "cost": round(cost, 2),
-        "breakdown": {
-            "labor": round(labor, 2),
-            "protective": round(protective, 2),
-            "hours": round(hours, 2),
-            "movers": movers,
-            "trucks": trucks,
-            "weight": weight,
-            "volume": volume,
-        },
-    }
+
+    breakdown = EstimateBreakdown(
+        labor=round(labor, 2),
+        protective=round(protective, 2),
+        hours=round(hours, 2),
+        movers=movers,
+        trucks=trucks,
+        weight=weight,
+        volume=volume,
+    )
+    return EstimateResponse(cost=round(cost, 2), breakdown=breakdown)
 
 
 @api.post("/estimate", response_model=EstimateResponse)
