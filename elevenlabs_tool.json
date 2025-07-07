@@ -1,0 +1,28 @@
+{
+  "name": "Estimate_Move_Price",
+  "description": "Determine the estimated cost of the move based on the caller's inventory, distance and move date.",
+  "type": "webhook",
+  "api_schema": {
+    "url": "{{base_url}}/estimate",
+    "method": "POST",
+    "path_params_schema": [],
+    "query_params_schema": [],
+    "request_body_schema": {
+      "type": "object",
+      "properties": {
+        "items": {"type": "object"},
+        "distance_miles": {"type": "number"},
+        "move_date": {"type": "string", "format": "date"}
+      },
+      "required": ["items", "distance_miles", "move_date"]
+    },
+    "request_headers": [],
+    "auth_connection": null
+  },
+  "response_timeout_secs": 10,
+  "dynamic_variables": {
+    "dynamic_variable_placeholders": {
+      "base_url": "Your Render service URL (e.g. https://my-api.onrender.com)"
+    }
+  }
+}
