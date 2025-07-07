@@ -151,8 +151,15 @@ def estimate_get(items: str, distance_miles: float, move_date: datetime):
     return _calculate_estimate(req)
 
 
-@api.get("/")
-def root():
+@api.get("/", include_in_schema=False)
+async def root():
+    """Health check endpoint used by hosting providers."""
+    return {"status": "ok"}
+
+
+@api.get("/info")
+def info():
+    """Basic usage information for browsers."""
     return {
         "message": "Moving price estimation service. POST or GET /estimate.",
     }
