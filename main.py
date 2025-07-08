@@ -100,7 +100,7 @@ class EstimateRequest(BaseModel):
                 values["move_date"] = items.pop("move_date")
         return values
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def _require_fields(cls, values):
         if values.get("distance_miles") is None:
             raise ValueError("distance_miles is required")
