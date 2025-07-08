@@ -75,7 +75,7 @@ Example request:
 
 The body should be a JSON **object** with these fields. If the request arrives
 as an array containing a single object (as some tooling formats requests), the
-service will unwrap it automatically. An alternative form is a list of item
+service now unwraps it directly inside the endpoint. An alternative form is a list of item
 objects, each with `items`/`item` and `Qty` fields, for example:
 
 ```json
@@ -85,8 +85,9 @@ objects, each with `items`/`item` and `Qty` fields, for example:
 ]
 ```
 
-Such lists will be converted to the required mapping internally. Any other
-structure will be rejected with a `400` error.
+Such lists will be converted to the required mapping internally. Requests may
+also be wrapped in an array at the top level; the API will unwrap a single
+object automatically. Any other structure will be rejected with a `400` error.
 
 The service also accepts a variant where `distance_miles` and `move_date`
 appear inside the `items` object. These fields will be extracted automatically
