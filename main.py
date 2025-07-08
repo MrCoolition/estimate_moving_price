@@ -65,31 +65,38 @@ class EstimateRequest(BaseModel):
             except json.JSONDecodeError:
                 raise ValueError("items must be a JSON object")
 
-        # list of {items:<name>, Qty:<number>} dictionaries
+        # list-based forms sent by some calling tools
         if isinstance(items, list):
-            converted: Dict[str, int] = {}
-            for entry in items:
-                if not isinstance(entry, dict):
-                    raise ValueError("items list must contain objects")
-                name = (
-                    entry.get("items")
-                    or entry.get("item")
-                    or entry.get("name")
-                    or entry.get("id")
-                )
-                qty = (
-                    entry.get("Qty")
-                    or entry.get("qty")
-                    or entry.get("quantity")
-                    or entry.get("q")
-                )
-                if name is None or qty is None:
-                    raise ValueError("items list entries must have name and quantity")
+            # allow [[name, qty], ...] pairs in addition to dictionaries
+            if all(isinstance(entry, list) and len(entry) == 2 for entry in items):
                 try:
-                    converted[str(name)] = int(qty)
+                    items = {str(name): int(qty) for name, qty in items}
                 except (TypeError, ValueError):
-                    raise ValueError("quantity values must be integers")
-            items = converted
+                    raise ValueError("items list pairs must contain name and integer quantity")
+            else:
+                converted: Dict[str, int] = {}
+                for entry in items:
+                    if not isinstance(entry, dict):
+                        raise ValueError("items list must contain objects")
+                    name = (
+                        entry.get("items")
+                        or entry.get("item")
+                        or entry.get("name")
+                        or entry.get("id")
+                    )
+                    qty = (
+                        entry.get("Qty")
+                        or entry.get("qty")
+                        or entry.get("quantity")
+                        or entry.get("q")
+                    )
+                    if name is None or qty is None:
+                        raise ValueError("items list entries must have name and quantity")
+                    try:
+                        converted[str(name)] = int(qty)
+                    except (TypeError, ValueError):
+                        raise ValueError("quantity values must be integers")
+                items = converted
 
         values["items"] = items
 
@@ -134,10 +141,14 @@ def _resolve_items(items: Dict[str, int]):
         info = ITEM_LOOKUP.get(key)
         if info is None:
             # attempt fuzzy match on known item keys
-            match = get_close_matches(key, ITEM_LOOKUP.keys(), n=1, cutoff=0.8)
+            choices = ITEM_LOOKUP.keys() if hasattr(ITEM_LOOKUP, "keys") else ITEM_LOOKUP
+            match = get_close_matches(key, choices, n=1, cutoff=0.8)
             if match:
-                info = ITEM_LOOKUP[match[0]]
-            else:
+                try:
+                    info = ITEM_LOOKUP[match[0]]
+                except Exception:
+                    info = None
+            if info is None:
                 unknown.append(name)
                 continue
         weight += info["weight"] * qty
