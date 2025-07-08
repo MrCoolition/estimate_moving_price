@@ -3,9 +3,10 @@ from datetime import datetime
 from math import ceil
 from pathlib import Path
 from typing import Dict
+from difflib import get_close_matches
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, root_validator
 
 DATA_DIR = Path(__file__).parent / "data"
 
@@ -34,8 +35,39 @@ class EstimateRequest(BaseModel):
         ...,
         description="Mapping of item names/ids to quantities"
     )
-    distance_miles: float = Field(..., gt=0)
-    move_date: datetime = Field(..., description="Date of move (YYYY-MM-DD)")
+    distance_miles: float | None = Field(None, gt=0)
+    move_date: datetime | None = Field(
+        None, description="Date of move (YYYY-MM-DD)"
+    )
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls._unpack_nested
+        yield from super().__get_validators__()
+
+    @classmethod
+    def _unpack_nested(cls, values):
+        """Allow distance and date to be provided inside the items object."""
+        if isinstance(values.get("items"), str):
+            try:
+                values["items"] = json.loads(values["items"])
+            except json.JSONDecodeError:
+                raise ValueError("items must be a JSON object")
+        items = values.get("items", {})
+        if isinstance(items, dict):
+            if "distance_miles" in items and values.get("distance_miles") is None:
+                values["distance_miles"] = items.pop("distance_miles")
+            if "move_date" in items and values.get("move_date") is None:
+                values["move_date"] = items.pop("move_date")
+        return values
+
+    @root_validator
+    def _require_fields(cls, values):
+        if values.get("distance_miles") is None:
+            raise ValueError("distance_miles is required")
+        if values.get("move_date") is None:
+            raise ValueError("move_date is required")
+        return values
 
 class EstimateBreakdown(BaseModel):
     labor: float
@@ -59,10 +91,16 @@ def _resolve_items(items: Dict[str, int]):
     for name, qty in items.items():
         if not isinstance(qty, int) or qty <= 0:
             raise HTTPException(status_code=400, detail="Quantity must be positive")
-        info = ITEM_LOOKUP.get(name.lower())
+        key = name.lower()
+        info = ITEM_LOOKUP.get(key)
         if info is None:
-            unknown.append(name)
-            continue
+            # attempt fuzzy match on known item keys
+            match = get_close_matches(key, ITEM_LOOKUP.keys(), n=1, cutoff=0.8)
+            if match:
+                info = ITEM_LOOKUP[match[0]]
+            else:
+                unknown.append(name)
+                continue
         weight += info["weight"] * qty
         volume += info["volume"] * qty
     if unknown:
