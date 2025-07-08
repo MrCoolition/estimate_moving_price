@@ -145,5 +145,7 @@
  { "id": "dining_table_large", "name": "Dining Table - Large", "category": "dining", "volume_cuft": 30.0, "weight_lbs": 195.0, "aliases": [ "dining table - large" ] },
  { "id": "dining_table_medium", "name": "Dining Table - Medium", "category": "dining", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "dining table - medium" ] },
  { "id": "dining_table_small", "name": "Dining Table - Small", "category": "dining", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dining table - small" ] },
- { "id": "dishwasher", "name": "Dishwasher", "category": "dishwasher", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dishwasher" ] }
+ { "id": "dishwasher", "name": "Dishwasher", "category": "dishwasher", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dishwasher" ] },
+ { "id": "piano_upright", "name": "Piano - Upright", "category": "piano", "volume_cuft": 70.0, "weight_lbs": 500.0, "aliases": [ "upright piano", "piano upright", "upright" ] },
+ { "id": "piano_grand", "name": "Piano - Grand", "category": "piano", "volume_cuft": 120.0, "weight_lbs": 700.0, "aliases": [ "grand piano", "baby grand piano", "concert piano", "grand" ] }
 ]

@@ -61,7 +61,7 @@ This repo now includes sample data used for estimating move costs.
 
 ## API Usage
 
-Send a `POST` request to `/estimate` with a JSON body specifying the items to move, distance in miles, and the date of the move. Item names must match entries in `data/estimation_weights_volumes_categories.json` (aliases are accepted). Quantities must be positive integers or the API will return `400 Quantity must be positive`.
+Send a `POST` request to `/estimate` with a JSON body specifying the items to move, distance in miles, and the date of the move. Item names are matched against `data/estimation_weights_volumes_categories.json`; close matches are accepted so minor variations (e.g., "grand piano" vs "piano - grand") will still resolve. Quantities must be positive integers or the API will return `400 Quantity must be positive`.
 
 Example request:
 
@@ -72,6 +72,10 @@ Example request:
   "move_date": "2025-07-08"
 }
 ```
+
+The service also accepts a variant where `distance_miles` and `move_date`
+appear inside the `items` object. These fields will be extracted automatically
+for compatibility with agent tools that send all values together.
 
 The response includes the total cost and a breakdown of labor hours, protective materials charges, number of movers and trucks, and the calculated weight and volume.
 
