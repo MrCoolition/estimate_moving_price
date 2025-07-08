@@ -48,6 +48,13 @@ class EstimateRequest(BaseModel):
     @classmethod
     def _unpack_nested(cls, values):
         """Allow distance and date to be provided inside the items object."""
+        if isinstance(values, list):
+            if len(values) == 1 and isinstance(values[0], dict):
+                values = values[0]
+            else:
+                raise ValueError("Request body must be a JSON object")
+        if not isinstance(values, dict):
+            raise ValueError("Request body must be a JSON object")
         if isinstance(values.get("items"), str):
             try:
                 values["items"] = json.loads(values["items"])
