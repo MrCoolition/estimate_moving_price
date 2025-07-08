@@ -2,10 +2,10 @@ import json
 from datetime import datetime
 from math import ceil
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Any
 from difflib import get_close_matches
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from pydantic import BaseModel, Field, root_validator
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -207,8 +207,20 @@ def _calculate_estimate(req: EstimateRequest):
 
 
 @api.post("/estimate", response_model=EstimateResponse)
-def estimate(req: EstimateRequest):
-    return _calculate_estimate(req)
+def estimate(req: Any = Body(...)):
+    """POST endpoint accepting flexible request formats."""
+    if isinstance(req, list):
+        if len(req) == 1 and isinstance(req[0], dict):
+            req = req[0]
+        else:
+            raise HTTPException(status_code=400, detail="Request body must be a JSON object")
+    if not isinstance(req, dict):
+        raise HTTPException(status_code=400, detail="Request body must be a JSON object")
+    try:
+        model = EstimateRequest(**req)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    return _calculate_estimate(model)
 
 
 @api.get("/estimate", response_model=EstimateResponse)
