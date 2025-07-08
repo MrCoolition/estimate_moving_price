@@ -55,12 +55,44 @@ class EstimateRequest(BaseModel):
                 raise ValueError("Request body must be a JSON object")
         if not isinstance(values, dict):
             raise ValueError("Request body must be a JSON object")
-        if isinstance(values.get("items"), str):
+        # items may arrive in several forms depending on the calling tool
+        items = values.get("items")
+
+        # JSON-encoded string
+        if isinstance(items, str):
             try:
-                values["items"] = json.loads(values["items"])
+                items = json.loads(items)
             except json.JSONDecodeError:
                 raise ValueError("items must be a JSON object")
-        items = values.get("items", {})
+
+        # list of {items:<name>, Qty:<number>} dictionaries
+        if isinstance(items, list):
+            converted: Dict[str, int] = {}
+            for entry in items:
+                if not isinstance(entry, dict):
+                    raise ValueError("items list must contain objects")
+                name = (
+                    entry.get("items")
+                    or entry.get("item")
+                    or entry.get("name")
+                    or entry.get("id")
+                )
+                qty = (
+                    entry.get("Qty")
+                    or entry.get("qty")
+                    or entry.get("quantity")
+                    or entry.get("q")
+                )
+                if name is None or qty is None:
+                    raise ValueError("items list entries must have name and quantity")
+                try:
+                    converted[str(name)] = int(qty)
+                except (TypeError, ValueError):
+                    raise ValueError("quantity values must be integers")
+            items = converted
+
+        values["items"] = items
+
         if isinstance(items, dict):
             if "distance_miles" in items and values.get("distance_miles") is None:
                 values["distance_miles"] = items.pop("distance_miles")
