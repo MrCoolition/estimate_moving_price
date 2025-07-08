@@ -12,12 +12,14 @@
       "description": "Data required to generate a moving estimate",
       "type": "object",
       "required": true,
+      "value_type": "llm_prompt",
       "properties": [
         {
           "id": "items",
           "type": "object",
           "description": "Mapping of items to move with their quantities",
-          "properties": [],
+          "properties": {},
+          "value_type": "llm_prompt",
           "dynamic_variable": "items",
           "required": true
         },
@@ -25,6 +27,7 @@
           "id": "distance_miles",
           "type": "number",
           "description": "Distance of the move in miles",
+          "value_type": "llm_prompt",
           "dynamic_variable": "distance_miles",
           "required": true
         },
@@ -33,6 +36,7 @@
           "type": "string",
           "format": "date",
           "description": "Date of the move (YYYY-MM-DD)",
+          "value_type": "llm_prompt",
           "dynamic_variable": "move_date",
           "required": true
         }
