@@ -73,6 +73,11 @@ Example request:
 }
 ```
 
+The body should be a JSON **object** with these fields. If the request arrives
+as an array containing a single object (as some tooling formats requests), the
+service will unwrap it automatically. Any other structure will be rejected with
+a `400` error.
+
 The service also accepts a variant where `distance_miles` and `move_date`
 appear inside the `items` object. These fields will be extracted automatically
 for compatibility with agent tools that send all values together.
