@@ -88,6 +88,8 @@ objects, each with `items`/`item` and `Qty` fields, for example:
 Such lists will be converted to the required mapping internally. Requests may
 also be wrapped in an array at the top level; the API will unwrap a single
 object automatically. Any other structure will be rejected with a `400` error.
+If `items` is missing or cannot be converted into a mapping, the service now
+returns a clear `400` response instead of raising an internal error.
 
 The service also accepts a variant where `distance_miles` and `move_date`
 appear inside the `items` object. These fields will be extracted automatically
