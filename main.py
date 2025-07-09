@@ -55,15 +55,18 @@ class EstimateRequest(BaseModel):
                 raise ValueError("Request body must be a JSON object")
         if not isinstance(values, dict):
             raise ValueError("Request body must be a JSON object")
+
         # items may arrive in several forms depending on the calling tool
         items = values.get("items")
+        if items is None:
+            raise ValueError("items field is required")
 
         # JSON-encoded string
         if isinstance(items, str):
             try:
                 items = json.loads(items)
             except json.JSONDecodeError:
-                raise ValueError("items must be a JSON object")
+                raise ValueError("items must be a JSON object or list")
 
         # list-based forms sent by some calling tools
         if isinstance(items, list):
@@ -97,6 +100,8 @@ class EstimateRequest(BaseModel):
                     except (TypeError, ValueError):
                         raise ValueError("quantity values must be integers")
                 items = converted
+        elif not isinstance(items, dict):
+            raise ValueError("items must be a JSON object or list")
 
         values["items"] = items
 
