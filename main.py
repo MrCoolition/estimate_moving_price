@@ -8,7 +8,6 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field, model_validator
 
 # ───────── helpers ─────────
-
 def _iso(d: Any) -> str:
     if isinstance(d, datetime):
         return d.date().isoformat()
@@ -20,7 +19,6 @@ def _norm(s: str) -> str:
     return " ".join(str(s).strip().lower().replace("_", " ").split())
 
 DEFAULT_WEIGHTS: Dict[str, float] = {
-    "king size bed": 250.0,
     "refrigerator": 250.0,
     "dining table": 180.0,
     "dining chair": 25.0,
@@ -30,28 +28,26 @@ DEFAULT_WEIGHTS: Dict[str, float] = {
     "box large": 45.0,
 }
 
-# ───────── request model ─────────
-
+# ───────── model ─────────
 class EstimateRequest(BaseModel):
-    items: Dict[str, int] = Field(..., description="Mapping item → quantity")
+    items: Dict[str, int] = Field(..., description="Mapping of item -> quantity")
     distance_miles: float = Field(..., ge=0)
     move_date: str = Field(..., description="YYYY-MM-DD")
     idempotency_key: Optional[str] = None
-    Qty: Optional[int] = None  # tolerated but ignored
+    Qty: Optional[int] = None
 
     @model_validator(mode="before")
     @classmethod
     def normalize(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        """Unwrap and normalize whatever ElevenLabs sends."""
         if not isinstance(values, dict):
-            raise ValueError("Request body must be a JSON object")
+            raise ValueError("Body must be an object")
 
         if "move_date" in values:
             values["move_date"] = _iso(values["move_date"])
 
         raw = values.get("items")
 
-        # handle ElevenLabs wrapping like {"items":{"items":[...]}}
+        # unwrap any nested {"items": {"items": [...]}}
         if isinstance(raw, dict) and "items" in raw and isinstance(raw["items"], list):
             raw = raw["items"]
 
@@ -64,17 +60,23 @@ class EstimateRequest(BaseModel):
         if isinstance(raw, list) and raw and all(isinstance(e, dict) for e in raw):
             mapping: Dict[str, int] = {}
             for obj in raw:
-                name = obj.get("item") or obj.get("items") or obj.get("name")
-                qty = obj.get("Qty") or obj.get("qty") or obj.get("quantity") or 1
+                name = obj.get("item") or obj.get("name")
+                qty = obj.get("Qty") or obj.get("quantity") or 1
                 if name:
                     iq = int(qty) if str(qty).isdigit() else 1
                     mapping[name] = mapping.get(name, 0) + iq
             values["items"] = mapping
             return values
 
-        # list of strings
+        # list of strings (array of names)
         if isinstance(raw, list):
-            strings = [s for s in raw if isinstance(s, str) and s.strip()]
+            # tolerate nested single key like {"items": [...]}
+            strings: List[str] = []
+            for s in raw:
+                if isinstance(s, str) and s.strip():
+                    strings.append(s)
+                elif isinstance(s, dict) and "name" in s:
+                    strings.append(str(s["name"]))
             if strings:
                 counts = Counter(strings)
                 qtop = values.get("Qty")
@@ -84,7 +86,7 @@ class EstimateRequest(BaseModel):
                 values["items"] = dict(counts)
                 return values
 
-        # "a:1, b:2" string
+        # string "a:1,b:2"
         if isinstance(raw, str):
             mapping: Dict[str, int] = {}
             for pair in raw.split(","):
@@ -99,10 +101,11 @@ class EstimateRequest(BaseModel):
             values["items"] = mapping
             return values
 
-        raise ValueError("'items' must be list, dict, or string list")
+        # nothing usable
+        values["items"] = {}
+        return values
 
 # ───────── response DTOs ─────────
-
 class InventoryRow(BaseModel):
     item_id: str
     name: str
@@ -112,7 +115,6 @@ class InventoryRow(BaseModel):
     weight_total_lbs: float
 
 # ───────── app ─────────
-
 api = FastAPI(title="Estimate Moving Price", version="2025-10-04")
 _IDEMP: Dict[str, Dict[str, Any]] = {}
 
@@ -121,9 +123,6 @@ def health():
     return {"status": "ok"}
 
 def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
-    if not items:
-        raise HTTPException(status_code=400, detail="No items provided")
-
     rows: List[InventoryRow] = []
     total = 0.0
     for name, qty in items.items():
@@ -135,7 +134,7 @@ def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
         rows.append(InventoryRow(
             item_id=key.replace(" ", "_"),
             name=name,
-            category="carton" if key.startswith("box_") or key.startswith("box ") else "misc",
+            category="carton" if key.startswith("box") else "misc",
             quantity=iq,
             weight_each_lbs=w_each,
             weight_total_lbs=w_each * iq
@@ -174,6 +173,9 @@ def estimate(req: EstimateRequest, request: Request):
     idem = req.idempotency_key or request.headers.get("X-Request-Id")
     if idem and idem in _IDEMP:
         return _IDEMP[idem]
+
+    if not req.items:
+        raise HTTPException(status_code=400, detail="No items provided")
 
     rows, total_w = _resolve_items(req.items)
     logic = _compute_price(total_w, float(req.distance_miles), req.move_date)
