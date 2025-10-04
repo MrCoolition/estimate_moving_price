@@ -40,55 +40,28 @@ def _norm(s: str) -> str:
 # --- request schema (accepts both array-of-objects and mapping) ------------
 
 class EstimateRequest(BaseModel):
-    items: Dict[str, int] = Field(..., description="items mapping after normalization")
-    distance_miles: float = Field(..., ge=0)
-    move_date: str = Field(..., description="YYYY-MM-DD")
-    idempotency_key: Optional[str] = None
+    items: Dict[str, int]
+    distance_miles: float
+    move_date: str
 
     @model_validator(mode="before")
     @classmethod
-    def normalize(cls, data: Any) -> Any:
-        if not isinstance(data, dict):
-            raise ValueError("Request body must be a JSON object")
+    def normalize_items(cls, values: Any) -> Any:
+        raw = values.get("items")
+        # Accept dict
+        if isinstance(raw, dict):
+            return values
+        # Accept array of objects [{item:"", Qty:n}]
+        if isinstance(raw, list):
+            converted = {}
+            for obj in raw:
+                name = obj.get("item")
+                qty = obj.get("Qty")
+                if name and qty is not None:
+                    converted[name] = int(qty)
+            values["items"] = converted
+        return values
 
-        # move_date & distance_miles
-        dm = data.get("distance_miles")
-        md = data.get("move_date")
-        if dm is None or md is None:
-            raise ValueError("distance_miles and move_date are required")
-        if isinstance(dm, str):
-            data["distance_miles"] = float(dm)
-        data["move_date"] = _iso(md)
-
-        raw_items = data.get("items")
-        if raw_items is None:
-            raise ValueError("items is required")
-
-        # 1) array of objects [{items|item|name, Qty|qty|quantity|q}]
-        if isinstance(raw_items, list):
-            mapping: Dict[str, int] = {}
-            for entry in raw_items:
-                if not isinstance(entry, dict):
-                    raise ValueError("items list must contain objects")
-                name = entry.get("items") or entry.get("item") or entry.get("name")
-                qty  = entry.get("Qty")   or entry.get("qty")  or entry.get("quantity") or entry.get("q")
-                if name is None or qty is None:
-                    raise ValueError("each item must have name/items and Qty/quantity")
-                mapping[str(name)] = int(qty)
-            data["items"] = mapping
-
-        # 2) mapping {"slug": qty, ...}
-        elif isinstance(raw_items, dict):
-            mapping = {}
-            for k, v in raw_items.items():
-                mapping[str(k)] = int(v)
-            data["items"] = mapping
-
-        # 3) unacceptable
-        else:
-            raise ValueError("items must be an array of objects or a mapping")
-
-        return data
 
 # --- response DTOs ---------------------------------------------------------
 
