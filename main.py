@@ -37,31 +37,43 @@ DEFAULT_WEIGHTS = {
 def _norm(s: str) -> str:
     return " ".join(str(s).strip().lower().replace("_"," ").split())
 
-# --- request schema (accepts both array-of-objects and mapping) ------------
+# --- request schema --------------------------------------------------------
 
 class EstimateRequest(BaseModel):
-    items: Dict[str, int]
-    distance_miles: float
-    move_date: str
+    items: Dict[str, int] = Field(..., description="Mapping of item names to quantities")
+    distance_miles: float = Field(..., ge=0)
+    move_date: str = Field(..., description="YYYY-MM-DD")
+    idempotency_key: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
     def normalize_items(cls, values: Any) -> Any:
         raw = values.get("items")
+        if raw is None:
+            raise ValueError("Missing 'items'")
+
         # Accept dict
         if isinstance(raw, dict):
+            # Clean out None or invalid values
+            cleaned = {str(k): int(v) for k, v in raw.items() if v not in (None, "", 0)}
+            values["items"] = cleaned
             return values
+
         # Accept array of objects [{item:"", Qty:n}]
         if isinstance(raw, list):
-            converted = {}
+            converted: Dict[str, int] = {}
             for obj in raw:
+                if not isinstance(obj, dict):
+                    continue
                 name = obj.get("item")
                 qty = obj.get("Qty")
                 if name and qty is not None:
-                    converted[name] = int(qty)
+                    converted[str(name)] = int(qty)
             values["items"] = converted
-        return values
+            return values
 
+        raise ValueError("'items' must be a dict or list of objects")
+        
 
 # --- response DTOs ---------------------------------------------------------
 
@@ -83,6 +95,9 @@ def health():
     return {"status": "ok"}
 
 def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
+    if not items:
+        raise HTTPException(status_code=400, detail="No items provided")
+
     rows: List[InventoryRow] = []
     total = 0.0
     for name, qty in items.items():
@@ -127,6 +142,7 @@ def _compute_price(total_weight: float, distance_miles: float, move_date: str) -
 
 @api.post("/estimate")
 def estimate(req: EstimateRequest, request: Request):
+    # Idempotency guard
     idem = req.idempotency_key or request.headers.get("X-Request-Id")
     if idem and idem in _IDEMP:
         return _IDEMP[idem]
@@ -142,6 +158,8 @@ def estimate(req: EstimateRequest, request: Request):
         "currency": "USD",
         "version": api.version
     }
+
     if idem:
         _IDEMP[idem] = resp
+
     return resp
