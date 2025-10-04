@@ -21,7 +21,7 @@ def _iso(d: Any) -> str:
 def _norm(s: str) -> str:
     return " ".join(str(s).strip().lower().replace("_", " ").split())
 
-# Fallback catalog (expand later)
+# Fallback catalog
 DEFAULT_WEIGHTS: Dict[str, float] = {
     "king size bed": 250.0,
     "king size bed with box spring and headboard": 350.0,
@@ -59,63 +59,30 @@ DEFAULT_WEIGHTS: Dict[str, float] = {
 # ───────────────────── request schema ─────────────────────
 
 class EstimateRequest(BaseModel):
-    # Canonicalized mapping after normalization
     items: Dict[str, int] = Field(..., description="Mapping item -> quantity")
     distance_miles: float = Field(..., ge=0)
     move_date: str = Field(..., description="YYYY-MM-DD")
-    # Optional fields some clients might send:
     idempotency_key: Optional[str] = None
-    Qty: Optional[int] = None  # seen at top-level from ElevenLabs UI in some configs
+    Qty: Optional[int] = None  # tolerated but ignored
 
     @model_validator(mode="before")
     @classmethod
     def normalize(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Accept ALL of the following and canonicalize to items: Dict[str,int]
-        A) dict: {"items": {"refrigerator":2, "chair":5}}
-        B) array<obj>: {"items": [{"item":"refrigerator","Qty":2}, ...]}
-        C) array<str>: {"items": ["refrigerator","chair","chair", ...], "Qty": 1 (optional)}
-        D) string list format: {"items":"refrigerator:2, chair:5"}  (belt & suspenders)
-        """
+        """Normalize any of the shapes ElevenLabs may send."""
         if not isinstance(values, dict):
             raise ValueError("Request body must be a JSON object")
 
-        # normalize move_date
         if "move_date" in values:
             values["move_date"] = _iso(values["move_date"])
 
         raw = values.get("items")
 
-        # D) string list "a:1, b:2"
-        if isinstance(raw, str):
-            mapping: Dict[str, int] = {}
-            for pair in raw.split(","):
-                pair = pair.strip()
-                if not pair:
-                    continue
-                if ":" in pair:
-                    name, qty = pair.split(":", 1)
-                    mapping[name.strip()] = int(str(qty).strip())
-                else:
-                    # if no qty provided, count as 1
-                    mapping[pair] = mapping.get(pair, 0) + 1
-            values["items"] = mapping
-            return values
-
-        # A) dict mapping
+        # dict mapping
         if isinstance(raw, dict):
-            mapping = {}
-            for k, v in raw.items():
-                try:
-                    iv = int(v)
-                except Exception:
-                    continue
-                if iv > 0:
-                    mapping[str(k)] = iv
-            values["items"] = mapping
+            values["items"] = {str(k): int(v) for k, v in raw.items() if v not in (None, "", 0)}
             return values
 
-        # B) array of objects {item, Qty}
+        # array of objects [{item:"",Qty:n}]
         if isinstance(raw, list) and raw and all(isinstance(e, dict) for e in raw):
             mapping: Dict[str, int] = {}
             for obj in raw:
@@ -127,23 +94,44 @@ class EstimateRequest(BaseModel):
                     except Exception:
                         iq = 1
                     if iq > 0:
-                        mapping[str(name)] = mapping.get(str(name), 0) + iq
+                        mapping[name] = mapping.get(name, 0) + iq
             values["items"] = mapping
             return values
 
-        # C) array of strings (with optional top-level Qty or duplicates)
-        if isinstance(raw, list) and all(isinstance(e, str) for e in raw):
-            counts = Counter([s for s in raw if s and isinstance(s, str)])
-            # If a top-level Qty is present and >1, multiply each unique by that default
-            default_qty = values.get("Qty")
-            if isinstance(default_qty, int) and default_qty > 1:
-                for k in list(counts.keys()):
-                    counts[k] = counts[k] * default_qty
-            values["items"] = {k: int(v) for k, v in counts.items() if int(v) > 0}
+        # array of strings (duplicates represent quantities)
+        if isinstance(raw, list):
+            # even if mixed types, keep strings only
+            strings = [s for s in raw if isinstance(s, str) and s.strip()]
+            if strings:
+                counts = Counter(strings)
+                # multiply if top-level Qty present
+                qtop = values.get("Qty")
+                if isinstance(qtop, int) and qtop > 1:
+                    for k in list(counts.keys()):
+                        counts[k] = counts[k] * qtop
+                values["items"] = {k: int(v) for k, v in counts.items()}
+                return values
+
+        # string list "a:1, b:2"
+        if isinstance(raw, str):
+            mapping: Dict[str, int] = {}
+            for pair in raw.split(","):
+                pair = pair.strip()
+                if not pair:
+                    continue
+                if ":" in pair:
+                    name, qty = pair.split(":", 1)
+                    try:
+                        mapping[name.strip()] = int(qty.strip())
+                    except Exception:
+                        mapping[name.strip()] = 1
+                else:
+                    mapping[pair] = mapping.get(pair, 0) + 1
+            values["items"] = mapping
             return values
 
-        # Empty or unrecognized
-        raise ValueError("'items' must be a dict, array of objects, array of strings, or a string list like 'a:1, b:2'")
+        # still here -> invalid
+        raise ValueError("'items' must be a dict, array, or string list")
 
 # ───────────────────── response DTOs ─────────────────────
 
@@ -176,7 +164,7 @@ def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
         except Exception:
             raise HTTPException(status_code=400, detail=f"Invalid quantity for '{name}'")
         if iq <= 0:
-            raise HTTPException(status_code=400, detail="Quantities must be positive integers")
+            continue  # silently skip invalid counts
 
         key = _norm(name)
         w_each = DEFAULT_WEIGHTS.get(key, 35.0)
@@ -186,22 +174,25 @@ def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
             name=name,
             category="carton" if key.startswith("box_") or key.startswith("box ") else "misc",
             quantity=iq,
-            weight_each_lbs=float(w_each),
-            weight_total_lbs=float(w_each * iq)
+            weight_each_lbs=w_each,
+            weight_total_lbs=w_each * iq
         ))
         total += w_each * iq
+
+    if not rows:
+        raise HTTPException(status_code=400, detail="No valid items after normalization")
     return rows, round(total, 2)
 
 def _compute_price(total_weight: float, distance_miles: float, move_date: str) -> Dict[str, Any]:
     crew = 2 if total_weight <= 1800 else 3 if total_weight <= 4000 else 4
-    hours = max(2.5, 2.0 + (total_weight/800.0) + (distance_miles/100.0))
+    hours = max(2.5, 2.0 + (total_weight / 800.0) + (distance_miles / 100.0))
     mover_rate = float(os.getenv("HOURLY_RATE_PER_MOVER", "95"))
     truck_rate = float(os.getenv("TRUCK_RATE_PER_HOUR", "85"))
     labor = round((mover_rate * crew + truck_rate) * hours, 2)
     mile_rate = float(os.getenv("MILEAGE_RATE", "2.25"))
     mileage_cost = round(distance_miles * mile_rate, 2)
     m = int(move_date.split("-")[1])
-    season = 1.08 if m in (5,6,7,8,9) else 1.03 if m in (12,1) else 1.00
+    season = 1.08 if m in (5, 6, 7, 8, 9) else 1.03 if m in (12, 1) else 1.00
     base_fee = float(os.getenv("BASE_FEE", "45"))
     subtotal = labor + mileage_cost
     total = round(subtotal * season + base_fee, 2)
@@ -218,7 +209,6 @@ def _compute_price(total_weight: float, distance_miles: float, move_date: str) -
 
 @api.post("/estimate")
 def estimate(req: EstimateRequest, request: Request):
-    # Idempotency (optional)
     idem = req.idempotency_key or request.headers.get("X-Request-Id")
     if idem and idem in _IDEMP:
         return _IDEMP[idem]
@@ -234,7 +224,6 @@ def estimate(req: EstimateRequest, request: Request):
         "currency": "USD",
         "version": api.version
     }
-
     if idem:
         _IDEMP[idem] = resp
     return resp
