@@ -82,6 +82,10 @@ class QuoteOptions(BaseModel):
     optimize_for: str = Field(default="lowest_price")
     not_to_exceed: bool = False
     seasonality: str = Field(default="auto")
+    resolver_policy: str = Field(default="best_match_no_fail")
+    box_allocation_policy: str = Field(default="50/35/10/5")
+    confidence_floor: float = Field(default=0.65, ge=0.0, le=1.0)
+    assumptions_public: bool = True
 
 
 class EstimateRequest(BaseModel):
@@ -158,9 +162,10 @@ class EstimateResponse(BaseModel):
     currency: str = "USD"
     breakdown_public: Dict[str, Any]
     line_items: List[Dict[str, Any]]
+    inventory_breakdown: List[Dict[str, Any]]
+    assumptions: List[Dict[str, Any]]
+    match_summary: Dict[str, Any]
     version: str
-    needs_clarification: bool = False
-    clarification_items: Optional[List[Dict[str, Any]]] = None
     calculation_logic: Optional[Dict[str, Any]] = None
 
 

@@ -1,4 +1,5 @@
 import hashlib
+import hashlib
 import hmac
 import json
 
@@ -33,6 +34,9 @@ def test_estimate_endpoint_success():
     assert data["final_price"] > 0
     assert data["breakdown_public"]["movers"] == 2
     assert data["breakdown_public"]["labor_hours_billed"] >= 3.0
+    assert data["match_summary"]["resolved_pct"] == 100
+    assert any(line["item_id"].startswith("dining") for line in data["inventory_breakdown"])
+    assert data["assumptions"]
 
 
 def test_idempotency_returns_cached_response():
