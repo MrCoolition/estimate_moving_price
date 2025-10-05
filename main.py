@@ -1,192 +1,270 @@
-# main.py
 from __future__ import annotations
+
+import json
 import os
-from datetime import datetime, date
-from typing import Any, Dict, List, Optional, Tuple
-from collections import Counter
-from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseModel, Field, model_validator
+import time
+import uuid
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List
 
-# ───────── helpers ─────────
-def _iso(d: Any) -> str:
-    if isinstance(d, datetime):
-        return d.date().isoformat()
-    if isinstance(d, date):
-        return d.isoformat()
-    return datetime.fromisoformat(str(d).strip().replace("/", "-")).date().isoformat()
+from fastapi import FastAPI, HTTPException, Request, Response
+from app.metrics import CONTENT_TYPE_LATEST, generate_latest
+from pydantic import ValidationError
 
-def _norm(s: str) -> str:
-    return " ".join(str(s).strip().lower().replace("_", " ").split())
+from app.catalog import Catalog, MatchResult
+from app.observability import (
+    hash_items,
+    record_alias_hit,
+    record_quote_error,
+    record_quote_success,
+    record_unknown_item,
+    span,
+    structured_log,
+)
+from app.packing import PackingCatalog
+from app.pricing import (
+    ItemAllocation,
+    LocationContext,
+    PackingRequest,
+    QuoteContext,
+    QuoteOptions,
+    QuoteResult,
+    optimize,
+)
+from app.rules import load_rules
+from app.schemas import EstimateRequest, EstimateResponse, detect_box_total, distribute_boxes
+from app.security import HMACVerifier, IdempotencyStore
 
-DEFAULT_WEIGHTS: Dict[str, float] = {
-    "refrigerator": 250.0,
-    "dining table": 180.0,
-    "dining chair": 25.0,
-    "large rug": 50.0,
-    "box small": 15.0,
-    "box medium": 30.0,
-    "box large": 45.0,
-}
+APP_VERSION = datetime.utcnow().strftime("%Y-%m-%d")
+BASE_DIR = Path(__file__).parent
+CATALOG_PATH = BASE_DIR / "data" / "estimation_weights_volumes_categories.json"
+RULES_PATH = BASE_DIR / "data" / "moving_rules.json"
+PACKING_PATH = BASE_DIR / "data" / "packing_weight_volume_pricing.tsv"
 
-# ───────── model ─────────
-class EstimateRequest(BaseModel):
-    items: Dict[str, int] = Field(..., description="Mapping of item -> quantity")
-    distance_miles: float = Field(..., ge=0)
-    move_date: str = Field(..., description="YYYY-MM-DD")
-    idempotency_key: Optional[str] = None
-    Qty: Optional[int] = None
+catalog = Catalog(CATALOG_PATH)
+with RULES_PATH.open("r", encoding="utf-8") as fh:
+    rules_payload = json.load(fh)
+rules = load_rules(RULES_PATH)
+packing_catalog = PackingCatalog(tsv_path=PACKING_PATH, json_config=rules_payload["movingQuoterContext"])
 
-    @model_validator(mode="before")
-    @classmethod
-    def normalize(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        if not isinstance(values, dict):
-            raise ValueError("Body must be an object")
+hmac_secret = os.getenv("HMAC_SECRET", "")
+verifier = HMACVerifier(hmac_secret)
+idempotency_store = IdempotencyStore(os.getenv("REDIS_URL"))
+allow_internal_debug = os.getenv("ALLOW_INTERNAL_DEBUG", "false").lower() in {"1", "true", "yes"}
 
-        if "move_date" in values:
-            values["move_date"] = _iso(values["move_date"])
+api = FastAPI(title="Estimate Moving Price", version=APP_VERSION)
 
-        raw = values.get("items")
 
-        # unwrap any nested {"items": {"items": [...]}}
-        if isinstance(raw, dict) and "items" in raw and isinstance(raw["items"], list):
-            raw = raw["items"]
+def _hash_file(path: Path) -> str:
+    data = path.read_bytes()
+    return str(abs(hash(data)))
 
-        # dict form
-        if isinstance(raw, dict):
-            values["items"] = {str(k): int(v) for k, v in raw.items() if str(v).isdigit()}
-            return values
 
-        # list of dicts
-        if isinstance(raw, list) and raw and all(isinstance(e, dict) for e in raw):
-            mapping: Dict[str, int] = {}
-            for obj in raw:
-                name = obj.get("item") or obj.get("name")
-                qty = obj.get("Qty") or obj.get("quantity") or 1
-                if name:
-                    iq = int(qty) if str(qty).isdigit() else 1
-                    mapping[name] = mapping.get(name, 0) + iq
-            values["items"] = mapping
-            return values
-
-        # list of strings (array of names)
-        if isinstance(raw, list):
-            # tolerate nested single key like {"items": [...]}
-            strings: List[str] = []
-            for s in raw:
-                if isinstance(s, str) and s.strip():
-                    strings.append(s)
-                elif isinstance(s, dict) and "name" in s:
-                    strings.append(str(s["name"]))
-            if strings:
-                counts = Counter(strings)
-                qtop = values.get("Qty")
-                if isinstance(qtop, int) and qtop > 1:
-                    for k in list(counts.keys()):
-                        counts[k] *= qtop
-                values["items"] = dict(counts)
-                return values
-
-        # string "a:1,b:2"
-        if isinstance(raw, str):
-            mapping: Dict[str, int] = {}
-            for pair in raw.split(","):
-                pair = pair.strip()
-                if not pair:
-                    continue
-                if ":" in pair:
-                    name, qty = pair.split(":", 1)
-                    mapping[name.strip()] = int(qty.strip()) if qty.strip().isdigit() else 1
-                else:
-                    mapping[pair] = mapping.get(pair, 0) + 1
-            values["items"] = mapping
-            return values
-
-        # nothing usable
-        values["items"] = {}
-        return values
-
-# ───────── response DTOs ─────────
-class InventoryRow(BaseModel):
-    item_id: str
-    name: str
-    category: str
-    quantity: int
-    weight_each_lbs: float
-    weight_total_lbs: float
-
-# ───────── app ─────────
-api = FastAPI(title="Estimate Moving Price", version="2025-10-04")
-_IDEMP: Dict[str, Dict[str, Any]] = {}
-
-@api.get("/", include_in_schema=False)
-def health():
-    return {"status": "ok"}
-
-def _resolve_items(items: Dict[str, int]) -> Tuple[List[InventoryRow], float]:
-    rows: List[InventoryRow] = []
-    total = 0.0
-    for name, qty in items.items():
-        iq = int(qty) if str(qty).isdigit() else 0
-        if iq <= 0:
-            continue
-        key = _norm(name)
-        w_each = DEFAULT_WEIGHTS.get(key, 35.0)
-        rows.append(InventoryRow(
-            item_id=key.replace(" ", "_"),
-            name=name,
-            category="carton" if key.startswith("box") else "misc",
-            quantity=iq,
-            weight_each_lbs=w_each,
-            weight_total_lbs=w_each * iq
-        ))
-        total += w_each * iq
-    if not rows:
-        raise HTTPException(status_code=400, detail="No valid items after normalization")
-    return rows, round(total, 2)
-
-def _compute_price(total_weight: float, distance_miles: float, move_date: str) -> Dict[str, Any]:
-    crew = 2 if total_weight <= 1800 else 3 if total_weight <= 4000 else 4
-    hours = max(2.5, 2.0 + (total_weight/800.0) + (distance_miles/100.0))
-    mover_rate = float(os.getenv("HOURLY_RATE_PER_MOVER", "95"))
-    truck_rate = float(os.getenv("TRUCK_RATE_PER_HOUR", "85"))
-    labor = round((mover_rate * crew + truck_rate) * hours, 2)
-    mile_rate = float(os.getenv("MILEAGE_RATE", "2.25"))
-    mileage_cost = round(distance_miles * mile_rate, 2)
-    m = int(move_date.split("-")[1])
-    season = 1.08 if m in (5,6,7,8,9) else 1.03 if m in (12,1) else 1.00
-    base_fee = float(os.getenv("BASE_FEE", "45"))
-    subtotal = labor + mileage_cost
-    total = round(subtotal * season + base_fee, 2)
+@api.get("/healthz", include_in_schema=False)
+def healthz():
     return {
-        "crew_size": crew,
-        "estimated_hours": round(hours, 2),
-        "labor_cost": labor,
+        "status": "ok",
+        "catalog_hash": _hash_file(CATALOG_PATH),
+        "rules_hash": _hash_file(RULES_PATH),
+        "version": APP_VERSION,
+    }
+
+
+@api.get("/metrics", include_in_schema=False)
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+
+def _resolve_cartons(base: Dict[str, int], additions: Dict[str, int]) -> Dict[str, int]:
+    result = dict(base)
+    for key, value in additions.items():
+        result[key] = result.get(key, 0) + value
+    return result
+
+
+def _match_items(req: EstimateRequest) -> tuple[List[ItemAllocation], bool, List[Dict[str, Any]], List[str], Dict[str, int]]:
+    unknowns: List[Dict[str, Any]] = []
+    notes: List[str] = []
+    allocations: List[ItemAllocation] = []
+    needs_clarification = False
+    cartons = req.packing.cartons_dict()
+    with span("normalize_items"):
+        counts = req.items_counter()
+    for raw_name, qty in counts.items():
+        if qty <= 0:
+            continue
+        detected_total = detect_box_total(raw_name)
+        if detected_total:
+            distribution = distribute_boxes(detected_total)
+            cartons = _resolve_cartons(cartons, distribution)
+            notes.append(
+                f"Converted {detected_total} boxes into distribution {distribution} from '{raw_name}'"
+            )
+            continue
+        with span("match_catalog", item=raw_name, quantity=qty):
+            match = catalog.match(raw_name)
+        if match:
+            record_alias_hit(match.approximate)
+            allocations.append(ItemAllocation(match=match, quantity=qty))
+            continue
+        record_unknown_item()
+        suggestions = catalog.suggest(raw_name)
+        needs_clarification = True
+        unknowns.append(
+            {
+                "name": raw_name,
+                "quantity": qty,
+                "suggestions": [
+                    {
+                        "item_id": suggestion.item["id"],
+                        "name": suggestion.item["name"],
+                        "similarity": round(suggestion.similarity, 4),
+                    }
+                    for suggestion in suggestions
+                ],
+            }
+        )
+    return allocations, needs_clarification, unknowns, notes, cartons
+
+
+def _location_context(raw: Dict[str, Any]) -> LocationContext:
+    access_rule = rules.access_for_location(raw)
+    return LocationContext(raw=raw, access_rule=access_rule)
+
+
+def _build_quote_response(
+    req: EstimateRequest,
+    allocations: List[ItemAllocation],
+    notes: List[str],
+    cartons: Dict[str, int],
+    needs_clarification: bool,
+    unknowns: List[Dict[str, Any]],
+    include_trace: bool,
+) -> tuple[Dict[str, Any], QuoteResult, int]:
+    origin_ctx = _location_context(req.origin.model_dump())
+    destination_ctx = _location_context(req.destination.model_dump())
+    options = QuoteOptions(
+        optimize_for=req.options.optimize_for,
+        not_to_exceed=req.options.not_to_exceed,
+        seasonality=req.options.seasonality,
+    )
+    packing_request = PackingRequest(service=req.packing.service, cartons=cartons)
+    ctx = QuoteContext(
+        move_date=req.move_date,
+        distance_miles=float(req.distance_miles),
+        origin=origin_ctx,
+        destination=destination_ctx,
+        allocations=allocations,
+        rules=rules,
+        packing_catalog=packing_catalog,
+        packing_request=packing_request,
+        options=options,
+        notes=notes,
+    )
+    with span("optimize"):
+        quote, candidates = optimize(ctx)
+    final_price = round(quote.total_price, 2)
+    labor_cost = round(quote.labor_cost, 2)
+    mileage_cost = round(quote.mileage_cost, 2)
+    packing_cost = round(quote.packing_cost, 2)
+    surcharges = [
+        {"type": item["type"], "amount": round(item["amount"], 2)} for item in quote.surcharges
+    ]
+    discounts = [
+        {"type": item["type"], "amount": round(item["amount"], 2)} for item in quote.discounts
+    ]
+    base_fee = rules.base_fee
+    line_items = [
+        {"type": "labor", "amount": labor_cost},
+        {"type": "mileage", "amount": mileage_cost},
+    ]
+    if packing_cost:
+        line_items.append({"type": "packing", "amount": packing_cost})
+    if surcharges:
+        for surcharge in surcharges:
+            line_items.append({"type": surcharge["type"], "amount": surcharge["amount"]})
+    if base_fee:
+        line_items.append({"type": "base_fee", "amount": round(base_fee, 2)})
+    breakdown_public = {
+        "labor_hours_billed": round(quote.billable_hours, 2),
+        "movers": quote.movers,
+        "trucks": quote.trucks,
+        "labor_cost": labor_cost,
         "mileage_cost": mileage_cost,
-        "season_multiplier": season,
-        "base_fee": base_fee,
-        "subtotal_before_season": round(subtotal, 2),
-        "total_after_season_and_fees": total
+        "packing_cost": packing_cost,
+        "travel_charge_hours": round(quote.travel_hours, 2),
+        "surcharges": surcharges,
+        "discounts": discounts,
     }
-
-@api.post("/estimate")
-def estimate(req: EstimateRequest, request: Request):
-    idem = req.idempotency_key or request.headers.get("X-Request-Id")
-    if idem and idem in _IDEMP:
-        return _IDEMP[idem]
-
-    if not req.items:
-        raise HTTPException(status_code=400, detail="No items provided")
-
-    rows, total_w = _resolve_items(req.items)
-    logic = _compute_price(total_w, float(req.distance_miles), req.move_date)
-    resp = {
-        "inventory_breakdown": [r.model_dump() for r in rows],
-        "calculation_logic": logic,
-        "total_weight": total_w,
-        "final_price": logic["total_after_season_and_fees"],
+    if notes:
+        breakdown_public["notes"] = notes
+    if req.packing.service.lower() != "none":
+        breakdown_public["cartons"] = cartons
+    calc_trace = {
+        **quote.calculation_trace,
+        "billable_hours": quote.billable_hours,
+        "total_weight": ctx.total_weight,
+        "total_volume": ctx.total_volume,
+    }
+    response_payload = {
+        "quote_id": f"q_{uuid.uuid4().hex[:10]}",
+        "final_price": final_price,
         "currency": "USD",
-        "version": api.version
+        "breakdown_public": breakdown_public,
+        "line_items": line_items,
+        "version": APP_VERSION,
+        "needs_clarification": needs_clarification,
+        "clarification_items": unknowns if needs_clarification else None,
     }
-    if idem:
-        _IDEMP[idem] = resp
-    return resp
+    if include_trace:
+        response_payload["calculation_logic"] = calc_trace
+    return response_payload, quote, candidates
+
+
+@api.post("/estimate", response_model=EstimateResponse)
+async def estimate(request: Request):
+    raw_body = await request.body()
+    verifier.verify(request.headers.get("X-Signature"), raw_body)
+    request_start = time.time()
+    with span("apply_rules"):
+        try:
+            payload = EstimateRequest.model_validate_json(raw_body)
+        except ValidationError as exc:
+            record_quote_error()
+            raise HTTPException(status_code=422, detail=json.loads(exc.json())) from exc
+        except Exception as exc:
+            record_quote_error()
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+    idempotency_key = request.headers.get("Idempotency-Key") or payload.idempotency_key
+    debug_header = (request.headers.get("X-Debug") or "").lower() == "true"
+    include_trace = allow_internal_debug and debug_header
+
+    def compute() -> Dict[str, Any]:
+        allocations, needs_clarification, unknowns, notes, cartons = _match_items(payload)
+        if not allocations and not unknowns:
+            raise HTTPException(status_code=400, detail="No recognizable items provided")
+        response_payload, quote, candidates = _build_quote_response(
+            payload, allocations, notes, cartons, needs_clarification, unknowns, include_trace
+        )
+        latency_ms = (time.time() - request_start) * 1000
+        record_quote_success(latency_ms, candidates, quote.movers, quote.trucks)
+        structured_log(
+            "quote.generated",
+            quote_id=response_payload["quote_id"],
+            hashed_items=hash_items(payload.items),
+            needs_clarification=needs_clarification,
+            movers=quote.movers,
+            trucks=quote.trucks,
+        )
+        return response_payload
+
+    try:
+        response = idempotency_store.get_or_set(idempotency_key, raw_body, compute)
+    except HTTPException:
+        record_quote_error()
+        raise
+    except Exception as exc:  # pragma: no cover
+        record_quote_error()
+        raise
+    return EstimateResponse.model_validate(response)
