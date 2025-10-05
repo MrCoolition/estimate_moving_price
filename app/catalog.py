@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import json
-import math
-import re
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple, TypedDict
+from typing import Dict, Iterable, List, Optional, Sequence, TypedDict
+
+from .text_utils import cosine_similarity, generate_tokens, normalize_label, trigram_vector
 
 
 class CatalogItem(TypedDict):
@@ -27,10 +27,17 @@ class MatchResult:
     approximate: bool = False
 
 
-class Catalog:
-    _WORD_RE = re.compile(r"[^a-z0-9\.]+")
-    _BOX_KEYWORDS = {"box", "carton"}
+@dataclass(frozen=True)
+class AliasRecord:
+    item_id: str
+    alias: str
+    normalized: str
+    tokens: Sequence[str]
+    vector: Counter[str]
+    priority: int
 
+
+class Catalog:
     _MANUAL_OVERRIDES: List[Dict[str, object]] = [
         {
             "id": "refrigerator_standard",
@@ -54,7 +61,7 @@ class Catalog:
             "category": "wardrobe",
             "volume_cuft": 45.0,
             "weight_lbs": 240.0,
-            "aliases": ["wardrobe", "armoire wardrobe"],
+            "aliases": ["wardrobe", "armoire", "armoire wardrobe"],
         },
         {
             "id": "safe_large",
@@ -64,7 +71,72 @@ class Catalog:
             "weight_lbs": 320.0,
             "aliases": ["safe", "gun safe", "floor safe"],
         },
+        {
+            "id": "dresser_standard",
+            "name": "Dresser",
+            "category": "dresser",
+            "volume_cuft": 35.0,
+            "weight_lbs": 150.0,
+            "aliases": ["dresser", "bureau"],
+        },
+        {
+            "id": "dresser_tall",
+            "name": "Dresser Tall",
+            "category": "dresser",
+            "volume_cuft": 32.0,
+            "weight_lbs": 165.0,
+            "aliases": ["tall dresser", "highboy", "chest of drawers"],
+        },
+        {
+            "id": "dresser_double",
+            "name": "Dresser Double",
+            "category": "dresser",
+            "volume_cuft": 45.0,
+            "weight_lbs": 190.0,
+            "aliases": ["double dresser", "lowboy dresser"],
+        },
+        {
+            "id": "rug_large",
+            "name": "Rug Large",
+            "category": "rug",
+            "volume_cuft": 10.0,
+            "weight_lbs": 50.0,
+            "aliases": ["large rug", "rug large"],
+        },
+        {
+            "id": "carton_box_small_1_5",
+            "name": "Box Small 1.5 cu ft",
+            "category": "carton",
+            "volume_cuft": 1.5,
+            "weight_lbs": 35.0,
+            "aliases": ["1.5 box", "small box", "box 1.5", "1.5 cu ft box"],
+        },
+        {
+            "id": "carton_box_medium_3_0",
+            "name": "Box Medium 3.0 cu ft",
+            "category": "carton",
+            "volume_cuft": 3.0,
+            "weight_lbs": 50.0,
+            "aliases": ["3.0 box", "medium box", "box 3.0", "3.0 cu ft box"],
+        },
+        {
+            "id": "carton_box_large_4_5",
+            "name": "Box Large 4.5 cu ft",
+            "category": "carton",
+            "volume_cuft": 4.5,
+            "weight_lbs": 65.0,
+            "aliases": ["4.5 box", "large box", "box 4.5", "4.5 cu ft box"],
+        },
+        {
+            "id": "carton_box_xl_6_0",
+            "name": "Box XL 6.0 cu ft",
+            "category": "carton",
+            "volume_cuft": 6.0,
+            "weight_lbs": 80.0,
+            "aliases": ["6.0 box", "xl box", "extra large box", "box 6.0"],
+        },
     ]
+
     _MANUAL_ALIASES: Dict[str, str] = {
         "dining table": "dining_table_medium",
         "table dining": "dining_table_medium",
@@ -75,6 +147,8 @@ class Catalog:
         "sofa": "sofa_three_seat",
         "wardrobe": "wardrobe_large",
         "safe": "safe_large",
+        "bureau": "dresser_standard",
+        "dresser": "dresser_standard",
     }
 
     def __init__(self, path: str | Path):
@@ -86,9 +160,28 @@ class Catalog:
         raw_items.extend(self._MANUAL_OVERRIDES)
         self.items: Dict[str, CatalogItem] = {}
         self.alias_to_id: Dict[str, str] = {}
-        self._alias_to_display: Dict[str, str] = {}
-        self._alias_vectors: Dict[str, Counter[str]] = {}
+        self._alias_records: Dict[str, AliasRecord] = {}
         self._load_items(raw_items)
+        self._alias_record_list: Sequence[AliasRecord] = tuple(self._alias_records.values())
+        self.category_medoid: Dict[str, str] = self._compute_category_medoids()
+
+    def _register_alias(self, alias: str, item: CatalogItem, *, priority: int) -> None:
+        normalized = normalize_label(alias)
+        if not normalized:
+            return
+        record = AliasRecord(
+            item_id=item["id"],
+            alias=alias,
+            normalized=normalized,
+            tokens=generate_tokens(normalized),
+            vector=trigram_vector(normalized),
+            priority=priority,
+        )
+        existing = self._alias_records.get(normalized)
+        if existing and existing.priority <= priority:
+            return
+        self._alias_records[normalized] = record
+        self.alias_to_id[normalized] = item["id"]
 
     def _load_items(self, raw_items: Iterable[dict]) -> None:
         for obj in raw_items:
@@ -101,160 +194,106 @@ class Catalog:
                 "aliases": list(obj.get("aliases", [])),
             }
             self.items[item["id"]] = item
-            seen_norms: set[str] = set()
-            for alias in self._candidate_aliases(item):
-                norm = self.normalize(alias)
-                if not norm or norm in seen_norms:
-                    continue
-                seen_norms.add(norm)
-                self.alias_to_id.setdefault(norm, item["id"])
-                self._alias_to_display[norm] = alias
-                self._alias_vectors[norm] = self._ngram_vector(norm)
+            self._register_alias(item["name"], item, priority=0)
+            for alias in item.get("aliases", []):
+                self._register_alias(alias, item, priority=1)
+            for variant in self._basic_alias_variants(item["name"]):
+                self._register_alias(variant, item, priority=2)
         for alias, target_id in self._MANUAL_ALIASES.items():
-            norm = self.normalize(alias)
-            if not norm or target_id not in self.items:
+            item = self.items.get(target_id)
+            if not item:
                 continue
-            self.alias_to_id[norm] = target_id
-            self._alias_to_display[norm] = alias
-            self._alias_vectors[norm] = self._ngram_vector(norm)
+            self._register_alias(alias, item, priority=0)
 
-    def _candidate_aliases(self, item: CatalogItem) -> Iterable[str]:
-        yield item["name"]
-        for alias in item.get("aliases", []):
-            yield alias
-        for alias in self._basic_alias_variants(item["name"]):
-            yield alias
-        tokens = self.normalize(item["name"]).split()
-        if tokens and tokens[-1] in {"small", "medium", "large"}:
-            trimmed = " ".join(tokens[:-1])
-            if trimmed:
-                yield trimmed
-                parts = trimmed.split()
-                if len(parts) == 2:
-                    yield " ".join(reversed(parts))
-
-    def _basic_alias_variants(self, name: str) -> List[str]:
-        normalized = self.normalize(name)
+    def _basic_alias_variants(self, name: str) -> Sequence[str]:
+        normalized = normalize_label(name)
         if not normalized:
             return []
-        tokens = normalized.split()
+        parts = normalized.split()
         variants: List[str] = []
-        if len(tokens) > 1:
-            variants.append("_".join(tokens))
-            variants.append("-".join(tokens))
-            variants.append(" ".join(sorted(tokens)))
-            if len(tokens) == 2:
-                variants.append(" ".join(reversed(tokens)))
+        if len(parts) == 2:
+            variants.append(" ".join(reversed(parts)))
+        variants.append("_".join(parts))
+        variants.append("-".join(parts))
         return variants
 
-    def normalize(self, raw: str) -> str:
-        if not raw:
-            return ""
-        working = raw.strip().lower()
-        working = working.replace("/", " ")
-        tokens = [
-            t for t in self._WORD_RE.split(working) if t
-        ]
-        normalized_tokens: List[str] = []
-        for token in tokens:
-            normalized_tokens.append(self._singularize(token))
-        if any(tok in self._BOX_KEYWORDS for tok in normalized_tokens):
-            normalized_tokens = sorted(normalized_tokens)
-        return " ".join(normalized_tokens)
+    def _compute_category_medoids(self) -> Dict[str, str]:
+        by_category: Dict[str, List[CatalogItem]] = defaultdict(list)
+        for item in self.items.values():
+            by_category[item["category"]].append(item)
+        medoids: Dict[str, str] = {}
+        for category, items in by_category.items():
+            if not items:
+                continue
+            sorted_items = sorted(items, key=lambda itm: (itm["weight_lbs"], itm["id"]))
+            median_index = len(sorted_items) // 2
+            target_weight = sorted_items[median_index]["weight_lbs"]
+            medoid = min(
+                sorted_items,
+                key=lambda itm: (abs(itm["weight_lbs"] - target_weight), itm["id"]),
+            )
+            medoids[category] = medoid["id"]
+        return medoids
 
-    def _singularize(self, token: str) -> str:
-        if token.isdigit() or self._is_float_token(token):
-            return token
-        if token.endswith("ies") and len(token) > 3:
-            return token[:-3] + "y"
-        if token.endswith("ves") and len(token) > 3:
-            return token[:-3] + "f"
-        if token.endswith("ses") and len(token) > 3:
-            return token[:-2]
-        if token.endswith("xes") and len(token) > 3:
-            return token[:-2]
-        if token.endswith("s") and len(token) > 3:
-            return token[:-1]
-        return token
+    def get(self, item_id: str) -> Optional[CatalogItem]:
+        return self.items.get(item_id)
 
-    def _is_float_token(self, token: str) -> bool:
-        try:
-            float(token)
-        except ValueError:
-            return False
-        return True
+    def alias_records(self) -> Sequence[AliasRecord]:
+        return self._alias_record_list
+
+    def get_alias_record(self, normalized: str) -> Optional[AliasRecord]:
+        return self._alias_records.get(normalized)
 
     def match(self, raw: str, *, similarity_threshold: float = 0.92) -> Optional[MatchResult]:
-        norm = self.normalize(raw)
-        if not norm:
+        normalized = normalize_label(raw)
+        if not normalized:
             return None
-        item_id = self.alias_to_id.get(norm)
+        item_id = self.alias_to_id.get(normalized)
         if item_id:
+            item = self.items[item_id]
+            record = self._alias_records[normalized]
+            return MatchResult(item=item, alias=record.alias, normalized=normalized, similarity=1.0)
+        vector = trigram_vector(normalized)
+        best: Optional[AliasRecord] = None
+        best_score = 0.0
+        for record in self._alias_records.values():
+            score = cosine_similarity(vector, record.vector)
+            if score > best_score:
+                best_score = score
+                best = record
+        if best and best_score >= similarity_threshold:
+            item = self.items[best.item_id]
             return MatchResult(
-                item=self.items[item_id],
-                alias=self._alias_to_display.get(norm, raw),
-                normalized=norm,
-                similarity=1.0,
-            )
-        vector = self._ngram_vector(norm)
-        best: Optional[Tuple[float, str]] = None
-        for alias_norm, alias_vec in self._alias_vectors.items():
-            sim = self._cosine_similarity(vector, alias_vec)
-            if sim == 0:
-                continue
-            if not best or sim > best[0]:
-                best = (sim, alias_norm)
-        if best and best[0] >= similarity_threshold:
-            alias_norm = best[1]
-            item_id = self.alias_to_id[alias_norm]
-            return MatchResult(
-                item=self.items[item_id],
-                alias=self._alias_to_display.get(alias_norm, raw),
-                normalized=alias_norm,
-                similarity=best[0],
+                item=item,
+                alias=best.alias,
+                normalized=best.normalized,
+                similarity=best_score,
                 approximate=True,
             )
         return None
 
     def suggest(self, raw: str, *, limit: int = 5) -> List[MatchResult]:
-        norm = self.normalize(raw)
-        if not norm:
+        normalized = normalize_label(raw)
+        if not normalized:
             return []
-        vector = self._ngram_vector(norm)
-        scored: List[Tuple[float, str]] = []
-        for alias_norm, alias_vec in self._alias_vectors.items():
-            sim = self._cosine_similarity(vector, alias_vec)
-            if sim <= 0:
+        vector = trigram_vector(normalized)
+        scored: List[tuple[float, AliasRecord]] = []
+        for record in self._alias_records.values():
+            score = cosine_similarity(vector, record.vector)
+            if score <= 0:
                 continue
-            scored.append((sim, alias_norm))
-        scored.sort(reverse=True, key=lambda x: x[0])
+            scored.append((score, record))
+        scored.sort(key=lambda pair: pair[0], reverse=True)
         results: List[MatchResult] = []
-        for sim, alias_norm in scored[:limit]:
-            item_id = self.alias_to_id[alias_norm]
+        for score, record in scored[:limit]:
+            item = self.items[record.item_id]
             results.append(
                 MatchResult(
-                    item=self.items[item_id],
-                    alias=self._alias_to_display.get(alias_norm, alias_norm),
-                    normalized=alias_norm,
-                    similarity=sim,
+                    item=item,
+                    alias=record.alias,
+                    normalized=record.normalized,
+                    similarity=score,
                     approximate=True,
                 )
             )
         return results
-
-    def _ngram_vector(self, norm: str, n: int = 3) -> Counter[str]:
-        padded = f"{norm}"
-        return Counter(padded[i : i + n] for i in range(max(len(padded) - n + 1, 1)))
-
-    @staticmethod
-    def _cosine_similarity(a: Counter[str], b: Counter[str]) -> float:
-        if not a or not b:
-            return 0.0
-        dot = sum(a[k] * b[k] for k in a.keys() & b.keys())
-        if dot == 0:
-            return 0.0
-        norm_a = math.sqrt(sum(v * v for v in a.values()))
-        norm_b = math.sqrt(sum(v * v for v in b.values()))
-        if norm_a == 0 or norm_b == 0:
-            return 0.0
-        return dot / (norm_a * norm_b)

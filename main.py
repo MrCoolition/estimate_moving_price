@@ -4,6 +4,7 @@ import json
 import os
 import time
 import uuid
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -12,13 +13,12 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from app.metrics import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import ValidationError
 
-from app.catalog import Catalog, MatchResult
+from app.catalog import Catalog
 from app.observability import (
     hash_items,
     record_alias_hit,
     record_quote_error,
     record_quote_success,
-    record_unknown_item,
     span,
     structured_log,
 )
@@ -33,7 +33,8 @@ from app.pricing import (
     optimize,
 )
 from app.rules import load_rules
-from app.schemas import EstimateRequest, EstimateResponse, detect_box_total, distribute_boxes
+from app.resolver import ResolverOptions, resolve_inventory, allocate_boxes
+from app.schemas import EstimateRequest, EstimateResponse, detect_box_total
 from app.security import HMACVerifier, IdempotencyStore
 
 APP_VERSION = datetime.utcnow().strftime("%Y-%m-%d")
@@ -83,49 +84,59 @@ def _resolve_cartons(base: Dict[str, int], additions: Dict[str, int]) -> Dict[st
     return result
 
 
-def _match_items(req: EstimateRequest) -> tuple[List[ItemAllocation], bool, List[Dict[str, Any]], List[str], Dict[str, int]]:
-    unknowns: List[Dict[str, Any]] = []
+def _resolve_items(
+    req: EstimateRequest, resolver_options: ResolverOptions
+) -> tuple[List[ItemAllocation], List[str], Dict[str, int], List[Dict[str, Any]], List[dict], Dict[str, Any]]:
     notes: List[str] = []
-    allocations: List[ItemAllocation] = []
-    needs_clarification = False
     cartons = req.packing.cartons_dict()
     with span("normalize_items"):
-        counts = req.items_counter()
-    for raw_name, qty in counts.items():
+        raw_counts = req.items_counter()
+    counter: Counter[str] = Counter()
+    for raw_name, qty in raw_counts.items():
         if qty <= 0:
             continue
         detected_total = detect_box_total(raw_name)
         if detected_total:
-            distribution = distribute_boxes(detected_total)
-            cartons = _resolve_cartons(cartons, distribution)
+            distribution = allocate_boxes(detected_total, resolver_options.box_allocation_policy)
+            scaled_distribution = {key: value * qty for key, value in distribution.items()}
+            cartons = _resolve_cartons(cartons, scaled_distribution)
+            counter["box"] += detected_total * qty
             notes.append(
-                f"Converted {detected_total} boxes into distribution {distribution} from '{raw_name}'"
+                f"Converted {detected_total * qty} boxes into distribution {scaled_distribution} from '{raw_name}'"
             )
             continue
-        with span("match_catalog", item=raw_name, quantity=qty):
-            match = catalog.match(raw_name)
-        if match:
-            record_alias_hit(match.approximate)
-            allocations.append(ItemAllocation(match=match, quantity=qty))
-            continue
-        record_unknown_item()
-        suggestions = catalog.suggest(raw_name)
-        needs_clarification = True
-        unknowns.append(
-            {
-                "name": raw_name,
-                "quantity": qty,
-                "suggestions": [
-                    {
-                        "item_id": suggestion.item["id"],
-                        "name": suggestion.item["name"],
-                        "similarity": round(suggestion.similarity, 4),
-                    }
-                    for suggestion in suggestions
-                ],
-            }
+        counter[raw_name] += qty
+    with span("resolve_inventory"):
+        resolver_result = resolve_inventory(counter, catalog, resolver_options)
+    allocations_map: Dict[str, Dict[str, Any]] = {}
+    for line in resolver_result.lines:
+        record_alias_hit(line.match.approximate)
+        entry = allocations_map.setdefault(
+            line.match.item["id"], {"match": line.match, "quantity": 0}
         )
-    return allocations, needs_clarification, unknowns, notes, cartons
+        entry["quantity"] += line.quantity
+    sorted_ids = sorted(allocations_map.keys())
+    allocations = [
+        ItemAllocation(match=allocations_map[item_id]["match"], quantity=allocations_map[item_id]["quantity"])
+        for item_id in sorted_ids
+    ]
+    inventory_breakdown = [
+        {
+            "item_id": item_id,
+            "name": allocations_map[item_id]["match"].item["name"],
+            "quantity": allocations_map[item_id]["quantity"],
+            "weight_each_lbs": allocations_map[item_id]["match"].item["weight_lbs"],
+            "weight_total_lbs": round(
+                allocations_map[item_id]["match"].item["weight_lbs"]
+                * allocations_map[item_id]["quantity"],
+                2,
+            ),
+        }
+        for item_id in sorted_ids
+    ]
+    inventory_breakdown.sort(key=lambda entry: entry["name"].lower())
+    assumptions = resolver_result.assumptions if resolver_options.assumptions_public else []
+    return allocations, notes, cartons, inventory_breakdown, assumptions, resolver_result.match_summary
 
 
 def _location_context(raw: Dict[str, Any]) -> LocationContext:
@@ -138,8 +149,9 @@ def _build_quote_response(
     allocations: List[ItemAllocation],
     notes: List[str],
     cartons: Dict[str, int],
-    needs_clarification: bool,
-    unknowns: List[Dict[str, Any]],
+    inventory_breakdown: List[Dict[str, Any]],
+    assumptions: List[dict],
+    match_summary: Dict[str, Any],
     include_trace: bool,
 ) -> tuple[Dict[str, Any], QuoteResult, int]:
     origin_ctx = _location_context(req.origin.model_dump())
@@ -213,9 +225,10 @@ def _build_quote_response(
         "currency": "USD",
         "breakdown_public": breakdown_public,
         "line_items": line_items,
+        "inventory_breakdown": inventory_breakdown,
+        "assumptions": assumptions,
+        "match_summary": match_summary,
         "version": APP_VERSION,
-        "needs_clarification": needs_clarification,
-        "clarification_items": unknowns if needs_clarification else None,
     }
     if include_trace:
         response_payload["calculation_logic"] = calc_trace
@@ -241,11 +254,29 @@ async def estimate(request: Request):
     include_trace = allow_internal_debug and debug_header
 
     def compute() -> Dict[str, Any]:
-        allocations, needs_clarification, unknowns, notes, cartons = _match_items(payload)
-        if not allocations and not unknowns:
-            raise HTTPException(status_code=400, detail="No recognizable items provided")
+        resolver_options = ResolverOptions(
+            resolver_policy=payload.options.resolver_policy,
+            box_allocation_policy=payload.options.box_allocation_policy,
+            confidence_floor=float(payload.options.confidence_floor),
+            assumptions_public=payload.options.assumptions_public,
+        )
+        (
+            allocations,
+            notes,
+            cartons,
+            inventory_breakdown,
+            assumptions,
+            match_summary,
+        ) = _resolve_items(payload, resolver_options)
         response_payload, quote, candidates = _build_quote_response(
-            payload, allocations, notes, cartons, needs_clarification, unknowns, include_trace
+            payload,
+            allocations,
+            notes,
+            cartons,
+            inventory_breakdown,
+            assumptions,
+            match_summary,
+            include_trace,
         )
         latency_ms = (time.time() - request_start) * 1000
         record_quote_success(latency_ms, candidates, quote.movers, quote.trucks)
@@ -253,7 +284,7 @@ async def estimate(request: Request):
             "quote.generated",
             quote_id=response_payload["quote_id"],
             hashed_items=hash_items(payload.items),
-            needs_clarification=needs_clarification,
+            match_summary=match_summary,
             movers=quote.movers,
             trucks=quote.trucks,
         )
