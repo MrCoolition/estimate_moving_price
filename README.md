@@ -97,6 +97,35 @@ for compatibility with agent tools that send all values together.
 
 The response includes the total cost and a breakdown of labor hours, protective materials charges, number of movers and trucks, and the calculated weight and volume.
 
+### Email finalized orders
+
+The webhook configuration in ElevenLabs expects a `POST /orders/email` endpoint. It now accepts the following JSON body and emails the full caller and move details to a configurable list of recipients:
+
+```json
+{
+  "item_details": "Clean inventory list the caller provided",
+  "move_date": "Move date and whether it falls on a weekday or weekend",
+  "phone": "Phone number of the caller",
+  "locations": "Origin and destination addresses",
+  "estimate_price": 1500.0,
+  "stairwells": "Stairwell/elevator info and floors at each location",
+  "estimate_calculation_table": "Full itemized inventory, weights, fees, and calculation logic",
+  "email": "caller@example.com",
+  "name": "Caller Name"
+}
+```
+
+Environment variables control delivery:
+
+- `ORDER_EMAIL_RECIPIENTS` (required): Comma-separated list of email addresses.
+- `ORDER_EMAIL_SMTP_HOST` (required): SMTP host to send mail through.
+- `ORDER_EMAIL_SMTP_PORT`: SMTP port (default `587`).
+- `ORDER_EMAIL_SMTP_USERNAME` / `ORDER_EMAIL_SMTP_PASSWORD`: Credentials for authenticated relays (optional).
+- `ORDER_EMAIL_SMTP_USE_TLS`: Set to `false` to disable `STARTTLS` (defaults to enabled).
+- `ORDER_EMAIL_SENDER`: From address for outbound emails; defaults to SMTP username or the first recipient.
+
+Successful requests return `{ "status": "sent", "recipients": ["..."] }`. Any configuration issues return a `500` with a descriptive error, while SMTP failures surface as `502` responses.
+
 ## Run Locally
 
 1. `cd` into the repository folder.
