@@ -2,10 +2,20 @@ from __future__ import annotations
 
 from datetime import date
 from pathlib import Path
-import os
-from typing import Dict, Iterable, List
-import smtplib
-from email.message import EmailMessage
+import tomllib
+from typing import Dict, List
+
+try:  # pragma: no cover - import guard for environments without AWS SDK
+    import boto3
+    from botocore.exceptions import BotoCoreError, ClientError
+except ModuleNotFoundError:  # pragma: no cover
+    boto3 = None  # type: ignore
+
+    class BotoCoreError(Exception):
+        """Fallback error when botocore is unavailable."""
+
+    class ClientError(Exception):
+        """Fallback error when botocore is unavailable."""
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, field_validator
@@ -64,53 +74,69 @@ class OrderEmailRequest(BaseModel):
         return value
 
 
+DEFAULT_SECRET_PATHS = [
+    Path("/etc/secrets/secrets.toml"),
+    Path("/etc/secrets.toml"),
+    Path.home() / ".streamlit" / "secrets.toml",
+    BASE_DIR / "secrets.toml",
+]
+
+
+def _load_secrets(path_override: Path | None = None) -> dict:
+    candidates = [path_override] if path_override else DEFAULT_SECRET_PATHS
+    for path in candidates:
+        if path and path.exists():
+            with path.open("rb") as fh:
+                payload = tomllib.load(fh)
+            return payload.get("secrets", payload)
+    raise HTTPException(
+        status_code=500,
+        detail="secrets.toml not found. Add one to /etc/secrets/, ~/.streamlit/, or the project root.",
+    )
+
+
 class EmailConfig(BaseModel):
-    host: str
-    port: int = 587
-    username: str | None = None
-    password: str | None = None
+    region: str
+    aws_access_key_id: str | None = None
+    aws_secret_access_key: str | None = None
     sender: str
     recipients: List[str]
-    use_tls: bool = True
 
     @classmethod
-    def from_environment(cls) -> "EmailConfig":
-        recipients_raw = os.getenv("ORDER_EMAIL_RECIPIENTS", "")
-        recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
+    def from_secrets(cls, *, path_override: Path | None = None) -> "EmailConfig":
+        secrets = _load_secrets(path_override)
+
+        recipients_raw = secrets.get("ORDER_EMAIL_RECIPIENTS")
+        recipients: List[str] = []
+        if isinstance(recipients_raw, str):
+            recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
+        elif isinstance(recipients_raw, list):
+            recipients = [str(addr).strip() for addr in recipients_raw if str(addr).strip()]
         if not recipients:
             raise HTTPException(
                 status_code=500,
-                detail="ORDER_EMAIL_RECIPIENTS is not configured. Set a comma-separated list of email addresses.",
+                detail="ORDER_EMAIL_RECIPIENTS is not configured in secrets.toml.",
             )
 
-        host = os.getenv("ORDER_EMAIL_SMTP_HOST")
-        if not host:
-            raise HTTPException(status_code=500, detail="ORDER_EMAIL_SMTP_HOST is required to send email.")
+        region = secrets.get("ORDER_EMAIL_AWS_REGION") or secrets.get("AWS_REGION") or ""
+        if not region:
+            raise HTTPException(status_code=500, detail="ORDER_EMAIL_AWS_REGION or AWS_REGION is required in secrets.toml.")
 
-        sender = os.getenv("ORDER_EMAIL_SENDER") or os.getenv("ORDER_EMAIL_SMTP_USERNAME") or recipients[0]
-        username = os.getenv("ORDER_EMAIL_SMTP_USERNAME")
-        password = os.getenv("ORDER_EMAIL_SMTP_PASSWORD")
-        port = int(os.getenv("ORDER_EMAIL_SMTP_PORT", "587"))
-        use_tls = os.getenv("ORDER_EMAIL_SMTP_USE_TLS", "true").lower() != "false"
+        sender = secrets.get("ORDER_EMAIL_SENDER") or recipients[0]
+        access_key = secrets.get("AWS_ACCESS_KEY_ID")
+        secret_key = secrets.get("AWS_SECRET_ACCESS_KEY")
 
         return cls(
-            host=host,
-            port=port,
-            username=username,
-            password=password,
+            region=region,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
             sender=sender,
             recipients=recipients,
-            use_tls=use_tls,
         )
 
 
-def _build_email_message(payload: OrderEmailRequest, sender: str, recipients: Iterable[str]) -> EmailMessage:
-    message = EmailMessage()
-    message["Subject"] = f"New move lead from {payload.name}"
-    message["From"] = sender
-    message["To"] = ", ".join(recipients)
-    message["Reply-To"] = payload.email
-
+def _build_email_body(payload: OrderEmailRequest) -> tuple[str, str]:
+    subject = f"New move lead from {payload.name}"
     body = (
         "New move lead received.\n\n"
         f"Caller: {payload.name}\n"
@@ -125,27 +151,38 @@ def _build_email_message(payload: OrderEmailRequest, sender: str, recipients: It
         "Full calculation:\n"
         f"{payload.estimate_calculation_table}\n"
     )
-    message.set_content(body)
-    return message
+    return subject, body
 
 
-def _send_email(config: EmailConfig, message: EmailMessage) -> None:
+def _send_email(config: EmailConfig, subject: str, body: str, reply_to: str) -> None:
+    if boto3 is None:  # pragma: no cover - safety for missing dependency
+        raise HTTPException(status_code=500, detail="boto3 is not installed; cannot send email.")
+
     try:
-        with smtplib.SMTP(config.host, config.port, timeout=20) as smtp:
-            if config.use_tls:
-                smtp.starttls()
-            if config.username and config.password:
-                smtp.login(config.username, config.password)
-            smtp.send_message(message)
-    except Exception as exc:  # pragma: no cover - network errors are environment-specific
+        ses = boto3.client(
+            "ses",
+            region_name=config.region,
+            aws_access_key_id=config.aws_access_key_id,
+            aws_secret_access_key=config.aws_secret_access_key,
+        )
+        ses.send_email(
+            Source=config.sender,
+            Destination={"ToAddresses": list(config.recipients)},
+            ReplyToAddresses=[reply_to],
+            Message={
+                "Subject": {"Data": subject, "Charset": "UTF-8"},
+                "Body": {"Text": {"Data": body, "Charset": "UTF-8"}},
+            },
+        )
+    except (BotoCoreError, ClientError) as exc:  # pragma: no cover - network errors are environment-specific
         raise HTTPException(status_code=502, detail=f"Failed to send email: {exc}") from exc
 
 
 @router.post("/orders/email")
 async def email_order(payload: OrderEmailRequest):
-    config = EmailConfig.from_environment()
-    message = _build_email_message(payload, sender=config.sender, recipients=config.recipients)
-    _send_email(config, message)
+    config = EmailConfig.from_secrets()
+    subject, body = _build_email_body(payload)
+    _send_email(config, subject=subject, body=body, reply_to=payload.email)
     return {"status": "sent", "recipients": config.recipients}
 
 
