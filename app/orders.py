@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import os
-import smtplib
 import tomllib
-from email.message import EmailMessage
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -66,18 +64,24 @@ class OrderEmailRequest(BaseModel):
 
 
 class EmailConfig(BaseModel):
-    host: str
-    port: int = 587
-    username: str | None = None
-    password: str | None = None
-    use_tls: bool = True
+    region: str
     sender: str
     recipients: List[str]
+    aws_access_key_id: str | None = None
+    aws_secret_access_key: str | None = None
 
     @classmethod
     def from_env_or_secrets(cls, *, path_override: Path | None = None) -> "EmailConfig":
+        """
+        Load configuration for sending order emails via Amazon SES.
+
+        Priority order:
+        - Environment variables (Render)
+        - Optional secrets.toml mounted into the container
+        """
         secrets = _load_secrets(path_override)
 
+        # 1) Recipients: comma-separated list
         recipients_raw = os.getenv("ORDER_EMAIL_RECIPIENTS") or secrets.get("ORDER_EMAIL_RECIPIENTS")
         recipients: List[str] = []
         if isinstance(recipients_raw, str):
@@ -90,36 +94,43 @@ class EmailConfig(BaseModel):
                 detail="ORDER_EMAIL_RECIPIENTS is not configured.",
             )
 
-        host = os.getenv("ORDER_EMAIL_SMTP_HOST") or secrets.get("ORDER_EMAIL_SMTP_HOST") or ""
-        if not host:
-            raise HTTPException(status_code=500, detail="ORDER_EMAIL_SMTP_HOST is required.")
-
-        port_raw = os.getenv("ORDER_EMAIL_SMTP_PORT") or secrets.get("ORDER_EMAIL_SMTP_PORT") or 587
-        try:
-            port = int(port_raw)
-        except (TypeError, ValueError):
-            raise HTTPException(status_code=500, detail="ORDER_EMAIL_SMTP_PORT must be an integer.")
-
-        username = os.getenv("ORDER_EMAIL_SMTP_USERNAME") or secrets.get("ORDER_EMAIL_SMTP_USERNAME")
-        password = os.getenv("ORDER_EMAIL_SMTP_PASSWORD") or secrets.get("ORDER_EMAIL_SMTP_PASSWORD")
-        use_tls_raw = os.getenv("ORDER_EMAIL_SMTP_USE_TLS") or secrets.get("ORDER_EMAIL_SMTP_USE_TLS")
-        use_tls = True if use_tls_raw is None else str(use_tls_raw).lower() not in {"0", "false", "no"}
-
+        # 2) Sender: ORDER_EMAIL_SENDER or FROM_EMAIL
         sender = (
             os.getenv("ORDER_EMAIL_SENDER")
+            or os.getenv("FROM_EMAIL")
             or secrets.get("ORDER_EMAIL_SENDER")
-            or username
-            or recipients[0]
+            or secrets.get("FROM_EMAIL")
         )
+        if not sender:
+            raise HTTPException(
+                status_code=500,
+                detail="ORDER_EMAIL_SENDER or FROM_EMAIL is required for SES emails.",
+            )
+
+        # 3) AWS region
+        region = (
+            os.getenv("ORDER_EMAIL_AWS_REGION")
+            or os.getenv("AWS_REGION")
+            or secrets.get("ORDER_EMAIL_AWS_REGION")
+            or secrets.get("AWS_REGION")
+        )
+        if not region:
+            raise HTTPException(
+                status_code=500,
+                detail="AWS_REGION or ORDER_EMAIL_AWS_REGION is required for SES emails.",
+            )
+
+        # 4) AWS credentials (optional if instance profile is used,
+        # but we wire them from env in this project)
+        access_key = os.getenv("AWS_ACCESS_KEY_ID") or secrets.get("AWS_ACCESS_KEY_ID")
+        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY") or secrets.get("AWS_SECRET_ACCESS_KEY")
 
         return cls(
-            host=host,
-            port=port,
-            username=username,
-            password=password,
-            use_tls=use_tls,
+            region=region,
             sender=sender,
             recipients=recipients,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
         )
 
 
@@ -144,27 +155,44 @@ def _build_email_body(payload: OrderEmailRequest) -> tuple[str, str]:
 
 def _send_email(config: EmailConfig, subject: str, body: str, reply_to: str) -> None:
     """
-    Send a plain-text email using a generic SMTP relay.
+    Send the order email using Amazon SES.
 
-    This is configured via ORDER_EMAIL_SMTP_* environment variables and can
-    point at Amazon SES or any other SMTP provider.
+    Uses the AWS region and credentials from EmailConfig. If credentials are not
+    provided explicitly, boto3 will fall back to its default credential chain.
     """
-    message = EmailMessage()
-    message["Subject"] = subject
-    message["From"] = config.sender
-    message["To"] = ", ".join(config.recipients)
-    message["Reply-To"] = reply_to
-    message.set_content(body)
+    if boto3 is None:  # pragma: no cover
+        raise HTTPException(
+            status_code=500,
+            detail="boto3 is not installed; cannot send email via Amazon SES.",
+        )
 
     try:
-        with smtplib.SMTP(config.host, config.port, timeout=10) as smtp:
-            if config.use_tls:
-                smtp.starttls()
-            if config.username:
-                smtp.login(config.username, config.password or "")
-            smtp.send_message(message)
-    except Exception as exc:  # pragma: no cover - network errors are environment-specific
-        raise HTTPException(status_code=502, detail=f"Failed to send email: {exc}") from exc
+        ses = boto3.client(
+            "ses",
+            region_name=config.region,
+            aws_access_key_id=config.aws_access_key_id,
+            aws_secret_access_key=config.aws_secret_access_key,
+        )
+
+        ses.send_email(
+            Source=config.sender,
+            Destination={"ToAddresses": config.recipients},
+            ReplyToAddresses=[reply_to],
+            Message={
+                "Subject": {"Data": subject, "Charset": "UTF-8"},
+                "Body": {
+                    "Text": {
+                        "Data": body,
+                        "Charset": "UTF-8",
+                    }
+                },
+            },
+        )
+    except (BotoCoreError, ClientError) as exc:  # pragma: no cover
+        raise HTTPException(
+            status_code=502,
+            detail=f"Failed to send email via SES: {exc}",
+        ) from exc
 
 
 class OrderSMSRequest(BaseModel):
