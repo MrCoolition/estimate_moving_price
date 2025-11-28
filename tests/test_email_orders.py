@@ -1,50 +1,52 @@
 import asyncio
+from pathlib import Path
 from typing import Any
 
-import smtplib
 import pytest
 
+from app import estimate_routes
 from app.estimate_routes import OrderEmailRequest, email_order
 
 
-class DummySMTP:
-    def __init__(self, host: str, port: int, timeout: int | None = None):
-        self.host = host
-        self.port = port
-        self.timeout = timeout
-        self.tls_started = False
-        self.login_called: tuple[str, str] | None = None
-        self.messages: list[Any] = []
+class DummySES:
+    def __init__(self, region_name: str | None, access_key: str | None, secret_key: str | None):
+        self.region_name = region_name
+        self.access_key = access_key
+        self.secret_key = secret_key
+        self.emails: list[dict[str, Any]] = []
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        return False
-
-    def starttls(self):
-        self.tls_started = True
-
-    def login(self, username: str, password: str):
-        self.login_called = (username, password)
-
-    def send_message(self, message):
-        self.messages.append(message)
+    def send_email(self, **kwargs):
+        self.emails.append(kwargs)
 
 
 def test_email_order_sends(monkeypatch):
-    smtp_instances: dict[str, DummySMTP] = {}
+    ses_instances: dict[str, DummySES] = {}
 
-    def fake_smtp(host: str, port: int, timeout=None):
-        smtp_instances["instance"] = DummySMTP(host, port, timeout)
-        return smtp_instances["instance"]
+    def fake_ses_client(service_name: str, region_name=None, aws_access_key_id=None, aws_secret_access_key=None):
+        assert service_name == "ses"
+        ses_instances["instance"] = DummySES(region_name, aws_access_key_id, aws_secret_access_key)
+        return ses_instances["instance"]
 
-    monkeypatch.setattr(smtplib, "SMTP", fake_smtp)
-    monkeypatch.setenv("ORDER_EMAIL_RECIPIENTS", "ops@example.com,billing@example.com")
-    monkeypatch.setenv("ORDER_EMAIL_SMTP_HOST", "smtp.example.com")
-    monkeypatch.setenv("ORDER_EMAIL_SMTP_USERNAME", "mailer@example.com")
-    monkeypatch.setenv("ORDER_EMAIL_SMTP_PASSWORD", "secret")
-    monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")
+    secrets_path = Path("/tmp/test-secrets.toml")
+    secrets_path.write_text(
+        "\n".join(
+            [
+                'ORDER_EMAIL_AWS_REGION = "us-east-1"',
+                'ORDER_EMAIL_RECIPIENTS = ["ops@example.com", "billing@example.com"]',
+                'ORDER_EMAIL_SENDER = "estimates@example.com"',
+                'AWS_ACCESS_KEY_ID = "key-id"',
+                'AWS_SECRET_ACCESS_KEY = "secret-key"',
+            ]
+        )
+    )
+
+    monkeypatch.setattr(estimate_routes, "DEFAULT_SECRET_PATHS", [secrets_path])
+    monkeypatch.setattr(
+        estimate_routes,
+        "boto3",
+        type("Boto3Stub", (), {"client": staticmethod(fake_ses_client)})(),
+        raising=False,
+    )
 
     payload = OrderEmailRequest(
         item_details="Sofa, 2 chairs",
@@ -61,23 +63,25 @@ def test_email_order_sends(monkeypatch):
     response = asyncio.run(email_order(payload))
     assert response == {"status": "sent", "recipients": ["ops@example.com", "billing@example.com"]}
 
-    smtp = smtp_instances["instance"]
-    assert smtp.host == "smtp.example.com"
-    assert smtp.port == 587
-    assert smtp.tls_started is True
-    assert smtp.login_called == ("mailer@example.com", "secret")
-    assert smtp.messages, "Expected an email to be sent"
+    ses = ses_instances["instance"]
+    assert ses.region_name == "us-east-1"
+    assert ses.access_key == "key-id"
+    assert ses.secret_key == "secret-key"
+    assert ses.emails, "Expected an email to be sent"
 
-    message = smtp.messages[0]
-    assert message["From"] == "estimates@example.com"
-    assert message["To"] == "ops@example.com, billing@example.com"
-    assert "New move lead from Alex Customer" == message["Subject"]
-    assert "Sofa, 2 chairs" in message.get_content()
+    email = ses.emails[0]
+    assert email["Source"] == "estimates@example.com"
+    assert email["Destination"] == {"ToAddresses": ["ops@example.com", "billing@example.com"]}
+    assert email["ReplyToAddresses"] == ["caller@example.com"]
+    assert email["Message"]["Subject"]["Data"] == "New move lead from Alex Customer"
+    assert "Sofa, 2 chairs" in email["Message"]["Body"]["Text"]["Data"]
 
 
 def test_email_order_requires_recipients(monkeypatch):
-    monkeypatch.delenv("ORDER_EMAIL_RECIPIENTS", raising=False)
-    monkeypatch.setenv("ORDER_EMAIL_SMTP_HOST", "smtp.example.com")
+    secrets_path = Path("/tmp/test-secrets-missing.toml")
+    secrets_path.write_text('ORDER_EMAIL_AWS_REGION = "us-east-1"')
+
+    monkeypatch.setattr(estimate_routes, "DEFAULT_SECRET_PATHS", [secrets_path])
 
     payload = OrderEmailRequest(
         item_details="Desk",
