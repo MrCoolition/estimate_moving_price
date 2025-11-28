@@ -36,6 +36,7 @@ from app.rules import load_rules
 from app.resolver import ResolverOptions, resolve_inventory, allocate_boxes
 from app.schemas import EstimateRequest, EstimateResponse, detect_box_total
 from app.security import HMACVerifier, IdempotencyStore
+from app.orders import router as orders_router
 
 APP_VERSION = datetime.utcnow().strftime("%Y-%m-%d")
 BASE_DIR = Path(__file__).parent
@@ -55,6 +56,7 @@ idempotency_store = IdempotencyStore(os.getenv("REDIS_URL"))
 allow_internal_debug = os.getenv("ALLOW_INTERNAL_DEBUG", "false").lower() in {"1", "true", "yes"}
 
 api = FastAPI(title="Estimate Moving Price", version=APP_VERSION)
+api.include_router(orders_router)
 
 
 def _hash_file(path: Path) -> str:
