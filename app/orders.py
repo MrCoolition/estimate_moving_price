@@ -143,6 +143,12 @@ def _build_email_body(payload: OrderEmailRequest) -> tuple[str, str]:
 
 
 def _send_email(config: EmailConfig, subject: str, body: str, reply_to: str) -> None:
+    """
+    Send a plain-text email using a generic SMTP relay.
+
+    This is configured via ORDER_EMAIL_SMTP_* environment variables and can
+    point at Amazon SES or any other SMTP provider.
+    """
     message = EmailMessage()
     message["Subject"] = subject
     message["From"] = config.sender

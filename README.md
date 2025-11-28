@@ -118,7 +118,7 @@ The webhook configuration in ElevenLabs expects a `POST /orders/email` endpoint.
 Environment variables control delivery:
 
 - `ORDER_EMAIL_RECIPIENTS` (required): Comma-separated list of email addresses.
-- `ORDER_EMAIL_SMTP_HOST` (required): SMTP host to send mail through.
+- `ORDER_EMAIL_SMTP_HOST` (required): SMTP host to send mail through (e.g. Amazon SES).
 - `ORDER_EMAIL_SMTP_PORT`: SMTP port (default `587`).
 - `ORDER_EMAIL_SMTP_USERNAME` / `ORDER_EMAIL_SMTP_PASSWORD`: Credentials for authenticated relays (optional).
 - `ORDER_EMAIL_SMTP_USE_TLS`: Set to `false` to disable `STARTTLS` (defaults to enabled).
