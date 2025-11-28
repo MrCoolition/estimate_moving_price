@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import os
-import tomllib
-from pathlib import Path
 from typing import Any, Dict, List
 
 try:  # pragma: no cover - import guard for environments without AWS SDK
@@ -20,25 +18,7 @@ except ModuleNotFoundError:  # pragma: no cover
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, field_validator
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 router = APIRouter()
-
-DEFAULT_SECRET_PATHS = [
-    Path("/etc/secrets/secrets.toml"),
-    Path("/etc/secrets.toml"),
-    BASE_DIR / "secrets.toml",
-]
-
-
-def _load_secrets(path_override: Path | None = None) -> dict:
-    candidates = [path_override] if path_override else DEFAULT_SECRET_PATHS
-    for path in candidates:
-        if path and path.exists():
-            with path.open("rb") as fh:
-                payload = tomllib.load(fh)
-            return payload.get("secrets", payload)
-    return {}
 
 
 class OrderEmailRequest(BaseModel):
@@ -71,59 +51,33 @@ class EmailConfig(BaseModel):
     aws_secret_access_key: str | None = None
 
     @classmethod
-    def from_env_or_secrets(cls, *, path_override: Path | None = None) -> "EmailConfig":
-        """
-        Load configuration for sending order emails via Amazon SES.
+    def from_env(cls) -> "EmailConfig":
+        """Load configuration for sending order emails via Amazon SES."""
 
-        Priority order:
-        - Environment variables (Render)
-        - Optional secrets.toml mounted into the container
-        """
-        secrets = _load_secrets(path_override)
-
-        # 1) Recipients: comma-separated list
-        recipients_raw = os.getenv("ORDER_EMAIL_RECIPIENTS") or secrets.get("ORDER_EMAIL_RECIPIENTS")
-        recipients: List[str] = []
-        if isinstance(recipients_raw, str):
-            recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
-        elif isinstance(recipients_raw, list):
-            recipients = [str(addr).strip() for addr in recipients_raw if str(addr).strip()]
+        recipients_raw = os.getenv("ORDER_EMAIL_RECIPIENTS", "")
+        recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
         if not recipients:
             raise HTTPException(
                 status_code=500,
                 detail="ORDER_EMAIL_RECIPIENTS is not configured.",
             )
 
-        # 2) Sender: ORDER_EMAIL_SENDER or FROM_EMAIL
-        sender = (
-            os.getenv("ORDER_EMAIL_SENDER")
-            or os.getenv("FROM_EMAIL")
-            or secrets.get("ORDER_EMAIL_SENDER")
-            or secrets.get("FROM_EMAIL")
-        )
+        sender = os.getenv("ORDER_EMAIL_SENDER") or os.getenv("FROM_EMAIL")
         if not sender:
             raise HTTPException(
                 status_code=500,
                 detail="ORDER_EMAIL_SENDER or FROM_EMAIL is required for SES emails.",
             )
 
-        # 3) AWS region
-        region = (
-            os.getenv("ORDER_EMAIL_AWS_REGION")
-            or os.getenv("AWS_REGION")
-            or secrets.get("ORDER_EMAIL_AWS_REGION")
-            or secrets.get("AWS_REGION")
-        )
+        region = os.getenv("ORDER_EMAIL_AWS_REGION") or os.getenv("AWS_REGION")
         if not region:
             raise HTTPException(
                 status_code=500,
                 detail="AWS_REGION or ORDER_EMAIL_AWS_REGION is required for SES emails.",
             )
 
-        # 4) AWS credentials (optional if instance profile is used,
-        # but we wire them from env in this project)
-        access_key = os.getenv("AWS_ACCESS_KEY_ID") or secrets.get("AWS_ACCESS_KEY_ID")
-        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY") or secrets.get("AWS_SECRET_ACCESS_KEY")
+        access_key = os.getenv("AWS_ACCESS_KEY_ID")
+        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 
         return cls(
             region=region,
@@ -208,16 +162,14 @@ class SMSConfig(BaseModel):
     aws_secret_access_key: str | None = None
 
     @classmethod
-    def from_env_or_secrets(cls, *, path_override: Path | None = None) -> "SMSConfig":
-        secrets = _load_secrets(path_override)
-
-        region = os.getenv("ORDER_SMS_AWS_REGION") or os.getenv("AWS_REGION") or secrets.get("ORDER_SMS_AWS_REGION") or secrets.get("AWS_REGION") or ""
+    def from_env(cls) -> "SMSConfig":
+        region = os.getenv("ORDER_SMS_AWS_REGION") or os.getenv("AWS_REGION") or ""
         if not region:
             raise HTTPException(status_code=500, detail="ORDER_SMS_AWS_REGION or AWS_REGION is required.")
 
-        sender_id = os.getenv("ORDER_SMS_SENDER_ID") or secrets.get("ORDER_SMS_SENDER_ID")
-        access_key = os.getenv("AWS_ACCESS_KEY_ID") or secrets.get("AWS_ACCESS_KEY_ID")
-        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY") or secrets.get("AWS_SECRET_ACCESS_KEY")
+        sender_id = os.getenv("ORDER_SMS_SENDER_ID")
+        access_key = os.getenv("AWS_ACCESS_KEY_ID")
+        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 
         return cls(region=region, sender_id=sender_id, aws_access_key_id=access_key, aws_secret_access_key=secret_key)
 
@@ -247,7 +199,7 @@ def _send_sms(config: SMSConfig, payload: OrderSMSRequest) -> None:
 
 @router.post("/orders/email")
 async def email_order(payload: OrderEmailRequest):
-    config = EmailConfig.from_env_or_secrets()
+    config = EmailConfig.from_env()
     subject, body = _build_email_body(payload)
     _send_email(config, subject=subject, body=body, reply_to=payload.email)
     return {"status": "sent", "recipients": config.recipients}
@@ -255,6 +207,6 @@ async def email_order(payload: OrderEmailRequest):
 
 @router.post("/orders/sms")
 async def sms_order(payload: OrderSMSRequest):
-    config = SMSConfig.from_env_or_secrets()
+    config = SMSConfig.from_env()
     _send_sms(config, payload)
     return {"status": "sent", "phone": payload.phone}
