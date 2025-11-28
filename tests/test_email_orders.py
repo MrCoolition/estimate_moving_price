@@ -26,7 +26,6 @@ def test_email_order_sends(monkeypatch):
         ses_instances["instance"] = DummySES(region_name, aws_access_key_id, aws_secret_access_key)
         return ses_instances["instance"]
 
-    # Env for SES + recipients
     monkeypatch.setenv("ORDER_EMAIL_RECIPIENTS", "ops@example.com, billing@example.com")
     monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")
     monkeypatch.setenv("AWS_REGION", "us-east-2")
@@ -70,6 +69,7 @@ def test_email_order_sends(monkeypatch):
 
 def test_email_order_requires_recipients(monkeypatch):
     monkeypatch.setenv("AWS_REGION", "us-east-2")
+    monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")
     monkeypatch.delenv("ORDER_EMAIL_RECIPIENTS", raising=False)
 
     payload = OrderEmailRequest(
@@ -88,3 +88,51 @@ def test_email_order_requires_recipients(monkeypatch):
         asyncio.run(email_order(payload))
 
     assert "ORDER_EMAIL_RECIPIENTS" in str(excinfo.value)
+
+
+def test_email_order_requires_sender(monkeypatch):
+    monkeypatch.setenv("AWS_REGION", "us-east-2")
+    monkeypatch.setenv("ORDER_EMAIL_RECIPIENTS", "ops@example.com")
+    monkeypatch.delenv("ORDER_EMAIL_SENDER", raising=False)
+    monkeypatch.delenv("FROM_EMAIL", raising=False)
+
+    payload = OrderEmailRequest(
+        item_details="Desk",
+        move_date="2025-06-20",
+        phone="555-999-1111",
+        locations="Origin -> Destination",
+        estimate_price=500,
+        stairwells="None",
+        estimate_calculation_table="Table",
+        email="caller@example.com",
+        name="MissingSender",
+    )
+
+    with pytest.raises(Exception) as excinfo:
+        asyncio.run(email_order(payload))
+
+    assert "ORDER_EMAIL_SENDER" in str(excinfo.value)
+
+
+def test_email_order_requires_region(monkeypatch):
+    monkeypatch.setenv("ORDER_EMAIL_RECIPIENTS", "ops@example.com")
+    monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")
+    monkeypatch.delenv("AWS_REGION", raising=False)
+    monkeypatch.delenv("ORDER_EMAIL_AWS_REGION", raising=False)
+
+    payload = OrderEmailRequest(
+        item_details="Desk",
+        move_date="2025-06-20",
+        phone="555-999-1111",
+        locations="Origin -> Destination",
+        estimate_price=500,
+        stairwells="None",
+        estimate_calculation_table="Table",
+        email="caller@example.com",
+        name="MissingRegion",
+    )
+
+    with pytest.raises(Exception) as excinfo:
+        asyncio.run(email_order(payload))
+
+    assert "AWS_REGION" in str(excinfo.value)
