@@ -18,7 +18,7 @@ This repository holds the FastAPI code used to estimate moving costs. Below are 
 3. **Configure Build and Start Commands**
    - **Environment**: Python 3.11 or your preferred version.
    - **Build Command:** `pip install -r requirements.txt` (make sure `requirements.txt` exists and lists `fastapi` and `uvicorn`).
-   - **Start Command:** `uvicorn main:api --host 0.0.0.0 --port $PORT`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
      - Do **not** replace `$PORT` with a fixed value. Render sets this
        environment variable automatically. If the service doesn't listen
        on that port, Render's health check will kill the process.
