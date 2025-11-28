@@ -1,151 +1,4572 @@
 [
- { "id": "2_wheel_dollies", "name": "2 Wheel Dollies", "category": "dolly", "volume_cuft": 1.0, "weight_lbs": 7.0, "aliases": [ "2 wheel dollies", "dolly" ] },
- { "id": "air_compressor", "name": "Air Compressor", "category": "air", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "air compressor" ] },
- { "id": "air_cond_window", "name": "Air Cond Window", "category": "air", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "air cond window" ] },
- { "id": "air_purifier", "name": "Air Purifier", "category": "air", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "air purifier" ] },
- { "id": "aquarium_10_0", "name": "Aquarium 10.0", "category": "aquarium", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "aquarium 10.0" ] },
- { "id": "aquarium_20_0", "name": "Aquarium 20.0", "category": "aquarium", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "aquarium 20.0" ] },
- { "id": "arcade_game", "name": "Arcade Game", "category": "arcade", "volume_cuft": 50.0, "weight_lbs": 350.0, "aliases": [ "arcade game" ] },
- { "id": "armoire", "name": "Armoire", "category": "armoire", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "armoire" ] },
- { "id": "artificial_plant_large", "name": "Artificial Plant - Large", "category": "artificial", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "artificial plant - large" ] },
- { "id": "artificial_plant_small", "name": "Artificial Plant - Small", "category": "artificial", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "artificial plant - small" ] },
- { "id": "atv", "name": "ATV", "category": "atv", "volume_cuft": 125.0, "weight_lbs": 875.0, "aliases": [ "atv" ] },
- { "id": "baby_dog_gates", "name": "Baby/Dog Gates", "category": "gate", "volume_cuft": 2.0, "weight_lbs": 14.0, "aliases": [ "baby/dog gates", "gate" ] },
- { "id": "baker_s_rack_large", "name": "Baker's Rack - Large", "category": "baker's", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "baker's rack - large" ] },
- { "id": "baker_s_rack_medium", "name": "Baker's Rack - Medium", "category": "baker's", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "baker's rack - medium" ] },
- { "id": "baker_s_rack_small", "name": "Baker's Rack - Small", "category": "baker's", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "baker's rack - small" ] },
- { "id": "bar_portable", "name": "Bar - Portable", "category": "bar", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "bar - portable" ] },
- { "id": "bar_stool", "name": "Bar Stool", "category": "bar", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "bar stool" ] },
- { "id": "basketball_hoop_pole", "name": "Basketball Hoop/Pole", "category": "basketball", "volume_cuft": 50.0, "weight_lbs": 350.0, "aliases": [ "basketball hoop/pole" ] },
- { "id": "bassinet", "name": "Bassinet", "category": "bassinet", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bassinet" ] },
- { "id": "bbq_grill_large", "name": "BBQ Grill - Large", "category": "bbq", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bbq grill - large" ] },
- { "id": "bbq_grill_small", "name": "BBQ Grill - Small", "category": "bbq", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bbq grill - small" ] },
- { "id": "bean_bag", "name": "Bean Bag", "category": "bean", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bean bag" ] },
- { "id": "bean_bag_large", "name": "Bean Bag - Large", "category": "bean", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bean bag - large" ] },
- { "id": "bed_bassinette", "name": "Bed - Bassinette", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed - bassinette" ] },
- { "id": "bed_bunk_set_of_2", "name": "Bed - Bunk (Set of 2)", "category": "bed", "volume_cuft": 55.0, "weight_lbs": 385.0, "aliases": [ "bed - bunk (set of 2)" ] },
- { "id": "bed_daybed", "name": "Bed - Daybed", "category": "bed", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "bed - daybed" ] },
- { "id": "bed_footboard", "name": "Bed - Footboard", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed - footboard" ] },
- { "id": "bed_headboard", "name": "Bed - Headboard", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed - headboard" ] },
- { "id": "bed_roll_a_way", "name": "Bed - Roll-A-Way", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed - roll-a-way" ] },
- { "id": "bed_trundle_bed", "name": "Bed - Trundle Bed", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed - trundle bed" ] },
- { "id": "bed_twin", "name": "Bed - Twin", "category": "bed", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "bed - twin" ] },
- { "id": "bed_waterbed_base", "name": "Bed - Waterbed Base", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed - waterbed base" ] },
- { "id": "bed_double_full_box_spring", "name": "Bed Double/Full - Box Spring", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed double/full - box spring" ] },
- { "id": "bed_double_full_frame", "name": "Bed Double/Full - Frame", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed double/full - frame" ] },
- { "id": "bed_double_full_mattress", "name": "Bed Double/Full - Mattress", "category": "mattres", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "bed double/full - mattress", "mattres" ] },
- { "id": "bed_double_full_platform", "name": "Bed Double/Full - Platform", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed double/full - platform" ] },
- { "id": "bed_double_full_sleep_number", "name": "Bed Double/Full- Sleep Number", "category": "bed", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "bed double/full- sleep number" ] },
- { "id": "bed_full_footboard", "name": "Bed Full - Footboard", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed full - footboard" ] },
- { "id": "bed_full_headboard", "name": "Bed Full - Headboard", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed full - headboard" ] },
- { "id": "bed_king_box_spring", "name": "Bed King - Box Spring", "category": "bed", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "bed king - box spring" ] },
- { "id": "bed_king_box_spring_1_2", "name": "Bed King - Box Spring 1/2", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed king - box spring 1/2" ] },
- { "id": "bed_king_footboard", "name": "Bed King - Footboard", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed king - footboard" ] },
- { "id": "bed_king_frame", "name": "Bed King - Frame", "category": "bed", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "bed king - frame" ] },
- { "id": "bed_king_headboard", "name": "Bed King - Headboard", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed king - headboard" ] },
- { "id": "bed_king_mattress", "name": "Bed King - Mattress", "category": "mattres", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "bed king - mattress", "mattres" ] },
- { "id": "bed_king_platform", "name": "Bed King - Platform", "category": "bed", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "bed king - platform" ] },
- { "id": "bed_king_sleep_number", "name": "Bed King - Sleep Number", "category": "bed", "volume_cuft": 60.0, "weight_lbs": 420.0, "aliases": [ "bed king - sleep number" ] },
- { "id": "bed_king_split_adjustable_base", "name": "Bed King - Split Adjustable Base", "category": "bed", "volume_cuft": 50.0, "weight_lbs": 350.0, "aliases": [ "bed king - split adjustable base" ] },
- { "id": "bed_queen_adjustable_base", "name": "Bed Queen - Adjustable Base", "category": "bed", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "bed queen - adjustable base" ] },
- { "id": "bed_queen_box_spring", "name": "Bed Queen - Box Spring", "category": "bed", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "bed queen - box spring" ] },
- { "id": "bed_queen_footboard", "name": "Bed Queen - Footboard", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed queen - footboard" ] },
- { "id": "bed_queen_frame", "name": "Bed Queen - Frame", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed queen - frame" ] },
- { "id": "bed_queen_headboard", "name": "Bed Queen - Headboard", "category": "bed", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed queen - headboard" ] },
- { "id": "bed_queen_mattress", "name": "Bed Queen - Mattress", "category": "mattres", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "bed queen - mattress", "mattres" ] },
- { "id": "bed_queen_platform", "name": "Bed Queen - Platform", "category": "bed", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "bed queen - platform" ] },
- { "id": "bed_queen_sleep_number", "name": "Bed Queen - Sleep Number", "category": "bed", "volume_cuft": 45.0, "weight_lbs": 315.0, "aliases": [ "bed queen - sleep number" ] },
- { "id": "bed_twin_single_box_spring", "name": "Bed Twin/Single - Box Spring", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed twin/single - box spring" ] },
- { "id": "bed_twin_single_frame", "name": "Bed Twin/Single - Frame", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed twin/single - frame" ] },
- { "id": "bed_twin_single_mattress", "name": "Bed Twin/Single - Mattress", "category": "mattres", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bed twin/single - mattress", "mattres" ] },
- { "id": "bed_twin_single_platform", "name": "Bed Twin/Single - Platform", "category": "bed", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bed twin/single - platform" ] },
- { "id": "bench_large", "name": "Bench - Large", "category": "bench", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "bench - large" ] },
- { "id": "bench_piano", "name": "Bench - Piano", "category": "bench", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "bench - piano" ] },
- { "id": "bench_small", "name": "Bench - Small", "category": "bench", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bench - small" ] },
- { "id": "bicycle_adult", "name": "Bicycle - Adult", "category": "bicycle", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bicycle - adult" ] },
- { "id": "bicycle_child", "name": "Bicycle - Child", "category": "bicycle", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bicycle - child" ] },
- { "id": "bicycle_exercise", "name": "Bicycle - Exercise", "category": "bicycle", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "bicycle - exercise" ] },
- { "id": "bike_rack", "name": "Bike Rack", "category": "bike", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bike rack" ] },
- { "id": "bird_cage", "name": "Bird Cage", "category": "bird", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bird cage" ] },
- { "id": "birdbath", "name": "Birdbath", "category": "birdbath", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "birdbath" ] },
- { "id": "boat", "name": "Boat", "category": "boat", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "boat" ] },
- { "id": "boat_14", "name": "Boat >14'", "category": "boat", "volume_cuft": 350.0, "weight_lbs": 2450.0, "aliases": [ "boat >14'" ] },
- { "id": "boat_trailer", "name": "Boat Trailer", "category": "boat", "volume_cuft": 100.0, "weight_lbs": 700.0, "aliases": [ "boat trailer" ] },
- { "id": "bookcase_large", "name": "Bookcase - Large", "category": "bookcase", "volume_cuft": 20.0, "weight_lbs": 130.0, "aliases": [ "bookcase - large" ] },
- { "id": "bookcase_medium", "name": "Bookcase - Medium", "category": "bookcase", "volume_cuft": 10.0, "weight_lbs": 65.0, "aliases": [ "bookcase - medium" ] },
- { "id": "bookcase_small", "name": "Bookcase - Small", "category": "bookcase", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "bookcase - small" ] },
- { "id": "bucket", "name": "Bucket", "category": "bucket", "volume_cuft": 2.0, "weight_lbs": 14.0, "aliases": [ "bucket" ] },
- { "id": "buffet_base", "name": "Buffet - Base", "category": "buffet", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "buffet - base" ] },
- { "id": "buffet_top", "name": "Buffet - Top", "category": "buffet", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "buffet - top" ] },
- { "id": "butcher_block", "name": "Butcher Block", "category": "butcher", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "butcher block" ] },
- { "id": "cabinet_china", "name": "Cabinet - China", "category": "cabinet", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "cabinet - china" ] },
- { "id": "cabinet_china_2_pc", "name": "Cabinet - China (2 pc.)", "category": "cabinet", "volume_cuft": 40.0, "weight_lbs": 280.0, "aliases": [ "cabinet - china (2 pc.)" ] },
- { "id": "cabinet_corner", "name": "Cabinet - Corner", "category": "cabinet", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "cabinet - corner" ] },
- { "id": "cabinet_curio_large", "name": "Cabinet - Curio/Large", "category": "cabinet", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "cabinet - curio/large" ] },
- { "id": "cabinet_curio_small", "name": "Cabinet - Curio/Small", "category": "cabinet", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "cabinet - curio/small" ] },
- { "id": "cabinet_gun", "name": "Cabinet - Gun", "category": "cabinet", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "cabinet - gun" ] },
- { "id": "cabinet_large", "name": "Cabinet - Large", "category": "cabinet", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "cabinet - large" ] },
- { "id": "cabinet_medium", "name": "Cabinet - Medium", "category": "cabinet", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "cabinet - medium" ] },
- { "id": "cabinet_metal", "name": "Cabinet - Metal", "category": "cabinet", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "cabinet - metal" ] },
- { "id": "cabinet_small", "name": "Cabinet - Small", "category": "cabinet", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "cabinet - small" ] },
- { "id": "camper_trailer", "name": "Camper Trailer", "category": "camper", "volume_cuft": 700.0, "weight_lbs": 4900.0, "aliases": [ "camper trailer" ] },
- { "id": "camping_gear", "name": "Camping Gear", "category": "camping", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "camping gear" ] },
- { "id": "canoe_14", "name": "Canoe <14'", "category": "canoe", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "canoe <14'" ] },
- { "id": "canoe_14", "name": "Canoe >14'", "category": "canoe", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "canoe >14'" ] },
- { "id": "carseat", "name": "Carseat", "category": "carseat", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "carseat" ] },
- { "id": "cart", "name": "Cart", "category": "cart", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "cart" ] },
- { "id": "cartop_carrier", "name": "Cartop Carrier", "category": "cartop", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "cartop carrier" ] },
- { "id": "cat_box", "name": "Cat Box", "category": "cat", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "cat box" ] },
- { "id": "cat_post", "name": "Cat Post", "category": "cat", "volume_cuft": 4.0, "weight_lbs": 28.0, "aliases": [ "cat post" ] },
- { "id": "cat_tree", "name": "Cat Tree", "category": "cat", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "cat tree" ] },
- { "id": "cd_dvd_rack", "name": "CD/DVD Rack", "category": "cd/dvd", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "cd/dvd rack" ] },
- { "id": "chair_arm", "name": "Chair - Arm", "category": "chair", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chair - arm" ] },
- { "id": "chair_bar", "name": "Chair - Bar", "category": "chair", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chair - bar" ] },
- { "id": "chair_childs", "name": "Chair - Childs", "category": "child", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "chair - childs", "child" ] },
- { "id": "chair_dining", "name": "Chair - Dining", "category": "chair", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "chair - dining" ] },
- { "id": "chair_folding", "name": "Chair - Folding", "category": "chair", "volume_cuft": 2.0, "weight_lbs": 14.0, "aliases": [ "chair - folding" ] },
- { "id": "chair_glider_settee", "name": "Chair - Glider/Settee", "category": "chair", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "chair - glider/settee" ] },
- { "id": "chair_high", "name": "Chair - High", "category": "chair", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "chair - high" ] },
- { "id": "chair_occasional", "name": "Chair - Occasional", "category": "chair", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "chair - occasional" ] },
- { "id": "chair_office", "name": "Chair - Office", "category": "chair", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chair - office" ] },
- { "id": "chair_os_reclining", "name": "Chair - OS/Reclining", "category": "chair", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "chair - os/reclining" ] },
- { "id": "chair_rocker", "name": "Chair - Rocker", "category": "chair", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chair - rocker" ] },
- { "id": "chaise_lounge_large", "name": "Chaise Lounge - Large", "category": "chaise", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "chaise lounge - large" ] },
- { "id": "chaise_lounge_small", "name": "Chaise Lounge - Small", "category": "chaise", "volume_cuft": 15.0, "weight_lbs": 97.5, "aliases": [ "chaise lounge - small" ] },
- { "id": "changing_table", "name": "Changing Table", "category": "changing", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "changing table" ] },
- { "id": "chest", "name": "Chest", "category": "chest", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chest" ] },
- { "id": "chest_cedar", "name": "Chest - Cedar", "category": "chest", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "chest - cedar" ] },
- { "id": "chest_toy", "name": "Chest - Toy", "category": "chest", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chest - toy" ] },
- { "id": "chest_of_drawers", "name": "Chest of Drawers", "category": "drawer", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "chest of drawers", "drawer" ] },
- { "id": "child_s_slide", "name": "Child's Slide", "category": "child's", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "child's slide" ] },
- { "id": "child_s_swing", "name": "Child's Swing", "category": "child's", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "child's swing" ] },
- { "id": "chimenea", "name": "Chimenea", "category": "chimenea", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "chimenea" ] },
- { "id": "chipper_shreader", "name": "Chipper/Shreader", "category": "chipper/shreader", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "chipper/shreader" ] },
- { "id": "christmas_tree", "name": "Christmas Tree", "category": "christmas", "volume_cuft": 8.0, "weight_lbs": 56.0, "aliases": [ "christmas tree" ] },
- { "id": "clock_grandfather", "name": "Clock - Grandfather", "category": "clock", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "clock - grandfather" ] },
- { "id": "clothes_dryer_rack", "name": "Clothes Dryer Rack", "category": "clothes", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "clothes dryer rack" ] },
- { "id": "clothes_hamper", "name": "Clothes Hamper", "category": "clothes", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "clothes hamper" ] },
- { "id": "coat_rack", "name": "Coat Rack", "category": "coat", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "coat rack" ] },
- { "id": "cooler", "name": "Cooler", "category": "cooler", "volume_cuft": 3.0, "weight_lbs": 21.0, "aliases": [ "cooler" ] },
- { "id": "copier", "name": "Copier", "category": "copier", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "copier" ] },
- { "id": "credenza", "name": "Credenza", "category": "credenza", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "credenza" ] },
- { "id": "crib", "name": "Crib", "category": "crib", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "crib" ] },
- { "id": "deck_box_large", "name": "Deck Box - Large", "category": "deck", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "deck box - large" ] },
- { "id": "deck_box_small", "name": "Deck Box - Small", "category": "deck", "volume_cuft": 15.0, "weight_lbs": 105.0, "aliases": [ "deck box - small" ] },
- { "id": "dehumidifier", "name": "Dehumidifier", "category": "dehumidifier", "volume_cuft": 5.0, "weight_lbs": 35.0, "aliases": [ "dehumidifier" ] },
- { "id": "desk_large", "name": "Desk - Large", "category": "desk", "volume_cuft": 30.0, "weight_lbs": 210.0, "aliases": [ "desk - large" ] },
- { "id": "desk_medium", "name": "Desk - Medium", "category": "desk", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "desk - medium" ] },
- { "id": "desk_roll_top_2_pc", "name": "Desk - Roll top/2 pc.", "category": "desk", "volume_cuft": 60.0, "weight_lbs": 420.0, "aliases": [ "desk - roll top/2 pc." ] },
- { "id": "desk_small", "name": "Desk - Small", "category": "desk", "volume_cuft": 10.0, "weight_lbs": 70.0, "aliases": [ "desk - small" ] },
- { "id": "desk_w_return", "name": "Desk - w. Return", "category": "desk", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "desk - w. return" ] },
- { "id": "desk_chair", "name": "Desk Chair", "category": "desk", "volume_cuft": 6.0, "weight_lbs": 42.0, "aliases": [ "desk chair" ] },
- { "id": "dining_hutch", "name": "Dining - Hutch", "category": "dining", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dining - hutch" ] },
- { "id": "dining_hutch_2_pc", "name": "Dining - Hutch (2 pc.)", "category": "dining", "volume_cuft": 35.0, "weight_lbs": 245.0, "aliases": [ "dining - hutch (2 pc.)" ] },
- { "id": "dining_leaf", "name": "Dining - Leaf", "category": "dining", "volume_cuft": 2.0, "weight_lbs": 14.0, "aliases": [ "dining - leaf" ] },
- { "id": "dining_table_large", "name": "Dining Table - Large", "category": "dining", "volume_cuft": 30.0, "weight_lbs": 195.0, "aliases": [ "dining table - large" ] },
- { "id": "dining_table_medium", "name": "Dining Table - Medium", "category": "dining", "volume_cuft": 25.0, "weight_lbs": 175.0, "aliases": [ "dining table - medium" ] },
- { "id": "dining_table_small", "name": "Dining Table - Small", "category": "dining", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dining table - small" ] },
- { "id": "dishwasher", "name": "Dishwasher", "category": "dishwasher", "volume_cuft": 20.0, "weight_lbs": 140.0, "aliases": [ "dishwasher" ] },
- { "id": "piano_upright", "name": "Piano - Upright", "category": "piano", "volume_cuft": 70.0, "weight_lbs": 500.0, "aliases": [ "upright piano", "piano upright", "upright" ] },
- { "id": "piano_grand", "name": "Piano - Grand", "category": "piano", "volume_cuft": 120.0, "weight_lbs": 700.0, "aliases": [ "grand piano", "baby grand piano", "concert piano", "grand" ] }
+  {
+    "id": "air_compressor",
+    "name": "Air Compressor",
+    "category": "air",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Air Compressor",
+      "air compressor"
+    ]
+  },
+  {
+    "id": "air_cond_window",
+    "name": "Air Cond Window",
+    "category": "air",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Air Cond Window",
+      "air cond window"
+    ]
+  },
+  {
+    "id": "air_purifier",
+    "name": "Air Purifier",
+    "category": "air",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Air Purifier",
+      "air purifier"
+    ]
+  },
+  {
+    "id": "aquarium",
+    "name": "Aquarium",
+    "category": "aquarium",
+    "volume_cuft": 1.0,
+    "weight_lbs": 0.0107,
+    "aliases": [
+      "Aquarium",
+      "aquarium"
+    ]
+  },
+  {
+    "id": "aquarium",
+    "name": "Aquarium",
+    "category": "aquarium",
+    "volume_cuft": 2.0,
+    "weight_lbs": 0.02014,
+    "aliases": [
+      "Aquarium",
+      "aquarium"
+    ]
+  },
+  {
+    "id": "arcade_game",
+    "name": "Arcade Game",
+    "category": "arcade",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Arcade Game",
+      "arcade game"
+    ]
+  },
+  {
+    "id": "artificial_plant_large",
+    "name": "Artificial Plant - Large",
+    "category": "artificial",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Artificial Plant",
+      "Artificial Plant - Large",
+      "artificial plant",
+      "artificial plant - large"
+    ]
+  },
+  {
+    "id": "artificial_plant_small",
+    "name": "Artificial Plant - Small",
+    "category": "artificial",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Artificial Plant",
+      "Artificial Plant - Small",
+      "artificial plant",
+      "artificial plant - small"
+    ]
+  },
+  {
+    "id": "atv",
+    "name": "ATV",
+    "category": "atv",
+    "volume_cuft": 12587.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "ATV",
+      "atv"
+    ]
+  },
+  {
+    "id": "baby_dog_gates",
+    "name": "Baby/Dog Gates",
+    "category": "baby",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Baby Dog Gates",
+      "Baby/Dog Gates",
+      "baby/dog gates"
+    ]
+  },
+  {
+    "id": "baker_s_rack_large",
+    "name": "Baker's Rack - Large",
+    "category": "baker",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Baker's Rack",
+      "Baker's Rack - Large",
+      "baker's rack",
+      "baker's rack - large"
+    ]
+  },
+  {
+    "id": "baker_s_rack_medium",
+    "name": "Baker's Rack - Medium",
+    "category": "baker",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Baker's Rack",
+      "Baker's Rack - Medium",
+      "baker's rack",
+      "baker's rack - medium"
+    ]
+  },
+  {
+    "id": "baker_s_rack_small",
+    "name": "Baker's Rack - Small",
+    "category": "baker",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Baker's Rack",
+      "Baker's Rack - Small",
+      "baker's rack",
+      "baker's rack - small"
+    ]
+  },
+  {
+    "id": "bar_portable",
+    "name": "Bar - Portable",
+    "category": "bar",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bar",
+      "Bar - Portable",
+      "bar",
+      "bar - portable"
+    ]
+  },
+  {
+    "id": "bar_stool",
+    "name": "Bar Stool",
+    "category": "bar",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Bar Stool",
+      "bar stool"
+    ]
+  },
+  {
+    "id": "basketball_hoop_pole",
+    "name": "Basketball Hoop/Pole",
+    "category": "basketball",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Basketball Hoop Pole",
+      "Basketball Hoop/Pole",
+      "basketball hoop/pole"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bassinet",
+    "name": "Bassinet",
+    "category": "bassinet",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bassinet",
+      "bassinet"
+    ]
+  },
+  {
+    "id": "bathtub",
+    "name": "Bathtub",
+    "category": "bathtub",
+    "volume_cuft": 8025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bathtub",
+      "bathtub"
+    ],
+    "handling": "+"
+  },
+  {
+    "id": "bbq_grill_large",
+    "name": "BBQ Grill - Large",
+    "category": "bbq",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "BBQ Grill",
+      "BBQ Grill - Large",
+      "bbq grill",
+      "bbq grill - large"
+    ]
+  },
+  {
+    "id": "bbq_grill_small",
+    "name": "BBQ Grill - Small",
+    "category": "bbq",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "BBQ Grill",
+      "BBQ Grill - Small",
+      "bbq grill",
+      "bbq grill - small"
+    ]
+  },
+  {
+    "id": "bean_bag",
+    "name": "Bean Bag",
+    "category": "bean",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bean Bag",
+      "bean bag"
+    ]
+  },
+  {
+    "id": "bean_bag_large",
+    "name": "Bean Bag - Large",
+    "category": "bean",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bean Bag",
+      "Bean Bag - Large",
+      "bean bag",
+      "bean bag - large"
+    ]
+  },
+  {
+    "id": "bed_bassinette",
+    "name": "Bed - Bassinette",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed",
+      "Bed - Bassinette",
+      "bed",
+      "bed - bassinette"
+    ]
+  },
+  {
+    "id": "bed_daybed",
+    "name": "Bed - Daybed",
+    "category": "bed",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed",
+      "Bed - Daybed",
+      "bed",
+      "bed - daybed"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_double_full_box_spring",
+    "name": "Bed Double/Full - Box Spring",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Double Full - Box Spring",
+      "Bed Double/Full",
+      "Bed Double/Full - Box Spring",
+      "bed double/full",
+      "bed double/full - box spring"
+    ]
+  },
+  {
+    "id": "bed_double_full_frame",
+    "name": "Bed Double/Full - Frame",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Double Full - Frame",
+      "Bed Double/Full",
+      "Bed Double/Full - Frame",
+      "bed double/full",
+      "bed double/full - frame"
+    ]
+  },
+  {
+    "id": "bed_double_full_mattress",
+    "name": "Bed Double/Full - Mattress",
+    "category": "bed",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Double Full - Mattress",
+      "Bed Double/Full",
+      "Bed Double/Full - Mattress",
+      "bed double/full",
+      "bed double/full - mattress"
+    ]
+  },
+  {
+    "id": "bed_double_full_platform",
+    "name": "Bed Double/Full - Platform",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Double Full - Platform",
+      "Bed Double/Full",
+      "Bed Double/Full - Platform",
+      "bed double/full",
+      "bed double/full - platform"
+    ]
+  },
+  {
+    "id": "bed_double_full_sleep_number",
+    "name": "Bed Double/Full- Sleep Number",
+    "category": "bed",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Double Full- Sleep Number",
+      "Bed Double/Full",
+      "Bed Double/Full- Sleep Number",
+      "bed double/full",
+      "bed double/full- sleep number"
+    ]
+  },
+  {
+    "id": "bed_footboard",
+    "name": "Bed - Footboard",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed",
+      "Bed - Footboard",
+      "bed",
+      "bed - footboard"
+    ]
+  },
+  {
+    "id": "bed_full_footboard",
+    "name": "Bed Full - Footboard",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Full",
+      "Bed Full - Footboard",
+      "bed full",
+      "bed full - footboard"
+    ]
+  },
+  {
+    "id": "bed_full_headboard",
+    "name": "Bed Full - Headboard",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Full",
+      "Bed Full - Headboard",
+      "bed full",
+      "bed full - headboard"
+    ]
+  },
+  {
+    "id": "bed_headboard",
+    "name": "Bed - Headboard",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed",
+      "Bed - Headboard",
+      "bed",
+      "bed - headboard"
+    ]
+  },
+  {
+    "id": "bed_king_box_spring",
+    "name": "Bed King - Box Spring",
+    "category": "bed",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Box Spring",
+      "bed king",
+      "bed king - box spring"
+    ]
+  },
+  {
+    "id": "bed_king_canopy",
+    "name": "Bed King - Canopy",
+    "category": "bed",
+    "volume_cuft": 10040.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Canopy",
+      "bed king",
+      "bed king - canopy"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_king_footboard",
+    "name": "Bed King - Footboard",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Footboard",
+      "bed king",
+      "bed king - footboard"
+    ]
+  },
+  {
+    "id": "bed_king_frame",
+    "name": "Bed King - Frame",
+    "category": "bed",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Frame",
+      "bed king",
+      "bed king - frame"
+    ]
+  },
+  {
+    "id": "bed_king_headboard",
+    "name": "Bed King - Headboard",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Headboard",
+      "bed king",
+      "bed king - headboard"
+    ]
+  },
+  {
+    "id": "bed_king_mattress",
+    "name": "Bed King - Mattress",
+    "category": "bed",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Mattress",
+      "bed king",
+      "bed king - mattress"
+    ]
+  },
+  {
+    "id": "bed_king_murphy_wall_bed",
+    "name": "Bed King - Murphy (Wall Bed)",
+    "category": "bed",
+    "volume_cuft": 7025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Murphy (Wall Bed)",
+      "bed king",
+      "bed king - murphy (wall bed)"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_king_platform",
+    "name": "Bed King - Platform",
+    "category": "bed",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Platform",
+      "bed king",
+      "bed king - platform"
+    ]
+  },
+  {
+    "id": "bed_king_sleep_number",
+    "name": "Bed King - Sleep Number",
+    "category": "bed",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Sleep Number",
+      "bed king",
+      "bed king - sleep number"
+    ]
+  },
+  {
+    "id": "bed_king_split_adjustable_base",
+    "name": "Bed King - Split Adjustable Base",
+    "category": "bed",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Split Adjustable Base",
+      "bed king",
+      "bed king - split adjustable base"
+    ]
+  },
+  {
+    "id": "bed_king_storage",
+    "name": "Bed King - Storage",
+    "category": "bed",
+    "volume_cuft": 8030.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed King",
+      "Bed King - Storage",
+      "bed king",
+      "bed king - storage"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_queen_adjustable_base",
+    "name": "Bed Queen - Adjustable Base",
+    "category": "bed",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Adjustable Base",
+      "bed queen",
+      "bed queen - adjustable base"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_queen_box_spring",
+    "name": "Bed Queen - Box Spring",
+    "category": "bed",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Box Spring",
+      "bed queen",
+      "bed queen - box spring"
+    ]
+  },
+  {
+    "id": "bed_queen_canopy",
+    "name": "Bed Queen - Canopy",
+    "category": "bed",
+    "volume_cuft": 7035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Canopy",
+      "bed queen",
+      "bed queen - canopy"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_queen_footboard",
+    "name": "Bed Queen - Footboard",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Footboard",
+      "bed queen",
+      "bed queen - footboard"
+    ]
+  },
+  {
+    "id": "bed_queen_frame",
+    "name": "Bed Queen - Frame",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Frame",
+      "bed queen",
+      "bed queen - frame"
+    ]
+  },
+  {
+    "id": "bed_queen_headboard",
+    "name": "Bed Queen - Headboard",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Headboard",
+      "bed queen",
+      "bed queen - headboard"
+    ]
+  },
+  {
+    "id": "bed_queen_mattress",
+    "name": "Bed Queen - Mattress",
+    "category": "bed",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Mattress",
+      "bed queen",
+      "bed queen - mattress"
+    ]
+  },
+  {
+    "id": "bed_queen_metal_frame",
+    "name": "Bed Queen - Metal Frame",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Metal Frame",
+      "bed queen",
+      "bed queen - metal frame"
+    ]
+  },
+  {
+    "id": "bed_queen_murphy_wall_bed",
+    "name": "Bed Queen - Murphy (Wall Bed)",
+    "category": "bed",
+    "volume_cuft": 6020.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Murphy (Wall Bed)",
+      "bed queen",
+      "bed queen - murphy (wall bed)"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_queen_platform",
+    "name": "Bed Queen - Platform",
+    "category": "bed",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Platform",
+      "bed queen",
+      "bed queen - platform"
+    ]
+  },
+  {
+    "id": "bed_queen_sleep_number",
+    "name": "Bed Queen - Sleep Number",
+    "category": "bed",
+    "volume_cuft": 4531.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Sleep Number",
+      "bed queen",
+      "bed queen - sleep number"
+    ]
+  },
+  {
+    "id": "bed_queen_storage",
+    "name": "Bed Queen - Storage",
+    "category": "bed",
+    "volume_cuft": 7025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Queen",
+      "Bed Queen - Storage",
+      "bed queen",
+      "bed queen - storage"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_roll_a_way",
+    "name": "Bed - Roll-A-Way",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed",
+      "Bed - Roll-A-Way",
+      "bed",
+      "bed - roll-a-way"
+    ]
+  },
+  {
+    "id": "bed_single_canopy",
+    "name": "Bed Single - Canopy",
+    "category": "bed",
+    "volume_cuft": 6025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Single",
+      "Bed Single - Canopy",
+      "bed single",
+      "bed single - canopy"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_single_murphy_wall_bed",
+    "name": "Bed Single - Murphy (Wall Bed)",
+    "category": "bed",
+    "volume_cuft": 5015.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Single",
+      "Bed Single - Murphy (Wall Bed)",
+      "bed single",
+      "bed single - murphy (wall bed)"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_single_storage",
+    "name": "Bed Single - Storage",
+    "category": "bed",
+    "volume_cuft": 5020.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Single",
+      "Bed Single - Storage",
+      "bed single",
+      "bed single - storage"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_trundle_bed",
+    "name": "Bed - Trundle Bed",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed",
+      "Bed - Trundle Bed",
+      "bed",
+      "bed - trundle bed"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bed_twin",
+    "name": "Bed - Twin",
+    "category": "bed",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed",
+      "Bed - Twin",
+      "bed",
+      "bed - twin"
+    ]
+  },
+  {
+    "id": "bed_twin_single_box_spring",
+    "name": "Bed Twin/Single - Box Spring",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Twin Single - Box Spring",
+      "Bed Twin/Single",
+      "Bed Twin/Single - Box Spring",
+      "bed twin/single",
+      "bed twin/single - box spring"
+    ]
+  },
+  {
+    "id": "bed_twin_single_frame",
+    "name": "Bed Twin/Single - Frame",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Twin Single - Frame",
+      "Bed Twin/Single",
+      "Bed Twin/Single - Frame",
+      "bed twin/single",
+      "bed twin/single - frame"
+    ]
+  },
+  {
+    "id": "bed_twin_single_mattress",
+    "name": "Bed Twin/Single - Mattress",
+    "category": "bed",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bed Twin Single - Mattress",
+      "Bed Twin/Single",
+      "Bed Twin/Single - Mattress",
+      "bed twin/single",
+      "bed twin/single - mattress"
+    ]
+  },
+  {
+    "id": "bed_twin_single_platform",
+    "name": "Bed Twin/Single - Platform",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed Twin Single - Platform",
+      "Bed Twin/Single",
+      "Bed Twin/Single - Platform",
+      "bed twin/single",
+      "bed twin/single - platform"
+    ]
+  },
+  {
+    "id": "bed_waterbed_base",
+    "name": "Bed - Waterbed Base",
+    "category": "bed",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bed",
+      "Bed - Waterbed Base",
+      "bed",
+      "bed - waterbed base"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bench_large",
+    "name": "Bench - Large",
+    "category": "bench",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bench",
+      "Bench - Large",
+      "bench",
+      "bench - large"
+    ]
+  },
+  {
+    "id": "bench_piano",
+    "name": "Bench - Piano",
+    "category": "bench",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Bench",
+      "Bench - Piano",
+      "bench",
+      "bench - piano"
+    ]
+  },
+  {
+    "id": "bench_small",
+    "name": "Bench - Small",
+    "category": "bench",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bench",
+      "Bench - Small",
+      "bench",
+      "bench - small"
+    ]
+  },
+  {
+    "id": "bicycle_adult",
+    "name": "Bicycle - Adult",
+    "category": "bicycle",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bicycle",
+      "Bicycle - Adult",
+      "bicycle",
+      "bicycle - adult"
+    ]
+  },
+  {
+    "id": "bicycle_child",
+    "name": "Bicycle - Child",
+    "category": "bicycle",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bicycle",
+      "Bicycle - Child",
+      "bicycle",
+      "bicycle - child"
+    ]
+  },
+  {
+    "id": "bicycle_exercise",
+    "name": "Bicycle - Exercise",
+    "category": "bicycle",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bicycle",
+      "Bicycle - Exercise",
+      "bicycle",
+      "bicycle - exercise"
+    ]
+  },
+  {
+    "id": "bike_rack",
+    "name": "Bike Rack",
+    "category": "bike",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bike Rack",
+      "bike rack"
+    ]
+  },
+  {
+    "id": "bird_cage",
+    "name": "Bird Cage",
+    "category": "bird",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bird Cage",
+      "bird cage"
+    ]
+  },
+  {
+    "id": "birdbath",
+    "name": "Birdbath",
+    "category": "birdbath",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Birdbath",
+      "birdbath"
+    ]
+  },
+  {
+    "id": "boat",
+    "name": "Boat",
+    "category": "boat",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Boat",
+      "boat"
+    ]
+  },
+  {
+    "id": "boat",
+    "name": "Boat >",
+    "category": "boat",
+    "volume_cuft": 1.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Boat >",
+      "boat >"
+    ],
+    "handling": "'3502450"
+  },
+  {
+    "id": "boat_trailer",
+    "name": "Boat Trailer",
+    "category": "boat",
+    "volume_cuft": 10070.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Boat Trailer",
+      "boat trailer"
+    ]
+  },
+  {
+    "id": "bookcase_large",
+    "name": "Bookcase - Large",
+    "category": "bookcase",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Large",
+      "bookcase",
+      "bookcase - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bookcase_large_wall_mounted",
+    "name": "Bookcase - Large Wall mounted",
+    "category": "bookcase",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Large Wall mounted",
+      "bookcase",
+      "bookcase - large wall mounted"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bookcase_medium",
+    "name": "Bookcase - Medium",
+    "category": "bookcase",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Medium",
+      "bookcase",
+      "bookcase - medium"
+    ]
+  },
+  {
+    "id": "bookcase_medium_wall_mounted",
+    "name": "Bookcase - Medium Wall mounted",
+    "category": "bookcase",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Medium Wall mounted",
+      "bookcase",
+      "bookcase - medium wall mounted"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bookcase_small",
+    "name": "Bookcase - Small",
+    "category": "bookcase",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Small",
+      "bookcase",
+      "bookcase - small"
+    ]
+  },
+  {
+    "id": "bookcase_small_wall_mounted",
+    "name": "Bookcase - Small Wall mounted",
+    "category": "bookcase",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Bookcase",
+      "Bookcase - Small Wall mounted",
+      "bookcase",
+      "bookcase - small wall mounted"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "bucket",
+    "name": "Bucket",
+    "category": "bucket",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Bucket",
+      "bucket"
+    ]
+  },
+  {
+    "id": "buffet_base",
+    "name": "Buffet - Base",
+    "category": "buffet",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Buffet",
+      "Buffet - Base",
+      "buffet",
+      "buffet - base"
+    ]
+  },
+  {
+    "id": "buffet_top",
+    "name": "Buffet - Top",
+    "category": "buffet",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Buffet",
+      "Buffet - Top",
+      "buffet",
+      "buffet - top"
+    ]
+  },
+  {
+    "id": "butcher_block",
+    "name": "Butcher Block",
+    "category": "butcher",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Butcher Block",
+      "butcher block"
+    ]
+  },
+  {
+    "id": "cabinet_china",
+    "name": "Cabinet - China",
+    "category": "cabinet",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - China",
+      "cabinet",
+      "cabinet - china"
+    ]
+  },
+  {
+    "id": "cabinet_corner",
+    "name": "Cabinet - Corner",
+    "category": "cabinet",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Corner",
+      "cabinet",
+      "cabinet - corner"
+    ]
+  },
+  {
+    "id": "cabinet_curio_large",
+    "name": "Cabinet - Curio/Large",
+    "category": "cabinet",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Curio Large",
+      "Cabinet - Curio/Large",
+      "cabinet",
+      "cabinet - curio/large"
+    ]
+  },
+  {
+    "id": "cabinet_curio_small",
+    "name": "Cabinet - Curio/Small",
+    "category": "cabinet",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Curio Small",
+      "Cabinet - Curio/Small",
+      "cabinet",
+      "cabinet - curio/small"
+    ]
+  },
+  {
+    "id": "cabinet_gun",
+    "name": "Cabinet - Gun",
+    "category": "cabinet",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Gun",
+      "cabinet",
+      "cabinet - gun"
+    ]
+  },
+  {
+    "id": "cabinet_large",
+    "name": "Cabinet - Large",
+    "category": "cabinet",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Large",
+      "cabinet",
+      "cabinet - large"
+    ]
+  },
+  {
+    "id": "cabinet_medium",
+    "name": "Cabinet - Medium",
+    "category": "cabinet",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Medium",
+      "cabinet",
+      "cabinet - medium"
+    ]
+  },
+  {
+    "id": "cabinet_metal",
+    "name": "Cabinet - Metal",
+    "category": "cabinet",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Metal",
+      "cabinet",
+      "cabinet - metal"
+    ]
+  },
+  {
+    "id": "cabinet_small",
+    "name": "Cabinet - Small",
+    "category": "cabinet",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Cabinet",
+      "Cabinet - Small",
+      "cabinet",
+      "cabinet - small"
+    ]
+  },
+  {
+    "id": "camper_trailer",
+    "name": "Camper Trailer",
+    "category": "camper",
+    "volume_cuft": 700490.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Camper Trailer",
+      "camper trailer"
+    ]
+  },
+  {
+    "id": "camping_gear",
+    "name": "Camping Gear",
+    "category": "camping",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Camping Gear",
+      "camping gear"
+    ]
+  },
+  {
+    "id": "canoe",
+    "name": "Canoe  <",
+    "category": "canoe",
+    "volume_cuft": 1.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Canoe  <",
+      "canoe  <"
+    ],
+    "handling": "'20140"
+  },
+  {
+    "id": "canoe",
+    "name": "Canoe >",
+    "category": "canoe",
+    "volume_cuft": 1.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Canoe >",
+      "canoe >"
+    ],
+    "handling": "'30210"
+  },
+  {
+    "id": "carseat",
+    "name": "Carseat",
+    "category": "carseat",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Carseat",
+      "carseat"
+    ]
+  },
+  {
+    "id": "cart",
+    "name": "Cart",
+    "category": "cart",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Cart",
+      "cart"
+    ]
+  },
+  {
+    "id": "cartop_carrier",
+    "name": "Cartop Carrier",
+    "category": "cartop",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cartop Carrier",
+      "cartop carrier"
+    ]
+  },
+  {
+    "id": "cat_box",
+    "name": "Cat Box",
+    "category": "cat",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Cat Box",
+      "cat box"
+    ]
+  },
+  {
+    "id": "cat_post",
+    "name": "Cat Post",
+    "category": "cat",
+    "volume_cuft": 42.0,
+    "weight_lbs": 8.0,
+    "aliases": [
+      "Cat Post",
+      "cat post"
+    ]
+  },
+  {
+    "id": "cat_tree",
+    "name": "Cat Tree",
+    "category": "cat",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Cat Tree",
+      "cat tree"
+    ]
+  },
+  {
+    "id": "cd_dvd_rack",
+    "name": "CD/DVD Rack",
+    "category": "cd",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "CD DVD Rack",
+      "CD/DVD Rack",
+      "cd/dvd rack"
+    ]
+  },
+  {
+    "id": "chair_arm",
+    "name": "Chair - Arm",
+    "category": "chair",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chair",
+      "Chair - Arm",
+      "chair",
+      "chair - arm"
+    ]
+  },
+  {
+    "id": "chair_bar",
+    "name": "Chair - Bar",
+    "category": "chair",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chair",
+      "Chair - Bar",
+      "chair",
+      "chair - bar"
+    ]
+  },
+  {
+    "id": "chair_childs",
+    "name": "Chair - Childs",
+    "category": "chair",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Chair",
+      "Chair - Childs",
+      "chair",
+      "chair - childs"
+    ]
+  },
+  {
+    "id": "chair_dining",
+    "name": "Chair - Dining",
+    "category": "chair",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chair",
+      "Chair - Dining",
+      "chair",
+      "chair - dining"
+    ]
+  },
+  {
+    "id": "chair_folding",
+    "name": "Chair - Folding",
+    "category": "chair",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Chair",
+      "Chair - Folding",
+      "chair",
+      "chair - folding"
+    ]
+  },
+  {
+    "id": "chair_glider_settee",
+    "name": "Chair - Glider/Settee",
+    "category": "chair",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chair",
+      "Chair - Glider Settee",
+      "Chair - Glider/Settee",
+      "chair",
+      "chair - glider/settee"
+    ]
+  },
+  {
+    "id": "chair_high",
+    "name": "Chair - High",
+    "category": "chair",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chair",
+      "Chair - High",
+      "chair",
+      "chair - high"
+    ]
+  },
+  {
+    "id": "chair_occasional",
+    "name": "Chair - Occasional",
+    "category": "chair",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chair",
+      "Chair - Occasional",
+      "chair",
+      "chair - occasional"
+    ]
+  },
+  {
+    "id": "chair_office",
+    "name": "Chair - Office",
+    "category": "chair",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chair",
+      "Chair - Office",
+      "chair",
+      "chair - office"
+    ]
+  },
+  {
+    "id": "chair_os_reclining",
+    "name": "Chair - OS/Reclining",
+    "category": "chair",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chair",
+      "Chair - OS Reclining",
+      "Chair - OS/Reclining",
+      "chair",
+      "chair - os/reclining"
+    ]
+  },
+  {
+    "id": "chair_rocker",
+    "name": "Chair - Rocker",
+    "category": "chair",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chair",
+      "Chair - Rocker",
+      "chair",
+      "chair - rocker"
+    ]
+  },
+  {
+    "id": "chaise_lounge_large",
+    "name": "Chaise Lounge - Large",
+    "category": "chaise",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chaise Lounge",
+      "Chaise Lounge - Large",
+      "chaise lounge",
+      "chaise lounge - large"
+    ]
+  },
+  {
+    "id": "chaise_lounge_small",
+    "name": "Chaise Lounge - Small",
+    "category": "chaise",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chaise Lounge",
+      "Chaise Lounge - Small",
+      "chaise lounge",
+      "chaise lounge - small"
+    ]
+  },
+  {
+    "id": "changing_table",
+    "name": "Changing Table",
+    "category": "changing",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Changing Table",
+      "changing table"
+    ]
+  },
+  {
+    "id": "chest",
+    "name": "Chest",
+    "category": "chest",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chest",
+      "chest"
+    ]
+  },
+  {
+    "id": "chest_cedar",
+    "name": "Chest - Cedar",
+    "category": "chest",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chest",
+      "Chest - Cedar",
+      "chest",
+      "chest - cedar"
+    ]
+  },
+  {
+    "id": "chest_of_drawers",
+    "name": "Chest of Drawers",
+    "category": "chest",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chest of Drawers",
+      "chest of drawers"
+    ]
+  },
+  {
+    "id": "chest_toy",
+    "name": "Chest - Toy",
+    "category": "chest",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chest",
+      "Chest - Toy",
+      "chest",
+      "chest - toy"
+    ]
+  },
+  {
+    "id": "child_s_slide",
+    "name": "Child's Slide",
+    "category": "child",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Child's Slide",
+      "child's slide"
+    ]
+  },
+  {
+    "id": "child_s_swing",
+    "name": "Child's Swing",
+    "category": "child",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Child's Swing",
+      "child's swing"
+    ]
+  },
+  {
+    "id": "chimenea",
+    "name": "Chimenea",
+    "category": "chimenea",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Chimenea",
+      "chimenea"
+    ]
+  },
+  {
+    "id": "chipper_shreader",
+    "name": "Chipper/Shreader",
+    "category": "chipper",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Chipper Shreader",
+      "Chipper/Shreader",
+      "chipper/shreader"
+    ]
+  },
+  {
+    "id": "christmas_tree",
+    "name": "Christmas Tree",
+    "category": "christmas",
+    "volume_cuft": 85.0,
+    "weight_lbs": 6.0,
+    "aliases": [
+      "Christmas Tree",
+      "christmas tree"
+    ]
+  },
+  {
+    "id": "clock_grandfather",
+    "name": "Clock - Grandfather",
+    "category": "clock",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Clock",
+      "Clock - Grandfather",
+      "clock",
+      "clock - grandfather"
+    ]
+  },
+  {
+    "id": "clothes_dryer_rack",
+    "name": "Clothes Dryer Rack",
+    "category": "clothes",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Clothes Dryer Rack",
+      "clothes dryer rack"
+    ]
+  },
+  {
+    "id": "clothes_hamper",
+    "name": "Clothes Hamper",
+    "category": "clothes",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Clothes Hamper",
+      "clothes hamper"
+    ]
+  },
+  {
+    "id": "coat_rack",
+    "name": "Coat Rack",
+    "category": "coat",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Coat Rack",
+      "coat rack"
+    ]
+  },
+  {
+    "id": "conference_table_large",
+    "name": "Conference table (Large)",
+    "category": "conference",
+    "volume_cuft": 5015.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Conference table (Large)",
+      "conference table (large)"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "cooler",
+    "name": "Cooler",
+    "category": "cooler",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Cooler",
+      "cooler"
+    ]
+  },
+  {
+    "id": "copier",
+    "name": "Copier",
+    "category": "copier",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Copier",
+      "copier"
+    ]
+  },
+  {
+    "id": "credenza",
+    "name": "Credenza",
+    "category": "credenza",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Credenza",
+      "credenza"
+    ]
+  },
+  {
+    "id": "crib",
+    "name": "Crib",
+    "category": "crib",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Crib",
+      "crib"
+    ]
+  },
+  {
+    "id": "deck_box_large",
+    "name": "Deck Box - Large",
+    "category": "deck",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Deck Box",
+      "Deck Box - Large",
+      "deck box",
+      "deck box - large"
+    ]
+  },
+  {
+    "id": "deck_box_small",
+    "name": "Deck Box - Small",
+    "category": "deck",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Deck Box",
+      "Deck Box - Small",
+      "deck box",
+      "deck box - small"
+    ]
+  },
+  {
+    "id": "dehumidifier",
+    "name": "Dehumidifier",
+    "category": "dehumidifier",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Dehumidifier",
+      "dehumidifier"
+    ]
+  },
+  {
+    "id": "desk_chair",
+    "name": "Desk Chair",
+    "category": "desk",
+    "volume_cuft": 64.0,
+    "weight_lbs": 2.0,
+    "aliases": [
+      "Desk Chair",
+      "desk chair"
+    ]
+  },
+  {
+    "id": "desk_large",
+    "name": "Desk - Large",
+    "category": "desk",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Desk",
+      "Desk - Large",
+      "desk",
+      "desk - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "desk_medium",
+    "name": "Desk - Medium",
+    "category": "desk",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Desk",
+      "Desk - Medium",
+      "desk",
+      "desk - medium"
+    ]
+  },
+  {
+    "id": "desk_small",
+    "name": "Desk - Small",
+    "category": "desk",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Desk",
+      "Desk - Small",
+      "desk",
+      "desk - small"
+    ]
+  },
+  {
+    "id": "desk_w_return",
+    "name": "Desk - w. Return",
+    "category": "desk",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Desk",
+      "Desk - w. Return",
+      "desk",
+      "desk - w. return"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "dining_hutch",
+    "name": "Dining - Hutch",
+    "category": "dining",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dining",
+      "Dining - Hutch",
+      "dining",
+      "dining - hutch"
+    ]
+  },
+  {
+    "id": "dining_leaf",
+    "name": "Dining - Leaf",
+    "category": "dining",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Dining",
+      "Dining - Leaf",
+      "dining",
+      "dining - leaf"
+    ]
+  },
+  {
+    "id": "dining_table_large",
+    "name": "Dining Table - Large",
+    "category": "dining",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dining Table",
+      "Dining Table - Large",
+      "dining table",
+      "dining table - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "dining_table_medium",
+    "name": "Dining Table - Medium",
+    "category": "dining",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Dining Table",
+      "Dining Table - Medium",
+      "dining table",
+      "dining table - medium"
+    ]
+  },
+  {
+    "id": "dining_table_small",
+    "name": "Dining Table - Small",
+    "category": "dining",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dining Table",
+      "Dining Table - Small",
+      "dining table",
+      "dining table - small"
+    ]
+  },
+  {
+    "id": "dishwasher",
+    "name": "Dishwasher",
+    "category": "dishwasher",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dishwasher",
+      "dishwasher"
+    ]
+  },
+  {
+    "id": "dog_house_kennel",
+    "name": "Dog House/Kennel",
+    "category": "dog",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dog House Kennel",
+      "Dog House/Kennel",
+      "dog house/kennel"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "dollhouse",
+    "name": "Dollhouse",
+    "category": "dollhouse",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dollhouse",
+      "dollhouse"
+    ]
+  },
+  {
+    "id": "drafting_table",
+    "name": "Drafting Table",
+    "category": "drafting",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Drafting Table",
+      "drafting table"
+    ]
+  },
+  {
+    "id": "dresser_double",
+    "name": "Dresser - Double",
+    "category": "dresser",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Double",
+      "dresser",
+      "dresser - double"
+    ]
+  },
+  {
+    "id": "dresser_mirror",
+    "name": "Dresser - Mirror",
+    "category": "dresser",
+    "volume_cuft": 64.0,
+    "weight_lbs": 2.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Mirror",
+      "dresser",
+      "dresser - mirror"
+    ]
+  },
+  {
+    "id": "dresser_single",
+    "name": "Dresser - Single",
+    "category": "dresser",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Single",
+      "dresser",
+      "dresser - single"
+    ]
+  },
+  {
+    "id": "dresser_triple",
+    "name": "Dresser - Triple",
+    "category": "dresser",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Triple",
+      "dresser",
+      "dresser - triple"
+    ]
+  },
+  {
+    "id": "dresser_vanity",
+    "name": "Dresser - Vanity",
+    "category": "dresser",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Vanity",
+      "dresser",
+      "dresser - vanity"
+    ]
+  },
+  {
+    "id": "dresser_vanity_bench",
+    "name": "Dresser - Vanity Bench",
+    "category": "dresser",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Dresser",
+      "Dresser - Vanity Bench",
+      "dresser",
+      "dresser - vanity bench"
+    ]
+  },
+  {
+    "id": "drill_press",
+    "name": "Drill Press",
+    "category": "drill",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Drill Press",
+      "drill press"
+    ]
+  },
+  {
+    "id": "dropleaf_table",
+    "name": "Dropleaf Table",
+    "category": "dropleaf",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Dropleaf Table",
+      "dropleaf table"
+    ]
+  },
+  {
+    "id": "dryer",
+    "name": "Dryer",
+    "category": "dryer",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Dryer",
+      "dryer"
+    ]
+  },
+  {
+    "id": "easel",
+    "name": "Easel",
+    "category": "easel",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Easel",
+      "easel"
+    ]
+  },
+  {
+    "id": "electronic_equipment",
+    "name": "Electronic Equipment",
+    "category": "electronic",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Electronic Equipment",
+      "electronic equipment"
+    ]
+  },
+  {
+    "id": "eliptical",
+    "name": "Eliptical",
+    "category": "eliptical",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Eliptical",
+      "eliptical"
+    ]
+  },
+  {
+    "id": "end_table",
+    "name": "End Table",
+    "category": "end",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "End Table",
+      "end table"
+    ]
+  },
+  {
+    "id": "entertainment_center_large",
+    "name": "Entertainment Center - Large",
+    "category": "entertainment",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Entertainment Center",
+      "Entertainment Center - Large",
+      "entertainment center",
+      "entertainment center - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "entertainment_center_medium",
+    "name": "Entertainment Center - Medium",
+    "category": "entertainment",
+    "volume_cuft": 4028.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Entertainment Center",
+      "Entertainment Center - Medium",
+      "entertainment center",
+      "entertainment center - medium"
+    ]
+  },
+  {
+    "id": "entertainment_center_small",
+    "name": "Entertainment Center - Small",
+    "category": "entertainment",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Entertainment Center",
+      "Entertainment Center - Small",
+      "entertainment center",
+      "entertainment center - small"
+    ]
+  },
+  {
+    "id": "exercise_equipment",
+    "name": "Exercise Equipment",
+    "category": "exercise",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Equipment",
+      "exercise equipment"
+    ]
+  },
+  {
+    "id": "exercise_equipment_bench",
+    "name": "Exercise Equipment - Bench",
+    "category": "exercise",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Bench",
+      "exercise equipment",
+      "exercise equipment - bench"
+    ]
+  },
+  {
+    "id": "exercise_equipment_bike",
+    "name": "Exercise Equipment - Bike",
+    "category": "exercise",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Bike",
+      "exercise equipment",
+      "exercise equipment - bike"
+    ]
+  },
+  {
+    "id": "exercise_equipment_eliptical_large",
+    "name": "Exercise Equipment - Eliptical Large",
+    "category": "exercise",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Eliptical Large",
+      "exercise equipment",
+      "exercise equipment - eliptical large"
+    ]
+  },
+  {
+    "id": "exercise_equipment_rowing_machine",
+    "name": "Exercise Equipment - Rowing Machine",
+    "category": "exercise",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Rowing Machine",
+      "exercise equipment",
+      "exercise equipment - rowing machine"
+    ]
+  },
+  {
+    "id": "exercise_equipment_squat_rack",
+    "name": "Exercise Equipment - Squat Rack",
+    "category": "exercise",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Squat Rack",
+      "exercise equipment",
+      "exercise equipment - squat rack"
+    ]
+  },
+  {
+    "id": "exercise_equipment_treadmill",
+    "name": "Exercise Equipment - Treadmill",
+    "category": "exercise",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Equipment",
+      "Exercise Equipment - Treadmill",
+      "exercise equipment",
+      "exercise equipment - treadmill"
+    ]
+  },
+  {
+    "id": "exercise_machine",
+    "name": "Exercise Machine",
+    "category": "exercise",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Machine",
+      "exercise machine"
+    ]
+  },
+  {
+    "id": "exercise_mat",
+    "name": "Exercise Mat",
+    "category": "exercise",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Exercise Mat",
+      "exercise mat"
+    ]
+  },
+  {
+    "id": "fan",
+    "name": "Fan",
+    "category": "fan",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Fan",
+      "fan"
+    ]
+  },
+  {
+    "id": "fan_large",
+    "name": "Fan - Large",
+    "category": "fan",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Fan",
+      "Fan - Large",
+      "fan",
+      "fan - large"
+    ]
+  },
+  {
+    "id": "file_cabinet_verticle",
+    "name": "File cabinet-Verticle",
+    "category": "file",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "File cabinet-Verticle",
+      "file cabinet-verticle"
+    ]
+  },
+  {
+    "id": "fire_pit_lg",
+    "name": "Fire Pit (Lg)",
+    "category": "fire",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Fire Pit (Lg)",
+      "fire pit (lg)"
+    ]
+  },
+  {
+    "id": "fire_pit_sm",
+    "name": "Fire Pit (Sm)",
+    "category": "fire",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Fire Pit (Sm)",
+      "fire pit (sm)"
+    ]
+  },
+  {
+    "id": "fireplace_equipment",
+    "name": "Fireplace Equipment",
+    "category": "fireplace",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Fireplace Equipment",
+      "fireplace equipment"
+    ]
+  },
+  {
+    "id": "folding_table",
+    "name": "Folding Table",
+    "category": "folding",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Folding Table",
+      "folding table"
+    ]
+  },
+  {
+    "id": "freezer_large",
+    "name": "Freezer - Large",
+    "category": "freezer",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Freezer",
+      "Freezer - Large",
+      "freezer",
+      "freezer - large"
+    ]
+  },
+  {
+    "id": "freezer_medium",
+    "name": "Freezer - Medium",
+    "category": "freezer",
+    "volume_cuft": 4531.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Freezer",
+      "Freezer - Medium",
+      "freezer",
+      "freezer - medium"
+    ]
+  },
+  {
+    "id": "freezer_small",
+    "name": "Freezer - Small",
+    "category": "freezer",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Freezer",
+      "Freezer - Small",
+      "freezer",
+      "freezer - small"
+    ]
+  },
+  {
+    "id": "futon",
+    "name": "Futon",
+    "category": "futon",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Futon",
+      "futon"
+    ]
+  },
+  {
+    "id": "game_table",
+    "name": "Game Table",
+    "category": "game",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Game Table",
+      "game table"
+    ]
+  },
+  {
+    "id": "garden_hose_tool",
+    "name": "Garden Hose/Tool",
+    "category": "garden",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Garden Hose Tool",
+      "Garden Hose/Tool",
+      "garden hose/tool"
+    ]
+  },
+  {
+    "id": "generator_lg",
+    "name": "Generator (Lg)",
+    "category": "generator",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Generator (Lg)",
+      "generator (lg)"
+    ]
+  },
+  {
+    "id": "generator_sm",
+    "name": "Generator (Sm)",
+    "category": "generator",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Generator (Sm)",
+      "generator (sm)"
+    ]
+  },
+  {
+    "id": "glass_tops",
+    "name": "Glass Tops",
+    "category": "glass",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Glass Tops",
+      "glass tops"
+    ]
+  },
+  {
+    "id": "glider",
+    "name": "Glider",
+    "category": "glider",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Glider",
+      "glider"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "golf_bag",
+    "name": "Golf Bag",
+    "category": "golf",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Golf Bag",
+      "golf bag"
+    ]
+  },
+  {
+    "id": "golf_cart",
+    "name": "Golf Cart",
+    "category": "golf",
+    "volume_cuft": 7049.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Golf Cart",
+      "golf cart"
+    ]
+  },
+  {
+    "id": "guitar_case",
+    "name": "Guitar Case",
+    "category": "guitar",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Guitar Case",
+      "guitar case"
+    ]
+  },
+  {
+    "id": "hammock_w_frame",
+    "name": "Hammock w. Frame",
+    "category": "hammock",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Hammock w. Frame",
+      "hammock w. frame"
+    ]
+  },
+  {
+    "id": "heater_radiator",
+    "name": "Heater/Radiator",
+    "category": "heater",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Heater Radiator",
+      "Heater/Radiator",
+      "heater/radiator"
+    ]
+  },
+  {
+    "id": "home_gym",
+    "name": "Home Gym",
+    "category": "home",
+    "volume_cuft": 4028.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Home Gym",
+      "home gym"
+    ]
+  },
+  {
+    "id": "home_gym_built",
+    "name": "Home Gym Built",
+    "category": "home",
+    "volume_cuft": 8056.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Home Gym Built",
+      "home gym built"
+    ]
+  },
+  {
+    "id": "hot_tub",
+    "name": "Hot Tub",
+    "category": "hot",
+    "volume_cuft": 7049.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Hot Tub",
+      "hot tub"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "hutch",
+    "name": "Hutch",
+    "category": "hutch",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Hutch",
+      "hutch"
+    ]
+  },
+  {
+    "id": "ironing_board",
+    "name": "Ironing Board",
+    "category": "ironing",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Ironing Board",
+      "ironing board"
+    ]
+  },
+  {
+    "id": "island_kitchen",
+    "name": "Island - Kitchen",
+    "category": "island",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Island",
+      "Island - Kitchen",
+      "island",
+      "island - kitchen"
+    ]
+  },
+  {
+    "id": "jack_auto_equipment",
+    "name": "Jack/Auto Equipment",
+    "category": "jack",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Jack Auto Equipment",
+      "Jack/Auto Equipment",
+      "jack/auto equipment"
+    ]
+  },
+  {
+    "id": "jet_ski",
+    "name": "Jet Ski",
+    "category": "jet",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Jet Ski",
+      "jet ski"
+    ]
+  },
+  {
+    "id": "jewelry_chest",
+    "name": "Jewelry Chest",
+    "category": "jewelry",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Jewelry Chest",
+      "jewelry chest"
+    ]
+  },
+  {
+    "id": "juke_box",
+    "name": "Juke Box",
+    "category": "juke",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Juke Box",
+      "juke box"
+    ]
+  },
+  {
+    "id": "kayak",
+    "name": "Kayak",
+    "category": "kayak",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Kayak",
+      "kayak"
+    ]
+  },
+  {
+    "id": "kayak",
+    "name": "Kayak",
+    "category": "kayak",
+    "volume_cuft": 1.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Kayak",
+      "kayak"
+    ],
+    "handling": "' & Under1070"
+  },
+  {
+    "id": "keyboard",
+    "name": "Keyboard",
+    "category": "keyboard",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Keyboard",
+      "keyboard"
+    ]
+  },
+  {
+    "id": "ladder",
+    "name": "Ladder",
+    "category": "ladder",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Ladder",
+      "ladder"
+    ]
+  },
+  {
+    "id": "ladder_extension",
+    "name": "Ladder - Extension",
+    "category": "ladder",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Ladder",
+      "Ladder - Extension",
+      "ladder",
+      "ladder - extension"
+    ]
+  },
+  {
+    "id": "ladder_lg",
+    "name": "Ladder (Lg)",
+    "category": "ladder",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Ladder (Lg)",
+      "ladder (lg)"
+    ]
+  },
+  {
+    "id": "ladder_step",
+    "name": "Ladder - Step",
+    "category": "ladder",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Ladder",
+      "Ladder - Step",
+      "ladder",
+      "ladder - step"
+    ]
+  },
+  {
+    "id": "lamp_floor",
+    "name": "Lamp - Floor",
+    "category": "lamp",
+    "volume_cuft": 52.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Lamp",
+      "Lamp - Floor",
+      "lamp",
+      "lamp - floor"
+    ]
+  },
+  {
+    "id": "lamp_table",
+    "name": "Lamp - Table",
+    "category": "lamp",
+    "volume_cuft": 31.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Lamp",
+      "Lamp - Table",
+      "lamp",
+      "lamp - table"
+    ]
+  },
+  {
+    "id": "lawn_mower",
+    "name": "Lawn Mower",
+    "category": "lawn",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Lawn Mower",
+      "lawn mower"
+    ]
+  },
+  {
+    "id": "lawn_mower_push",
+    "name": "Lawn Mower - Push",
+    "category": "lawn",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Lawn Mower",
+      "Lawn Mower - Push",
+      "lawn mower",
+      "lawn mower - push"
+    ]
+  },
+  {
+    "id": "lawn_mower_riding",
+    "name": "Lawn Mower - Riding",
+    "category": "lawn",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Lawn Mower",
+      "Lawn Mower - Riding",
+      "lawn mower",
+      "lawn mower - riding"
+    ]
+  },
+  {
+    "id": "leaf_blower",
+    "name": "Leaf Blower",
+    "category": "leaf",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Leaf Blower",
+      "leaf blower"
+    ]
+  },
+  {
+    "id": "locker_large",
+    "name": "Locker - Large",
+    "category": "locker",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Locker",
+      "Locker - Large",
+      "locker",
+      "locker - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "locker_small",
+    "name": "Locker - Small",
+    "category": "locker",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Locker",
+      "Locker - Small",
+      "locker",
+      "locker - small"
+    ]
+  },
+  {
+    "id": "magazine_rack",
+    "name": "Magazine Rack",
+    "category": "magazine",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Magazine Rack",
+      "magazine rack"
+    ]
+  },
+  {
+    "id": "mannequins",
+    "name": "Mannequins",
+    "category": "mannequins",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Mannequins",
+      "mannequins"
+    ]
+  },
+  {
+    "id": "metal_screen",
+    "name": "Metal Screen",
+    "category": "metal",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Metal Screen",
+      "metal screen"
+    ]
+  },
+  {
+    "id": "microwave_stand",
+    "name": "Microwave Stand",
+    "category": "microwave",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Microwave Stand",
+      "microwave stand"
+    ]
+  },
+  {
+    "id": "mirror_full_floor_style",
+    "name": "Mirror - Full Floor Style",
+    "category": "mirror",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Mirror",
+      "Mirror - Full Floor Style",
+      "mirror",
+      "mirror - full floor style"
+    ]
+  },
+  {
+    "id": "mirror_picture",
+    "name": "Mirror/Picture",
+    "category": "mirror",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Mirror Picture",
+      "Mirror/Picture",
+      "mirror/picture"
+    ]
+  },
+  {
+    "id": "mirror_picture_large",
+    "name": "Mirror/Picture - Large",
+    "category": "mirror",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Mirror Picture - Large",
+      "Mirror/Picture",
+      "Mirror/Picture - Large",
+      "mirror/picture",
+      "mirror/picture - large"
+    ]
+  },
+  {
+    "id": "miter_saw",
+    "name": "Miter Saw",
+    "category": "miter",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Miter Saw",
+      "miter saw"
+    ]
+  },
+  {
+    "id": "monitor",
+    "name": "Monitor",
+    "category": "monitor",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Monitor",
+      "monitor"
+    ]
+  },
+  {
+    "id": "motorbike",
+    "name": "Motorbike",
+    "category": "motorbike",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Motorbike",
+      "motorbike"
+    ]
+  },
+  {
+    "id": "nightstand_large",
+    "name": "Nightstand - Large",
+    "category": "nightstand",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Nightstand",
+      "Nightstand - Large",
+      "nightstand",
+      "nightstand - large"
+    ]
+  },
+  {
+    "id": "nightstand_small",
+    "name": "Nightstand - Small",
+    "category": "nightstand",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Nightstand",
+      "Nightstand - Small",
+      "nightstand",
+      "nightstand - small"
+    ]
+  },
+  {
+    "id": "organ",
+    "name": "Organ",
+    "category": "organ",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Organ",
+      "organ"
+    ]
+  },
+  {
+    "id": "ottoman_large",
+    "name": "Ottoman - Large",
+    "category": "ottoman",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Ottoman",
+      "Ottoman - Large",
+      "ottoman",
+      "ottoman - large"
+    ]
+  },
+  {
+    "id": "ottoman_small",
+    "name": "Ottoman - Small",
+    "category": "ottoman",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Ottoman",
+      "Ottoman - Small",
+      "ottoman",
+      "ottoman - small"
+    ]
+  },
+  {
+    "id": "pack_and_play",
+    "name": "Pack and Play",
+    "category": "pack",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Pack and Play",
+      "pack and play"
+    ]
+  },
+  {
+    "id": "patio_chair_large",
+    "name": "Patio Chair - Large",
+    "category": "patio",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Patio Chair",
+      "Patio Chair - Large",
+      "patio chair",
+      "patio chair - large"
+    ]
+  },
+  {
+    "id": "patio_chair_small",
+    "name": "Patio Chair - Small",
+    "category": "patio",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Patio Chair",
+      "Patio Chair - Small",
+      "patio chair",
+      "patio chair - small"
+    ]
+  },
+  {
+    "id": "patio_sofa",
+    "name": "Patio Sofa",
+    "category": "patio",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Patio Sofa",
+      "patio sofa"
+    ]
+  },
+  {
+    "id": "patio_table",
+    "name": "Patio Table",
+    "category": "patio",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Patio Table",
+      "patio table"
+    ]
+  },
+  {
+    "id": "patio_table_large",
+    "name": "Patio Table - Large",
+    "category": "patio",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Patio Table",
+      "Patio Table - Large",
+      "patio table",
+      "patio table - large"
+    ]
+  },
+  {
+    "id": "pedestal",
+    "name": "Pedestal",
+    "category": "pedestal",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Pedestal",
+      "pedestal"
+    ]
+  },
+  {
+    "id": "piano_baby_grand",
+    "name": "Piano - Baby Grand",
+    "category": "piano",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Piano",
+      "Piano - Baby Grand",
+      "piano",
+      "piano - baby grand"
+    ]
+  },
+  {
+    "id": "ping_pong_table",
+    "name": "Ping Pong Table",
+    "category": "ping",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Ping Pong Table",
+      "ping pong table"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "plant_stand",
+    "name": "Plant Stand",
+    "category": "plant",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Plant Stand",
+      "plant stand"
+    ]
+  },
+  {
+    "id": "plants_planter_large",
+    "name": "Plants/Planter - Large",
+    "category": "plants",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Plants Planter - Large",
+      "Plants/Planter",
+      "Plants/Planter - Large",
+      "plants/planter",
+      "plants/planter - large"
+    ]
+  },
+  {
+    "id": "plants_planter_small",
+    "name": "Plants/Planter - Small",
+    "category": "plants",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Plants Planter - Small",
+      "Plants/Planter",
+      "Plants/Planter - Small",
+      "plants/planter",
+      "plants/planter - small"
+    ]
+  },
+  {
+    "id": "plastic_drawers",
+    "name": "Plastic Drawers",
+    "category": "plastic",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Plastic Drawers",
+      "plastic drawers"
+    ]
+  },
+  {
+    "id": "plastic_tote_large",
+    "name": "Plastic Tote - Large",
+    "category": "plastic",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Plastic Tote",
+      "Plastic Tote - Large",
+      "plastic tote",
+      "plastic tote - large"
+    ]
+  },
+  {
+    "id": "plastic_tote_small",
+    "name": "Plastic Tote - Small",
+    "category": "plastic",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Plastic Tote",
+      "Plastic Tote - Small",
+      "plastic tote",
+      "plastic tote - small"
+    ]
+  },
+  {
+    "id": "pool_table_composite",
+    "name": "Pool Table - Composite",
+    "category": "pool",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Pool Table",
+      "Pool Table - Composite",
+      "pool table",
+      "pool table - composite"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "pool_table_slate",
+    "name": "Pool Table - Slate",
+    "category": "pool",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Pool Table",
+      "Pool Table - Slate",
+      "pool table",
+      "pool table - slate"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "porch_swing",
+    "name": "Porch - Swing",
+    "category": "porch",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Porch",
+      "Porch - Swing",
+      "porch",
+      "porch - swing"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "power_tool",
+    "name": "Power Tool",
+    "category": "power",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Power Tool",
+      "power tool"
+    ]
+  },
+  {
+    "id": "power_tool_large",
+    "name": "Power Tool - Large",
+    "category": "power",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Power Tool",
+      "Power Tool - Large",
+      "power tool",
+      "power tool - large"
+    ]
+  },
+  {
+    "id": "pressure_washer",
+    "name": "Pressure Washer",
+    "category": "pressure",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Pressure Washer",
+      "pressure washer"
+    ]
+  },
+  {
+    "id": "printer",
+    "name": "Printer",
+    "category": "printer",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Printer",
+      "printer"
+    ]
+  },
+  {
+    "id": "range_stove",
+    "name": "Range/Stove",
+    "category": "range",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Range Stove",
+      "Range/Stove",
+      "range/stove"
+    ]
+  },
+  {
+    "id": "refrigerator",
+    "name": "Refrigerator",
+    "category": "refrigerator",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Refrigerator",
+      "refrigerator"
+    ]
+  },
+  {
+    "id": "refrigerator_large",
+    "name": "Refrigerator - Large",
+    "category": "refrigerator",
+    "volume_cuft": 4531.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Refrigerator",
+      "Refrigerator - Large",
+      "refrigerator",
+      "refrigerator - large"
+    ]
+  },
+  {
+    "id": "refrigerator_small",
+    "name": "Refrigerator - Small",
+    "category": "refrigerator",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Refrigerator",
+      "Refrigerator - Small",
+      "refrigerator",
+      "refrigerator - small"
+    ]
+  },
+  {
+    "id": "room_divider",
+    "name": "Room Divider",
+    "category": "room",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Room Divider",
+      "room divider"
+    ]
+  },
+  {
+    "id": "rototiller",
+    "name": "Rototiller",
+    "category": "rototiller",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Rototiller",
+      "rototiller"
+    ]
+  },
+  {
+    "id": "rug_large",
+    "name": "Rug - Large",
+    "category": "rug",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Rug",
+      "Rug - Large",
+      "rug",
+      "rug - large"
+    ]
+  },
+  {
+    "id": "rug_medium",
+    "name": "Rug - Medium",
+    "category": "rug",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Rug",
+      "Rug - Medium",
+      "rug",
+      "rug - medium"
+    ]
+  },
+  {
+    "id": "rug_small",
+    "name": "Rug - Small",
+    "category": "rug",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Rug",
+      "Rug - Small",
+      "rug",
+      "rug - small"
+    ]
+  },
+  {
+    "id": "saddle",
+    "name": "Saddle",
+    "category": "saddle",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Saddle",
+      "saddle"
+    ]
+  },
+  {
+    "id": "safe_extra_lg",
+    "name": "Safe - (Extra Lg)",
+    "category": "safe",
+    "volume_cuft": 7552.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Safe",
+      "Safe - (Extra Lg)",
+      "safe",
+      "safe - (extra lg)"
+    ]
+  },
+  {
+    "id": "safe_lg",
+    "name": "Safe - (Lg)",
+    "category": "safe",
+    "volume_cuft": 5035.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Safe",
+      "Safe - (Lg)",
+      "safe",
+      "safe - (lg)"
+    ]
+  },
+  {
+    "id": "safe_md",
+    "name": "Safe - (Md)",
+    "category": "safe",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Safe",
+      "Safe - (Md)",
+      "safe",
+      "safe - (md)"
+    ]
+  },
+  {
+    "id": "safe_sm",
+    "name": "Safe - (Sm)",
+    "category": "safe",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Safe",
+      "Safe - (Sm)",
+      "safe",
+      "safe - (sm)"
+    ]
+  },
+  {
+    "id": "sandbox",
+    "name": "Sandbox",
+    "category": "sandbox",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Sandbox",
+      "sandbox"
+    ]
+  },
+  {
+    "id": "saw_horse",
+    "name": "Saw Horse",
+    "category": "saw",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Saw Horse",
+      "saw horse"
+    ]
+  },
+  {
+    "id": "scooter",
+    "name": "Scooter",
+    "category": "scooter",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Scooter",
+      "scooter"
+    ]
+  },
+  {
+    "id": "sculpture",
+    "name": "Sculpture",
+    "category": "sculpture",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sculpture",
+      "sculpture"
+    ]
+  },
+  {
+    "id": "sewing_machine",
+    "name": "Sewing Machine",
+    "category": "sewing",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sewing Machine",
+      "sewing machine"
+    ]
+  },
+  {
+    "id": "sewing_machine_cabinet",
+    "name": "Sewing Machine Cabinet",
+    "category": "sewing",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sewing Machine Cabinet",
+      "sewing machine cabinet"
+    ]
+  },
+  {
+    "id": "shelves",
+    "name": "Shelves",
+    "category": "shelves",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Shelves",
+      "shelves"
+    ]
+  },
+  {
+    "id": "shelves_heavy_metal",
+    "name": "Shelves - Heavy Metal",
+    "category": "shelves",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Shelves",
+      "Shelves - Heavy Metal",
+      "shelves",
+      "shelves - heavy metal"
+    ]
+  },
+  {
+    "id": "shelves_metal",
+    "name": "Shelves - Metal",
+    "category": "shelves",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Shelves",
+      "Shelves - Metal",
+      "shelves",
+      "shelves - metal"
+    ]
+  },
+  {
+    "id": "shelving_plastic",
+    "name": "Shelving - Plastic",
+    "category": "shelving",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Shelving",
+      "Shelving - Plastic",
+      "shelving",
+      "shelving - plastic"
+    ]
+  },
+  {
+    "id": "shoe_rack",
+    "name": "Shoe Rack",
+    "category": "shoe",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Shoe Rack",
+      "shoe rack"
+    ]
+  },
+  {
+    "id": "shoe_rack_large",
+    "name": "Shoe Rack - Large",
+    "category": "shoe",
+    "volume_cuft": 123.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Shoe Rack",
+      "Shoe Rack - Large",
+      "shoe rack",
+      "shoe rack - large"
+    ]
+  },
+  {
+    "id": "shoe_rack_medium",
+    "name": "Shoe Rack - Medium",
+    "category": "shoe",
+    "volume_cuft": 72.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Shoe Rack",
+      "Shoe Rack - Medium",
+      "shoe rack",
+      "shoe rack - medium"
+    ]
+  },
+  {
+    "id": "shoe_rack_small",
+    "name": "Shoe Rack - Small",
+    "category": "shoe",
+    "volume_cuft": 41.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Shoe Rack",
+      "Shoe Rack - Small",
+      "shoe rack",
+      "shoe rack - small"
+    ]
+  },
+  {
+    "id": "skiis",
+    "name": "Skiis",
+    "category": "skiis",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Skiis",
+      "skiis"
+    ]
+  },
+  {
+    "id": "sled",
+    "name": "Sled",
+    "category": "sled",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sled",
+      "sled"
+    ]
+  },
+  {
+    "id": "snowblower",
+    "name": "Snowblower",
+    "category": "snowblower",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Snowblower",
+      "snowblower"
+    ]
+  },
+  {
+    "id": "sofa_futon",
+    "name": "Sofa - Futon",
+    "category": "sofa",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Sofa",
+      "Sofa - Futon",
+      "sofa",
+      "sofa - futon"
+    ]
+  },
+  {
+    "id": "sofa_loveseat",
+    "name": "Sofa - Loveseat",
+    "category": "sofa",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sofa",
+      "Sofa - Loveseat",
+      "sofa",
+      "sofa - loveseat"
+    ]
+  },
+  {
+    "id": "sofa_power_reacliner",
+    "name": "Sofa - Power Reacliner",
+    "category": "sofa",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Sofa",
+      "Sofa - Power Reacliner",
+      "sofa",
+      "sofa - power reacliner"
+    ]
+  },
+  {
+    "id": "sofa_sec_per_section",
+    "name": "Sofa - Sec. Per Section",
+    "category": "sofa",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Sofa",
+      "Sofa - Sec. Per Section",
+      "sofa",
+      "sofa - sec. per section"
+    ]
+  },
+  {
+    "id": "sofa_table",
+    "name": "Sofa Table",
+    "category": "sofa",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Sofa Table",
+      "sofa table"
+    ]
+  },
+  {
+    "id": "speaker_large",
+    "name": "Speaker - Large",
+    "category": "speaker",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Speaker",
+      "Speaker - Large",
+      "speaker",
+      "speaker - large"
+    ]
+  },
+  {
+    "id": "speaker_small",
+    "name": "Speaker - Small",
+    "category": "speaker",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Speaker",
+      "Speaker - Small",
+      "speaker",
+      "speaker - small"
+    ]
+  },
+  {
+    "id": "sporting_goods",
+    "name": "Sporting Goods",
+    "category": "sporting",
+    "volume_cuft": 42.0,
+    "weight_lbs": 8.0,
+    "aliases": [
+      "Sporting Goods",
+      "sporting goods"
+    ]
+  },
+  {
+    "id": "stand",
+    "name": "Stand",
+    "category": "stand",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Stand",
+      "stand"
+    ]
+  },
+  {
+    "id": "statue_large",
+    "name": "Statue (Large)",
+    "category": "statue",
+    "volume_cuft": 8025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Statue (Large)",
+      "statue (large)"
+    ],
+    "handling": "+"
+  },
+  {
+    "id": "statue_medium",
+    "name": "Statue (Medium)",
+    "category": "statue",
+    "volume_cuft": 408.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Statue (Medium)",
+      "statue (medium)"
+    ]
+  },
+  {
+    "id": "statue_small",
+    "name": "Statue (Small)",
+    "category": "statue",
+    "volume_cuft": 103.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Statue (Small)",
+      "statue (small)"
+    ]
+  },
+  {
+    "id": "stool_bar",
+    "name": "Stool - Bar",
+    "category": "stool",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Stool",
+      "Stool - Bar",
+      "stool",
+      "stool - bar"
+    ]
+  },
+  {
+    "id": "stool_foot",
+    "name": "Stool - Foot",
+    "category": "stool",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Stool",
+      "Stool - Foot",
+      "stool",
+      "stool - foot"
+    ]
+  },
+  {
+    "id": "storage_shed",
+    "name": "Storage Shed",
+    "category": "storage",
+    "volume_cuft": 6042.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Storage Shed",
+      "storage shed"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "stroller",
+    "name": "Stroller",
+    "category": "stroller",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Stroller",
+      "stroller"
+    ]
+  },
+  {
+    "id": "suitcase",
+    "name": "Suitcase",
+    "category": "suitcase",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Suitcase",
+      "suitcase"
+    ]
+  },
+  {
+    "id": "surfboard",
+    "name": "Surfboard",
+    "category": "surfboard",
+    "volume_cuft": 64.0,
+    "weight_lbs": 2.0,
+    "aliases": [
+      "Surfboard",
+      "surfboard"
+    ]
+  },
+  {
+    "id": "table_card",
+    "name": "Table - Card",
+    "category": "table",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table",
+      "Table - Card",
+      "table",
+      "table - card"
+    ]
+  },
+  {
+    "id": "table_childs",
+    "name": "Table - Childs",
+    "category": "table",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table",
+      "Table - Childs",
+      "table",
+      "table - childs"
+    ]
+  },
+  {
+    "id": "table_coffee_lg",
+    "name": "Table - Coffee (Lg)",
+    "category": "table",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Table",
+      "Table - Coffee (Lg)",
+      "table",
+      "table - coffee (lg)"
+    ]
+  },
+  {
+    "id": "table_coffee_md",
+    "name": "Table - Coffee (Md)",
+    "category": "table",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Table",
+      "Table - Coffee (Md)",
+      "table",
+      "table - coffee (md)"
+    ]
+  },
+  {
+    "id": "table_coffee_sm",
+    "name": "Table - Coffee (Sm)",
+    "category": "table",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table",
+      "Table - Coffee (Sm)",
+      "table",
+      "table - coffee (sm)"
+    ]
+  },
+  {
+    "id": "table_extension_leaf",
+    "name": "Table - Extension Leaf",
+    "category": "table",
+    "volume_cuft": 74.0,
+    "weight_lbs": 9.0,
+    "aliases": [
+      "Table",
+      "Table - Extension Leaf",
+      "table",
+      "table - extension leaf"
+    ]
+  },
+  {
+    "id": "table_inversion",
+    "name": "Table - Inversion",
+    "category": "table",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table",
+      "Table - Inversion",
+      "table",
+      "table - inversion"
+    ]
+  },
+  {
+    "id": "table_kitchen",
+    "name": "Table - Kitchen",
+    "category": "table",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table",
+      "Table - Kitchen",
+      "table",
+      "table - kitchen"
+    ]
+  },
+  {
+    "id": "table_saw",
+    "name": "Table Saw",
+    "category": "table",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Table Saw",
+      "table saw"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "telescope",
+    "name": "Telescope",
+    "category": "telescope",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Telescope",
+      "telescope"
+    ]
+  },
+  {
+    "id": "tire",
+    "name": "Tire",
+    "category": "tire",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Tire",
+      "tire"
+    ]
+  },
+  {
+    "id": "toolbox",
+    "name": "Toolbox",
+    "category": "toolbox",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Toolbox",
+      "toolbox"
+    ]
+  },
+  {
+    "id": "toolchest_large",
+    "name": "Toolchest - Large",
+    "category": "toolchest",
+    "volume_cuft": 4531.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Toolchest",
+      "Toolchest - Large",
+      "toolchest",
+      "toolchest - large"
+    ]
+  },
+  {
+    "id": "toolchest_medium",
+    "name": "Toolchest - Medium",
+    "category": "toolchest",
+    "volume_cuft": 3021.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Toolchest",
+      "Toolchest - Medium",
+      "toolchest",
+      "toolchest - medium"
+    ]
+  },
+  {
+    "id": "toolchest_small",
+    "name": "Toolchest - Small",
+    "category": "toolchest",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Toolchest",
+      "Toolchest - Small",
+      "toolchest",
+      "toolchest - small"
+    ]
+  },
+  {
+    "id": "toy_large",
+    "name": "Toy - Large",
+    "category": "toy",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Toy",
+      "Toy - Large",
+      "toy",
+      "toy - large"
+    ]
+  },
+  {
+    "id": "toy_small",
+    "name": "Toy - Small",
+    "category": "toy",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Toy",
+      "Toy - Small",
+      "toy",
+      "toy - small"
+    ]
+  },
+  {
+    "id": "trampoline_large",
+    "name": "Trampoline - Large",
+    "category": "trampoline",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Trampoline",
+      "Trampoline - Large",
+      "trampoline",
+      "trampoline - large"
+    ],
+    "handling": "disassembly/reassembly"
+  },
+  {
+    "id": "trampoline_toy",
+    "name": "Trampoline - Toy",
+    "category": "trampoline",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Trampoline",
+      "Trampoline - Toy",
+      "trampoline",
+      "trampoline - toy"
+    ]
+  },
+  {
+    "id": "trash_can",
+    "name": "Trash Can",
+    "category": "trash",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Trash Can",
+      "trash can"
+    ]
+  },
+  {
+    "id": "treadmill",
+    "name": "Treadmill",
+    "category": "treadmill",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Treadmill",
+      "treadmill"
+    ]
+  },
+  {
+    "id": "tricycle",
+    "name": "Tricycle",
+    "category": "tricycle",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Tricycle",
+      "tricycle"
+    ]
+  },
+  {
+    "id": "tripod",
+    "name": "Tripod",
+    "category": "tripod",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Tripod",
+      "tripod"
+    ]
+  },
+  {
+    "id": "trunk_large",
+    "name": "Trunk - Large",
+    "category": "trunk",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Trunk",
+      "Trunk - Large",
+      "trunk",
+      "trunk - large"
+    ]
+  },
+  {
+    "id": "trunk_medium",
+    "name": "Trunk - Medium",
+    "category": "trunk",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Trunk",
+      "Trunk - Medium",
+      "trunk",
+      "trunk - medium"
+    ]
+  },
+  {
+    "id": "trunk_small",
+    "name": "Trunk - Small",
+    "category": "trunk",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Trunk",
+      "Trunk - Small",
+      "trunk",
+      "trunk - small"
+    ]
+  },
+  {
+    "id": "tv",
+    "name": "TV -",
+    "category": "tv",
+    "volume_cuft": 5.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "TV -",
+      "tv -"
+    ],
+    "handling": "\"-80\"15105"
+  },
+  {
+    "id": "tv",
+    "name": "TV -",
+    "category": "tv",
+    "volume_cuft": 8.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "TV -",
+      "tv -"
+    ],
+    "handling": "\" & Over20140"
+  },
+  {
+    "id": "tv",
+    "name": "TV - >",
+    "category": "tv",
+    "volume_cuft": 5.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "TV",
+      "TV - >",
+      "tv",
+      "tv - >"
+    ],
+    "handling": "\"535"
+  },
+  {
+    "id": "tv_stand_large",
+    "name": "TV Stand - Large",
+    "category": "tv",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "TV Stand",
+      "TV Stand - Large",
+      "tv stand",
+      "tv stand - large"
+    ]
+  },
+  {
+    "id": "tv_stand_medium",
+    "name": "TV Stand - Medium",
+    "category": "tv",
+    "volume_cuft": 1510.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "TV Stand",
+      "TV Stand - Medium",
+      "tv stand",
+      "tv stand - medium"
+    ]
+  },
+  {
+    "id": "tv_stand_small",
+    "name": "TV Stand - Small",
+    "category": "tv",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "TV Stand",
+      "TV Stand - Small",
+      "tv stand",
+      "tv stand - small"
+    ]
+  },
+  {
+    "id": "tv_tray_set",
+    "name": "TV Tray Set",
+    "category": "tv",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "TV Tray Set",
+      "tv tray set"
+    ]
+  },
+  {
+    "id": "umbrella_base",
+    "name": "Umbrella - Base",
+    "category": "umbrella",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Umbrella",
+      "Umbrella - Base",
+      "umbrella",
+      "umbrella - base"
+    ]
+  },
+  {
+    "id": "umbrella_patio",
+    "name": "Umbrella - Patio",
+    "category": "umbrella",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Umbrella",
+      "Umbrella - Patio",
+      "umbrella",
+      "umbrella - patio"
+    ]
+  },
+  {
+    "id": "upright_piano_large",
+    "name": "Upright Piano - Large",
+    "category": "upright",
+    "volume_cuft": 4028.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Upright Piano",
+      "Upright Piano - Large",
+      "upright piano",
+      "upright piano - large"
+    ]
+  },
+  {
+    "id": "upright_piano_small",
+    "name": "Upright Piano - Small",
+    "category": "upright",
+    "volume_cuft": 3524.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Upright Piano",
+      "Upright Piano - Small",
+      "upright piano",
+      "upright piano - small"
+    ]
+  },
+  {
+    "id": "vacuum_cleaner",
+    "name": "Vacuum Cleaner",
+    "category": "vacuum",
+    "volume_cuft": 32.0,
+    "weight_lbs": 1.0,
+    "aliases": [
+      "Vacuum Cleaner",
+      "vacuum cleaner"
+    ]
+  },
+  {
+    "id": "wagon",
+    "name": "Wagon",
+    "category": "wagon",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Wagon",
+      "wagon"
+    ]
+  },
+  {
+    "id": "walker",
+    "name": "Walker",
+    "category": "walker",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Walker",
+      "walker"
+    ]
+  },
+  {
+    "id": "washing_machine",
+    "name": "Washing Machine",
+    "category": "washing",
+    "volume_cuft": 2517.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Washing Machine",
+      "washing machine"
+    ]
+  },
+  {
+    "id": "waste_basket",
+    "name": "Waste Basket",
+    "category": "waste",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Waste Basket",
+      "waste basket"
+    ]
+  },
+  {
+    "id": "water_dispenser_large",
+    "name": "Water Dispenser - Large",
+    "category": "water",
+    "volume_cuft": 74.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Water Dispenser",
+      "Water Dispenser - Large",
+      "water dispenser",
+      "water dispenser - large"
+    ]
+  },
+  {
+    "id": "water_dispenser_medium",
+    "name": "Water Dispenser - Medium",
+    "category": "water",
+    "volume_cuft": 53.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Water Dispenser",
+      "Water Dispenser - Medium",
+      "water dispenser",
+      "water dispenser - medium"
+    ]
+  },
+  {
+    "id": "water_dispenser_small",
+    "name": "Water Dispenser - Small",
+    "category": "water",
+    "volume_cuft": 31.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Water Dispenser",
+      "Water Dispenser - Small",
+      "water dispenser",
+      "water dispenser - small"
+    ]
+  },
+  {
+    "id": "water_fountain_medium",
+    "name": "Water Fountain (Medium)",
+    "category": "water",
+    "volume_cuft": 8025.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Water Fountain (Medium)",
+      "water fountain (medium)"
+    ],
+    "handling": "+"
+  },
+  {
+    "id": "water_fountain_small",
+    "name": "Water Fountain (Small)",
+    "category": "water",
+    "volume_cuft": 204.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Water Fountain (Small)",
+      "water fountain (small)"
+    ]
+  },
+  {
+    "id": "weight_bench",
+    "name": "Weight Bench",
+    "category": "weight",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Weight Bench",
+      "weight bench"
+    ]
+  },
+  {
+    "id": "weights",
+    "name": "Weights",
+    "category": "weights",
+    "volume_cuft": 0.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Weights",
+      "weights"
+    ]
+  },
+  {
+    "id": "wheelbarrow",
+    "name": "Wheelbarrow",
+    "category": "wheelbarrow",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Wheelbarrow",
+      "wheelbarrow"
+    ]
+  },
+  {
+    "id": "wheelchair",
+    "name": "Wheelchair",
+    "category": "wheelchair",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Wheelchair",
+      "wheelchair"
+    ]
+  },
+  {
+    "id": "whiteboard",
+    "name": "Whiteboard",
+    "category": "whiteboard",
+    "volume_cuft": 53.0,
+    "weight_lbs": 5.0,
+    "aliases": [
+      "Whiteboard",
+      "whiteboard"
+    ]
+  },
+  {
+    "id": "wine_rack",
+    "name": "Wine rack",
+    "category": "wine",
+    "volume_cuft": 107.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Wine rack",
+      "wine rack"
+    ]
+  },
+  {
+    "id": "workbench_large",
+    "name": "Workbench - Large",
+    "category": "workbench",
+    "volume_cuft": 4028.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Workbench",
+      "Workbench - Large",
+      "workbench",
+      "workbench - large"
+    ]
+  },
+  {
+    "id": "workbench_small",
+    "name": "Workbench - Small",
+    "category": "workbench",
+    "volume_cuft": 2014.0,
+    "weight_lbs": 0.0,
+    "aliases": [
+      "Workbench",
+      "Workbench - Small",
+      "workbench",
+      "workbench - small"
+    ]
+  },
+  {
+    "id": "yard_ornaments",
+    "name": "Yard Ornaments",
+    "category": "yard",
+    "volume_cuft": 21.0,
+    "weight_lbs": 4.0,
+    "aliases": [
+      "Yard Ornaments",
+      "yard ornaments"
+    ]
+  }
 ]
