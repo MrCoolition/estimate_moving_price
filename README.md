@@ -115,16 +115,14 @@ The webhook configuration in ElevenLabs expects a `POST /orders/email` endpoint.
 }
 ```
 
-Environment variables control delivery:
+Environment variables control delivery via Amazon SES:
 
-- `ORDER_EMAIL_RECIPIENTS` (required): Comma-separated list of email addresses.
-- `ORDER_EMAIL_SMTP_HOST` (required): SMTP host to send mail through (e.g. Amazon SES).
-- `ORDER_EMAIL_SMTP_PORT`: SMTP port (default `587`).
-- `ORDER_EMAIL_SMTP_USERNAME` / `ORDER_EMAIL_SMTP_PASSWORD`: Credentials for authenticated relays (optional).
-- `ORDER_EMAIL_SMTP_USE_TLS`: Set to `false` to disable `STARTTLS` (defaults to enabled).
-- `ORDER_EMAIL_SENDER`: From address for outbound emails; defaults to SMTP username or the first recipient.
+- `ORDER_EMAIL_RECIPIENTS` (required): Comma-, semicolon-, or whitespace-separated list of destination addresses.
+- `ORDER_EMAIL_SENDER` or `FROM_EMAIL` (required): Verified SES identity to use as the sender.
+- `ORDER_EMAIL_AWS_REGION` or `AWS_REGION` / `AWS_DEFAULT_REGION` (required): AWS region where SES is enabled.
+- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`: AWS credentials (optional if running on an instance with an IAM role).
 
-Successful requests return `{ "status": "sent", "recipients": ["..."] }`. Any configuration issues return a `500` with a descriptive error, while SMTP failures surface as `502` responses.
+Successful requests return `{ "status": "sent", "recipients": ["..."] }`. Missing configuration returns a `500` with a descriptive error, while SES delivery problems surface as `502` responses.
 
 ## Run Locally
 
