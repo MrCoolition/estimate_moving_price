@@ -71,7 +71,11 @@ class EmailConfig(BaseModel):
         """Load configuration for sending order emails via Amazon SES."""
 
         recipients_raw = os.getenv("ORDER_EMAIL_RECIPIENTS", "")
-        recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
+        recipients = [
+            addr.strip()
+            for addr in re.split(r"[,;\s]+", recipients_raw)
+            if addr and addr.strip()
+        ]
         if not recipients:
             raise HTTPException(
                 status_code=500,
@@ -85,7 +89,11 @@ class EmailConfig(BaseModel):
                 detail="ORDER_EMAIL_SENDER or FROM_EMAIL is required for SES emails.",
             )
 
-        region = os.getenv("ORDER_EMAIL_AWS_REGION") or os.getenv("AWS_REGION")
+        region = (
+            os.getenv("ORDER_EMAIL_AWS_REGION")
+            or os.getenv("AWS_REGION")
+            or os.getenv("AWS_DEFAULT_REGION")
+        )
         if not region:
             raise HTTPException(
                 status_code=500,
