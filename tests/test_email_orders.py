@@ -67,6 +67,45 @@ def test_email_order_sends(monkeypatch):
     assert "Sofa, 2 chairs" in call["Message"]["Body"]["Text"]["Data"]
 
 
+def test_email_order_normalizes_spoken_email(monkeypatch):
+    ses_instances: dict[str, DummySES] = {}
+
+    def fake_ses_client(service_name: str, region_name=None, aws_access_key_id=None, aws_secret_access_key=None):
+        assert service_name == "ses"
+        ses_instances["instance"] = DummySES(region_name, aws_access_key_id, aws_secret_access_key)
+        return ses_instances["instance"]
+
+    monkeypatch.setenv("ORDER_EMAIL_RECIPIENTS", "ops@example.com")
+    monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")
+    monkeypatch.setenv("AWS_REGION", "us-west-1")
+
+    monkeypatch.setattr(
+        orders,
+        "boto3",
+        type("Boto3Stub", (), {"client": staticmethod(fake_ses_client)})(),
+        raising=False,
+    )
+
+    payload = OrderEmailRequest(
+        item_details="Dresser",
+        move_date="2025-06-20 (weekday)",
+        phone="555-123-4567",
+        locations="123 Main St -> 456 Oak St",
+        estimate_price=1250.0,
+        stairwells="Origin: 2nd floor walk-up; Destination: elevator",
+        estimate_calculation_table="Item1: $500, Item2: $750",
+        email="jimbob at gmail dot com",
+        name="Alex Customer",
+    )
+
+    response = asyncio.run(email_order(payload))
+    assert response == {"status": "sent", "recipients": ["ops@example.com"]}
+
+    ses = ses_instances["instance"]
+    call = ses.sent[0]
+    assert call["ReplyToAddresses"] == ["jimbob@gmail.com"]
+
+
 def test_email_order_requires_recipients(monkeypatch):
     monkeypatch.setenv("AWS_REGION", "us-east-2")
     monkeypatch.setenv("ORDER_EMAIL_SENDER", "estimates@example.com")

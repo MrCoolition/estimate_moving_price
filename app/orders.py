@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from typing import Any, Dict, List
 
 try:  # pragma: no cover - import guard for environments without AWS SDK
@@ -32,9 +33,24 @@ class OrderEmailRequest(BaseModel):
     email: str
     name: str
 
-    @field_validator("email")
+    @classmethod
+    def _normalize_email(cls, value: str) -> str:
+        """Convert spoken-style email addresses into RFC-friendly form."""
+
+        if not value:
+            return value
+
+        normalized = value.strip().lower()
+        normalized = re.sub(r"\s*(?:\[?at\]?|\(at\)| at )\s*", "@", normalized)
+        normalized = re.sub(r"\s*(?:\[?dot\]?|\(dot\)| dot )\s*", ".", normalized)
+        normalized = re.sub(r"\s+", "", normalized)
+        return normalized
+
+    @field_validator("email", mode="before")
     @classmethod
     def validate_email(cls, value: str) -> str:
+        value = cls._normalize_email(value)
+
         if "@" not in value or value.count("@") != 1:
             raise ValueError("email must contain a single '@' symbol")
         local, domain = value.split("@", 1)
